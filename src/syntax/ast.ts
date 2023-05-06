@@ -19,6 +19,16 @@ export interface NumberLiteral extends NodeBase {
     kind: SyntaxKinds.NumberLiteral;
     value: string | number;
 }
+export interface ObjectExpression extends NodeBase {
+    kind: SyntaxKinds.ObjectExpression;
+    properties: Array<Property>;
+}
+export interface Property extends NodeBase {
+    kind: SyntaxKinds.Property;
+    key: Identifier;
+    value: Expression; // actually is assignment expression,
+    variant: "init" | "set" | "get";
+}
 export interface MemberExpression extends NodeBase {
     kind: SyntaxKinds.MemberExpression;
     object: Expression;
@@ -65,7 +75,8 @@ export interface SequenceExpression extends NodeBase {
 }
 
 export type Expression = 
-    Identifier | NumberLiteral | CallExpression | MemberExpression |
+    Identifier | NumberLiteral | ObjectExpression |
+    CallExpression | MemberExpression |
     UpdateExpression | UnaryExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
 ;

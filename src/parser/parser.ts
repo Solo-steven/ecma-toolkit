@@ -1,5 +1,5 @@
 import { createLexer } from "@/src/lexer";
-import { Expression } from "@/src/syntax/ast";
+import { Expression, Identifier, Property } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
     UnaryOperators,
@@ -20,7 +20,6 @@ export function createParser(code: string) {
         return parseExpression();
     }
     return { parse };
-
     function match(kind: SyntaxKinds) {
         return lexer.getToken() === kind;
     }
@@ -40,7 +39,10 @@ export function createParser(code: string) {
         return lexer.lookahead();
     }
     function parseProgram() {
-
+        const body = [];
+        while(!match(SyntaxKinds.EOFToken)) {
+            body.push(parseStatementListItem());
+        }
     }
     function parseStatementListItem() {
         const token = lexer.getToken();
@@ -256,6 +258,7 @@ export function createParser(code: string) {
     function parsePrimaryExpression(): Expression {
         switch(getToken()) {
             case SyntaxKinds.Identifier:
+                // parse identifier.
                 const name = getValue();
                 nextToken();
                 return {
@@ -263,11 +266,23 @@ export function createParser(code: string) {
                     name,
                 }
             case SyntaxKinds.NumberLiteral:
+                // parse number literal
                 const value = getValue();
                 nextToken();
                 return {
                     kind: SyntaxKinds.NumberLiteral,
                     value,
+                }
+            case SyntaxKinds.BracesLeftPunctuator:
+                // parse object expression (object literal)
+                nextToken();
+                const properties = parseProperties();
+                if(!match(SyntaxKinds.BracesRightPunctuator)) {
+
+                }
+                return {
+                    kind: SyntaxKinds.ObjectExpression,
+                    properties,
                 }
             case SyntaxKinds.ParenthesesLeftPunctuator:
                 nextToken();
@@ -280,5 +295,54 @@ export function createParser(code: string) {
             default:
                 throw new Error(`${getToken()}`);
         }
+    }
+    function parseProperties(): Array<Property> {
+        // parse properties as Property ` '{' Property [',' Property] ','?  '}' `
+        const propertis: Array<Property> = [];
+        let isStart = true;
+        while(!match(SyntaxKinds.BracesRightPunctuator)) {
+            if(isStart) {
+                isStart  = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.BracesRightPunctuator)) {
+                break;
+            }
+            if(!match(SyntaxKinds.Identifier)) {
+
+            }
+            let variant: Property['variant'] = "init";
+            const prefix = getValue();
+            if(prefix === "set" || prefix === 'get') {
+                nextToken();
+                variant = prefix;
+                if(!match(SyntaxKinds.Identifier)) {
+
+                }
+            }
+            const key = {
+                kind: SyntaxKinds.Identifier,
+                name: getValue(),
+            } as Identifier;
+            nextToken();
+            if(!match(SyntaxKinds.ColonPunctuator)) {
+
+            }
+            nextToken();
+            console.log("1.There", propertis);
+            const value = parseAssigmentExpression();
+            console.log("2.There", propertis);
+            propertis.push({
+                kind: SyntaxKinds.Property,
+                key,
+                value,
+                variant,
+            })
+        }
+        return propertis;
     }
 }

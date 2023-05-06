@@ -3,7 +3,7 @@ import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
 
-const code = "curry[1][test](1,2,4)";
+const code = "a(test, arugment0101).test(1)";
 const lexer = createLexer(code)
 
 while(1) {
