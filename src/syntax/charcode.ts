@@ -1,3 +1,4 @@
+import { SyntaxKinds } from "./kinds";
 
 export const LexicalLiteral = {
     whiteSpaceChars: [" ", "\t"],
@@ -47,3 +48,12 @@ export const LexicalLiteral = {
         "in", "instanceof",
     ]
 };
+
+
+export const KeywordMapSyntaxKind = {
+    "await": SyntaxKinds.AwaitKeyword,
+    "break": SyntaxKinds.BreakKeyword,
+    "import": SyntaxKinds.ImportKeyword,
+    "new": SyntaxKinds.NewKeyword,
+    "super": SyntaxKinds.SuperKeyword,
+}

@@ -1,6 +1,6 @@
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { SourcePosition, cloneSourcePosition, createSourcePosition } from "@/src/utils/position";
-import { LexicalLiteral } from "@/src/syntax/charcode";
+import { LexicalLiteral, KeywordMapSyntaxKind } from "@/src/syntax/charcode";
 
 interface Context {
     code: string;
@@ -708,10 +708,10 @@ export function createLexer(code: string): Lexer {
         }
         const w = start + word;
         if((new Set(LexicalLiteral.keywords)).has(w)) {
-            if(SyntaxKinds[w] === null) {
+            if(KeywordMapSyntaxKind[w] == null) {
                 throw new Error(`[Error]: Keyword ${w} have no match method to create token`);
             }
-            return finishToken(SyntaxKinds[w], w);
+            return finishToken(KeywordMapSyntaxKind[w], w);
         }
         if((new Set(LexicalLiteral.BooleanLiteral)).has(w)) {
             if(w === "true") {

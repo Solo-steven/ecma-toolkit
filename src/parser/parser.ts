@@ -1,4 +1,5 @@
 import { createLexer } from "@/src/lexer";
+import* as factory from "@/src/syntax/factory";
 import { Expression, Identifier, Property } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -11,7 +12,6 @@ import {
     UpdateOperators,
     UpdateOperatorKinds,
  } from "@/src/syntax/operator";
-
 import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/utils";
 
 export function createParser(code: string) {
@@ -165,77 +165,52 @@ export function createParser(code: string) {
         }
         return argument;
     }
+    /**
+     * 
+     * @returns 
+     */
     function parseLeftHandSideExpression(): Expression {
         let base = parsePrimaryExpression();
-        while(1) {
+        let shouldStop = false;
+        while(!shouldStop) {
             if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
                 // callexpression
                 base = parseCallExpression(base);
             }
-            else if (match(SyntaxKinds.BracketLeftPunctuator)) {
-                base = parseComputedMemberExpression(base);
-            }
-            else if (match(SyntaxKinds.DotOperator)) {
-                // memberexpression
+            else if (match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator)) {
+                // memberexpression 
                 base = parseMemberExpression(base);
             }
-            else if (match(SyntaxKinds.NewKeyword)) {
-                // new expression
-                throw new Error()
-            }
             else {
-                break;
+                shouldStop = true;
             }
         }
         return base;
     }
+    /**
+     * 
+     * @param callee 
+     * @returns 
+     */
     function parseCallExpression(callee: Expression): Expression {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach`);
         }
-        const callExpressionArguments = parseCallExpressionArguments();
+        const callerArguments = parseArguments();
         return {
             kind: SyntaxKinds.CallExpression,
             callee,
-            arguments: callExpressionArguments,
+            arguments: callerArguments,
         }
     }
-    /**
-     * ##  Sytanx From Spec
-     * ```
-     * Arugment := '('')' 
-     *          := '(' ArgumentList ')'
-     *          := '(' ArgumentList ',' ')';
-     * ArugmentList := AssigmentExpression
-     *              := ...AssigmentExpression
-     *              := ArugmentList ',' AssigmentExpression
-     *              := ArgumentList ',' ... AssigmentExpression
-     * ```
-     * ## Transform above CFG grammer to following CFG grammer
-     * ```
-     * Arugment := '('  AssigmentExpression? [',' AssigmentExpression]? (',' | '...' AssigmentExpressiom ','?)? ')'
-     * ```
-     * which can be follwing spec, make it better for programming.
-     * ```
-     * Arugment := '(' ')'
-     * Arugment := '(' AssigmentExpression NextArugmentList
-     * NextArugmentList :=  ',' ')' 
-     *                  :=" ',' '...' AssigmentExpression ','? ')'
-     *                  :=  ',' AssigmentExpression NextArgumentList
-     * ```
-     * reference: 
-     *  - https://tc39.es/ecma262/#prod-Arguments
-     *  - https://tc39.es/ecma262/#prod-ArgumentList
-     * @returns {Array<Expression>}
-     */
-    function parseCallExpressionArguments(): Array<Expression> {
+    function parseArguments(): Array<Expression> {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach`);
         }
         nextToken();
         let isStart = true;
         let shouldStop = false;
-        const callExpressionArguments: Array<Expression> = [];
+        const callerArguments: Array<Expression> = [];
         while(!shouldStop && !match(SyntaxKinds.ParenthesesRightPunctuator)) {
             if(isStart) {
                 isStart = false
@@ -253,7 +228,7 @@ export function createParser(code: string) {
             // case 2: ',' following by SpreadElement, maybe follwed by ','
             if(match(SyntaxKinds.SpreadOperator)) {
                 nextToken();
-                callExpressionArguments.push({
+                callerArguments.push({
                     kind: SyntaxKinds.SpreadElement,
                     argument: parseAssigmentExpression(),
                 })
@@ -264,54 +239,52 @@ export function createParser(code: string) {
                 continue;
             }
             // case 3 : ',' AssigmentExpression
-            callExpressionArguments.push(parseAssigmentExpression());
+            callerArguments.push(parseAssigmentExpression());
         }
         if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
             throw new Error();
         }
         nextToken();
-        return callExpressionArguments;
+        return callerArguments;
     }
+    /**
+     * 
+     * @param base 
+     * @returns 
+     */
     function parseMemberExpression(base: Expression): Expression {
-        if(!match(SyntaxKinds.DotOperator)) {
+        if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator)) {
             throw new Error(`Unreach`);
         }
-        nextToken();
-        const property = parsePrimaryExpression();
-        return {
-            kind: SyntaxKinds.MemberExpression,
-            computed: true,
-            object: base,
-            property,
-        };
-    }
-    function parseComputedMemberExpression(base: Expression): Expression {
-        if(!match(SyntaxKinds.BracketLeftPunctuator)) {
-            throw new Error(`[Unreach]`);
+        if(match(SyntaxKinds.DotOperator)) {
+            nextToken();
+            const property = parseIdentifer();
+            return {
+                kind: SyntaxKinds.MemberExpression,
+                computed: false,
+                object: base,
+                property,
+            };
+        }else {
+            nextToken();
+            const property = parseExpression();
+            if(!match(SyntaxKinds.BracketRightPunctuator)) {
+                throw new Error(``);
+            }
+            nextToken();
+            return {
+                kind: SyntaxKinds.MemberExpression,
+                computed: true,
+                object: base,
+                property,
+            };
         }
-        nextToken();
-        const property = parseExpression();
-        if(!match(SyntaxKinds.BracketRightPunctuator)) {
-            throw new Error(``);
-        }
-        nextToken();
-        return {
-            kind: SyntaxKinds.MemberExpression,
-            computed: false,
-            object: base,
-            property,
-        };
     }
     function parsePrimaryExpression(): Expression {
         switch(getToken()) {
             case SyntaxKinds.Identifier:
                 // parse identifier.
-                const name = getValue();
-                nextToken();
-                return {
-                    kind: SyntaxKinds.Identifier,
-                    name,
-                }
+                return parseIdentifer();
             case SyntaxKinds.NumberLiteral:
                 // parse number literal
                 const value = getValue();
@@ -320,6 +293,15 @@ export function createParser(code: string) {
                     kind: SyntaxKinds.NumberLiteral,
                     value,
                 }
+            // case SyntaxKinds.BracketLeftPunctuator:
+            //     // parse array expression (array literal)
+            //     return factory.createArrayExpression()
+            case SyntaxKinds.ImportKeyword:
+                return parseImportMeta();
+            case SyntaxKinds.NewKeyword:
+                return parseNewExpression();
+            case SyntaxKinds.SuperKeyword:
+                return parseSuper();
             case SyntaxKinds.BracesLeftPunctuator:
                 // parse object expression (object literal)
                 nextToken();
@@ -342,6 +324,35 @@ export function createParser(code: string) {
             default:
                 throw new Error(`${getToken()}`);
         }
+    }
+    function parseIdentifer(): Identifier {
+        if(getToken() !== SyntaxKinds.Identifier) {
+            throw new Error(`${getToken()}`);
+        }
+        const name = getValue();
+        nextToken();
+        return {
+            kind: SyntaxKinds.Identifier,
+            name,
+        }
+    }
+    function parseImportMeta() {
+        if(!match(SyntaxKinds.ImportKeyword)) {
+            throw new Error();
+        }
+        nextToken();
+        if(!match(SyntaxKinds.DoKeyword)) {
+
+        }
+        nextToken();
+        const property = parseIdentifer();
+        return factory.createMetaProperty(factory.createIdentifier("import"), property);
+    }
+    function parseSuper() {
+        if(!match(SyntaxKinds.SuperKeyword)) {
+            throw new Error();
+        }
+        return factory.createCallExpression(factory.createIdentifier("super"), [])
     }
     function parseProperties(): Array<Property> {
         // parse properties as Property ` '{' Property [',' Property] ','?  '}' `
@@ -389,5 +400,20 @@ export function createParser(code: string) {
             })
         }
         return propertis;
+    }
+    function parseNewExpression() {
+        if(!match(SyntaxKinds.NewKeyword)) {
+            throw new Error();
+        }
+        nextToken();
+        if(match(SyntaxKinds.NewKeyword)) {
+            return parseNewExpression();
+        }
+        let base = parsePrimaryExpression();
+        while(match(SyntaxKinds.DotOperator)) {
+            base = parseMemberExpression(base);
+        }
+        return factory.createNewExpression(base, parseArguments());
+
     }
 }

@@ -123,10 +123,12 @@ export enum SyntaxKinds {
  *          AST Node
  * ======================================
  */
+    MetaProperty,
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
     Property,
+    NewExpression,
     MemberExpression,
     CallExpression,
     UpdateExpression,

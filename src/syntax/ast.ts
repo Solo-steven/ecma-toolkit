@@ -33,6 +33,20 @@ export interface SpreadElement extends NodeBase {
     kind: SyntaxKinds.SpreadElement,
     argument: Expression,
 }
+export interface ArrayExpression extends NodeBase {
+    kind: SyntaxKinds.ArrayExpression;
+    elements: Array<Expression>; // actually need to be assigment expression;
+}
+export interface MetaProperty extends NodeBase {
+    kind: SyntaxKinds.MetaProperty;
+    meta: Identifier;
+    property: Identifier;
+}
+export interface NewExpression extends NodeBase {
+    kind: SyntaxKinds.NewExpression,
+    callee: Expression;
+    arguments:Array<Expression>;
+}
 export interface MemberExpression extends NodeBase {
     kind: SyntaxKinds.MemberExpression;
     object: Expression;
@@ -80,7 +94,7 @@ export interface SequenceExpression extends NodeBase {
 
 export type Expression = 
     Identifier | NumberLiteral | 
-    ObjectExpression | SpreadElement |
+    ObjectExpression | SpreadElement | MetaProperty |
     CallExpression | MemberExpression |
     UpdateExpression | UnaryExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
