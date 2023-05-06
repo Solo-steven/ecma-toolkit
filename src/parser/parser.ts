@@ -16,6 +16,10 @@ import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/utils";
 
 export function createParser(code: string) {
     const lexer = createLexer(code);
+    /**
+     * 
+     * @returns {}
+     */
     function parse() {
         return parseExpression();
     }
@@ -196,6 +200,34 @@ export function createParser(code: string) {
             arguments: callExpressionArguments,
         }
     }
+    /**
+     * ##  Sytanx From Spec
+     * ```
+     * Arugment := '('')' 
+     *          := '(' ArgumentList ')'
+     *          := '(' ArgumentList ',' ')';
+     * ArugmentList := AssigmentExpression
+     *              := ...AssigmentExpression
+     *              := ArugmentList ',' AssigmentExpression
+     *              := ArgumentList ',' ... AssigmentExpression
+     * ```
+     * ## Transform above CFG grammer to following CFG grammer
+     * ```
+     * Arugment := '('  AssigmentExpression? [',' AssigmentExpression]? (',' | '...' AssigmentExpressiom ','?)? ')'
+     * ```
+     * which can be follwing spec, make it better for programming.
+     * ```
+     * Arugment := '(' ')'
+     * Arugment := '(' AssigmentExpression NextArugmentList
+     * NextArugmentList :=  ',' ')' 
+     *                  :=" ',' '...' AssigmentExpression ','? ')'
+     *                  :=  ',' AssigmentExpression NextArgumentList
+     * ```
+     * reference: 
+     *  - https://tc39.es/ecma262/#prod-Arguments
+     *  - https://tc39.es/ecma262/#prod-ArgumentList
+     * @returns {Array<Expression>}
+     */
     function parseCallExpressionArguments(): Array<Expression> {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach`);
@@ -213,10 +245,25 @@ export function createParser(code: string) {
                 }
                 nextToken();
             }
+            // case 1: ',' following by ')'
             if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
                 shouldStop = true;
                 continue;
             }
+            // case 2: ',' following by SpreadElement, maybe follwed by ','
+            if(match(SyntaxKinds.SpreadOperator)) {
+                nextToken();
+                callExpressionArguments.push({
+                    kind: SyntaxKinds.SpreadElement,
+                    argument: parseAssigmentExpression(),
+                })
+                if(match(SyntaxKinds.CommaToken)) {
+                    nextToken();
+                }
+                shouldStop = true;
+                continue;
+            }
+            // case 3 : ',' AssigmentExpression
             callExpressionArguments.push(parseAssigmentExpression());
         }
         if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
@@ -333,9 +380,7 @@ export function createParser(code: string) {
 
             }
             nextToken();
-            console.log("1.There", propertis);
             const value = parseAssigmentExpression();
-            console.log("2.There", propertis);
             propertis.push({
                 kind: SyntaxKinds.Property,
                 key,

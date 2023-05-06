@@ -29,6 +29,10 @@ export interface Property extends NodeBase {
     value: Expression; // actually is assignment expression,
     variant: "init" | "set" | "get";
 }
+export interface SpreadElement extends NodeBase {
+    kind: SyntaxKinds.SpreadElement,
+    argument: Expression,
+}
 export interface MemberExpression extends NodeBase {
     kind: SyntaxKinds.MemberExpression;
     object: Expression;
@@ -75,7 +79,8 @@ export interface SequenceExpression extends NodeBase {
 }
 
 export type Expression = 
-    Identifier | NumberLiteral | ObjectExpression |
+    Identifier | NumberLiteral | 
+    ObjectExpression | SpreadElement |
     CallExpression | MemberExpression |
     UpdateExpression | UnaryExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression

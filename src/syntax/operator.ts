@@ -1,6 +1,8 @@
 import { SyntaxKinds } from "./kinds";
 /** ======================================
  *          Union SytaxKinds
+ *  kinds: union of all possible kind
+ *  operators: array of every possible kinds 
  * ======================================
  */
 export type AssigmentOperatorKinds = 
