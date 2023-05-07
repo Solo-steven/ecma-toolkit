@@ -2,7 +2,7 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
-const code = "a = (() => {})";
+const code = `a.test?.().s.d`;
 const lexer = createLexer(code)
 
 while(1) {

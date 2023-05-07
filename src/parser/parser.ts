@@ -283,22 +283,32 @@ export function createParser(code: string) {
         let base = parsePrimaryExpression();
         let shouldStop = false;
         while(!shouldStop) {
+            let optional = false;
+            if(match(SyntaxKinds.QustionDotOperator)) {
+                optional = true;
+                context.isOptionChain = true;
+                nextToken();
+            }
             if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
                 // callexpression
-                base = parseCallExpression(base);
+                base = parseCallExpression(base, optional);
             }
-            else if (match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator)) {
+            else if (match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator) || optional) {
                 // memberexpression 
-                base = parseMemberExpression(base);
+                base = parseMemberExpression(base, optional);
             }
             //TODO: taggle-Expression.
             else {
                 shouldStop = true;
             }
         }
+        if(context.isOptionChain) {
+            context.isOptionChain = false;
+            return factory.createChainExpression(base);
+        }
         return base;
     }
-    function parseCallExpression(callee: Expression): Expression {
+    function parseCallExpression(callee: Expression, optional: boolean): Expression {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach`);
         }
@@ -306,7 +316,7 @@ export function createParser(code: string) {
         return {
             kind: SyntaxKinds.CallExpression,
             callee,
-            arguments: callerArguments,
+            arguments: callerArguments, optional
         }
     }
     function parseArguments(): Array<Expression> {
@@ -353,22 +363,26 @@ export function createParser(code: string) {
         nextToken();
         return callerArguments;
     }
-    function parseMemberExpression(base: Expression): Expression {
-        if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator)) {
+    function parseMemberExpression(base: Expression, optional: boolean): Expression {
+        if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator) && !optional) {
             throw createRecuriveDecentError("parseMemberExpression", [SyntaxKinds.DotOperator, SyntaxKinds.BracesLeftPunctuator]);
         }
         if(match(SyntaxKinds.DotOperator)) {
             nextToken();
             const property = parseIdentiferWithKeyword();
-            return factory.createMemberExpression(false, base, property);
-        }else {
+            return factory.createMemberExpression(false, base, property, optional);
+        }
+        else if(match(SyntaxKinds.BracesLeftPunctuator)){
             nextToken();
             const property = parseExpression();
             if(!match(SyntaxKinds.BracketRightPunctuator)) {
                 throw createSyntaxError(SyntaxKinds.BracesRightPunctuator);
             }
             nextToken();
-            return factory.createMemberExpression(true, base, property);
+            return factory.createMemberExpression(true, base, property, optional);
+        }else {
+            const property = parseIdentiferWithKeyword();
+            return factory.createMemberExpression(false, base, property, optional);
         }
     }
     function parsePrimaryExpression(): Expression {
@@ -442,7 +456,7 @@ export function createParser(code: string) {
         let base = parsePrimaryExpression();
         // TODO: refactor this loop to with function -> parseNewExpressionCallee ?
         while(match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator)) {
-            base = parseMemberExpression(base);
+            base = parseMemberExpression(base, false);
         }
         return factory.createNewExpression(base, parseArguments());
 
@@ -451,7 +465,7 @@ export function createParser(code: string) {
         if(!match(SyntaxKinds.SuperKeyword)) {
             throw createRecuriveDecentError("parseSuper", [SyntaxKinds.SuperKeyword]);
         }
-        return factory.createCallExpression(factory.createSuper(), []);
+        return factory.createCallExpression(factory.createSuper(), [], false);
     }
     function parseObjectExpression() {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {

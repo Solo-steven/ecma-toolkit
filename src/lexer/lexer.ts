@@ -550,7 +550,6 @@ export function createLexer(code: string): Lexer {
         if(!startWith("?")) {
             throw subStateMachineError("readQustionStart", "?");
         } 
-        eatChar();
         if(startWith("?.")) {
             eatChar(2);
             return finishToken(SyntaxKinds.QustionDotOperator,"?.");

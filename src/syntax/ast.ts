@@ -67,12 +67,18 @@ export interface MemberExpression extends NodeBase {
     object: Expression;
     property: Expression;
     computed: boolean;
+    optional: boolean;
 }
 export interface CallExpression extends NodeBase {
     kind: SyntaxKinds.CallExpression;
     callee: Expression;
     arguments: Array<Expression>;
+    optional: boolean;
 }
+export interface ChainExpression extends NodeBase {
+    kind: SyntaxKinds.ChainExpression;
+    expression: Expression;
+  }
 export interface UpdateExpression extends NodeBase {
     kind: SyntaxKinds.UpdateExpression;
     argument: Expression;
@@ -116,7 +122,8 @@ export type Expression =
     ObjectExpression | ArrayExpression | ArrorFunctionExpression |
     // meta property and spread element
     SpreadElement | MetaProperty |
-    CallExpression | MemberExpression |
+    // other expression
+    CallExpression | MemberExpression | ChainExpression |
     UpdateExpression | UnaryExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
 ;

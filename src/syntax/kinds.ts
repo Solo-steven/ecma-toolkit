@@ -131,6 +131,7 @@ export enum SyntaxKinds {
     ObjectExpression,
     ArrowFunctionExpression,
     Property,
+    ChainExpression,
     NewExpression,
     MemberExpression,
     CallExpression,

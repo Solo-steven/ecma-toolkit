@@ -31,11 +31,11 @@ export function createObjectExpression(properties: Array<AST.Property>): AST.Obj
 export function createSuper(): AST.Super {
     return { kind: SyntaxKinds.Super, name: "super" }
 }
-export function createCallExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>): AST.CallExpression {
+export function createCallExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>, optional: boolean): AST.CallExpression {
     return {
         kind: SyntaxKinds.CallExpression,
         callee, 
-        arguments: calleeArguments
+        arguments: calleeArguments, optional,
     }
 }
 export function createNewExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>): AST.NewExpression {
@@ -45,12 +45,15 @@ export function createNewExpression(callee: AST.Expression, calleeArguments: Arr
         arguments: calleeArguments
     }
 }
-export function createMemberExpression(computed: boolean, object: AST.Expression, property: AST.Expression): AST.MemberExpression {
+export function createMemberExpression(computed: boolean, object: AST.Expression, property: AST.Expression, optional: boolean): AST.MemberExpression {
     return {
         kind: SyntaxKinds.MemberExpression,
         computed,
-        object, property
+        object, property, optional,
     }
+}
+export function createChainExpression(expr: AST.Expression): AST.ChainExpression {
+    return { kind: SyntaxKinds.ChainExpression, expression: expr };
 }
 export function createSequenceExpression(exprs: Array<AST.Expression>): AST.SequenceExpression {
     return {
