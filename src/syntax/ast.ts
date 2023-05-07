@@ -9,8 +9,17 @@ import {
  *          AST Node
  * ======================================
  */
-interface NodeBase {}
+export interface NodeBase {}
 
+/** =====================================
+ *      Expression
+ * ======================================
+ */
+
+export interface Super extends NodeBase {
+    kind: SyntaxKinds.Super;
+    name: "super"
+}
 export interface Identifier extends NodeBase  {
     kind: SyntaxKinds.Identifier;
     name: string;
@@ -35,7 +44,13 @@ export interface SpreadElement extends NodeBase {
 }
 export interface ArrayExpression extends NodeBase {
     kind: SyntaxKinds.ArrayExpression;
-    elements: Array<Expression>; // actually need to be assigment expression;
+    elements: Array<Expression | null>; // actually need to be assigment expression;
+}
+export interface ArrorFunctionExpression extends NodeBase {
+    kind: SyntaxKinds.ArrowFunctionExpression;
+    arguments: Array<Expression>;
+    expressionBody: boolean;
+    body: Expression | FunctionBody;
 }
 export interface MetaProperty extends NodeBase {
     kind: SyntaxKinds.MetaProperty;
@@ -92,10 +107,26 @@ export interface SequenceExpression extends NodeBase {
     exprs: Array<Expression>
 }
 
-export type Expression = 
-    Identifier | NumberLiteral | 
-    ObjectExpression | SpreadElement | MetaProperty |
+export type Expression =
+    // identifer and super
+    Identifier | Super | 
+    // literals 
+    NumberLiteral | 
+    // composition literal
+    ObjectExpression | ArrayExpression | ArrorFunctionExpression |
+    // meta property and spread element
+    SpreadElement | MetaProperty |
     CallExpression | MemberExpression |
     UpdateExpression | UnaryExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
 ;
+
+export interface FunctionBody {
+    kind: SyntaxKinds.FunctionBody;
+    body: Array<NodeBase> //TODO: using StatementListItem
+}
+
+export interface Program {
+    kind: SyntaxKinds.Program;
+    body: Array<NodeBase>; //TODO: using StatementListItem
+}

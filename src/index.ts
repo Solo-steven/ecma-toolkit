@@ -2,7 +2,7 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
-const code = "new T.A.B()";
+const code = "[1,2,3].map((index) => index + 1)";
 const lexer = createLexer(code)
 
 while(1) {

@@ -1,8 +1,6 @@
 import { SyntaxKinds } from "./kinds";
 /** ======================================
  *          Union SytaxKinds
- *  kinds: union of all possible kind
- *  operators: array of every possible kinds 
  * ======================================
  */
 export type AssigmentOperatorKinds = 
@@ -114,4 +112,42 @@ export const UnaryOperators = [
     SyntaxKinds.DeleteKeyword,     // delete
     SyntaxKinds.VoidKeyword,       // void
     SyntaxKinds.TypeofKeyword       // typeof
+]
+
+export const Keywords = [
+    SyntaxKinds.AwaitKeyword,
+    SyntaxKinds.BreakKeyword,
+    SyntaxKinds.CaseKeyword,
+    SyntaxKinds.CatchKeyword,
+    SyntaxKinds.ClassKeyword,
+    SyntaxKinds.ConstKeyword,
+    SyntaxKinds.ContinueKeyword,
+    SyntaxKinds.DebuggerKeyword,
+    SyntaxKinds.DefaultKeyword,
+    SyntaxKinds.DoKeyword,
+    SyntaxKinds.ElseKeyword,
+    SyntaxKinds.EnumKeyword,
+    SyntaxKinds.ExportKeyword,
+    SyntaxKinds.ExtendsKeyword,
+    SyntaxKinds.FinallyKeyword,
+    SyntaxKinds.ForKeyword,
+    SyntaxKinds.FunctionKeyword,
+    SyntaxKinds.IfKeyword,
+    SyntaxKinds.ImportKeyword,
+    SyntaxKinds.LetKeyword,
+    SyntaxKinds.NewKeyword,
+    SyntaxKinds.ReturnKeyword,
+    SyntaxKinds.SuperKeyword,
+    SyntaxKinds.SwitchKeyword,
+    SyntaxKinds.ThisKeyword,
+    SyntaxKinds.ThrowKeyword,
+    SyntaxKinds.TryKeyword,
+    SyntaxKinds.VarKeyword,
+    SyntaxKinds.WithKeyword,
+    SyntaxKinds.YieldKeyword,
+    SyntaxKinds.DeleteKeyword,
+    SyntaxKinds.VoidKeyword,
+    SyntaxKinds.TypeofKeyword,
+    SyntaxKinds.InKeyword,
+    SyntaxKinds.InstanceofKeyword,
 ]

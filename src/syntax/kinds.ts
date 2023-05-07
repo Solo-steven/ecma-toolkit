@@ -54,6 +54,7 @@ export enum SyntaxKinds {
     NotEqOperator,  // !=
     GeqtOperator,   // >=
     LeqtOperator,   // <=
+    ArrowOperator, //  =>
     StrictEqOperator,       // ===
     StrictNotEqOperator,    // !==
     BitwiseOROperator,      // |
@@ -124,9 +125,11 @@ export enum SyntaxKinds {
  * ======================================
  */
     MetaProperty,
+    Super,
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
+    ArrowFunctionExpression,
     Property,
     NewExpression,
     MemberExpression,
@@ -137,29 +140,93 @@ export enum SyntaxKinds {
     AssigmentExpression,
     ConditionalExpression,
     SequenceExpression,
+    FunctionBody,
+    Program,
 }
+export const LexicalLiteral = {
+    whiteSpaceChars: [" ", "\t"],
+    newLineChars: ["\n"],
+    numberChars: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+    punctuators: [
+        "{", "}",
+        "[", "]",
+        "(", ")",
+        ":", ";",
+        "\'", "\"", 
+        "#"
+    ],
+    operator: [
+        // Arithmetic operators
+        "+", "-", "*", "/", "%", "++", "--", "**",
+        // Compare operators
+        ">", "<", "==", "!=", "<=", ">=", "===", "!==",
+        // Bitwise operators
+        "|", "&", "~", "^", "<<", ">>", ">>>",
+        // Logical operators
+        "||", "&&", "!", "??",
+        // Comma operators
+        ",",
+        // 
+        "...",
+        // Optional Chaining, Chaining
+        "?.", ".",
+        // Assignment operator,
+        "=", "+=", "-=", "*=", "%=", "**=",
+        "|=", "&=", ">>=", "<<=", ">>>=", "^=", "~=",
+        "||=", "&&=", "??="
+    ],
+    BooleanLiteral: ["true", "false"],
+    NullLiteral: ["null"],
+    UndefinbedLiteral: ["undefined"],
+    keywords: [
+        "await", "break", "case", "catch", "class",
+        "const", "continue", "debugger", "default", "do",
+        "else", "enum", "export", "extends", "finally",
+        "for", "function", "if", "import", "new",
+        "return", "super", "switch", "this", "throw",
+        "try", "var", "with", "yield","let",
+        // Unary operators
+        "delete", "void", "typeof",
+        // Relation operators
+        "in", "instanceof",
+    ]
+};
 
-// TODO: fill all possible text
-export function kindToText(kind: SyntaxKinds) {
-    switch(kind) {
-        case SyntaxKinds.AwaitKeyword:
-            return "AwaitKeyword";
-        case SyntaxKinds.BreakKeyword:
-            return "BreakKeyword";
-        case SyntaxKinds.CaseKeyword:
-            return "Casekeyword";
-        case SyntaxKinds.CatchKeyword:
-            return "CatchKeyword";
-        case SyntaxKinds.ClassKeyword:
-            return "ClassKeyword";
-        case SyntaxKinds.ConstKeyword:
-            return "ConstKeyword";
-        case SyntaxKinds.ContinueKeyword:
-            return "ContineKeyword";
-        case SyntaxKinds.DebuggerKeyword:
-            return "DebuggerKeyword";
-        
-        
-        
-    }
+
+export const KeywordLiteralMapSyntaxKind = {
+    ["await"]: SyntaxKinds.AwaitKeyword,
+    ["break"]: SyntaxKinds.BreakKeyword, 
+    ["case"]: SyntaxKinds.CaseKeyword,
+    ["catch"]: SyntaxKinds.CatchKeyword,
+    ["class"]: SyntaxKinds.ClassKeyword,
+    ["const"]: SyntaxKinds.ConstKeyword,
+    ["continue"]: SyntaxKinds.ContinueKeyword,
+    ["debugger"]: SyntaxKinds.DebuggerKeyword, 
+    ["default"]: SyntaxKinds.DefaultKeyword,
+    ["do"]: SyntaxKinds.DoKeyword,
+    ["else"]: SyntaxKinds.ElseKeyword,
+    ["enum"]: SyntaxKinds.EnumKeyword,
+    ["export"]: SyntaxKinds.ExportKeyword,
+    ["extends"]: SyntaxKinds.ExtendsKeyword,
+    ["finally"]: SyntaxKinds.FinallyKeyword,
+    ["for"]: SyntaxKinds.ForKeyword,
+    ["function"]: SyntaxKinds.FunctionKeyword,
+    ["if"]: SyntaxKinds.IfKeyword,
+    ["import"]: SyntaxKinds.ImportKeyword,
+    ["new"]: SyntaxKinds.NewKeyword,
+    ["return"]: SyntaxKinds.ReturnKeyword,
+    ["super"]: SyntaxKinds.SuperKeyword,
+    ["switch"]: SyntaxKinds.SwitchKeyword, 
+    ["this"]: SyntaxKinds.ThisKeyword,
+    ["throw"]: SyntaxKinds.ThrowKeyword,
+    ["try"]: SyntaxKinds.TryKeyword,
+    ["var"]: SyntaxKinds.VarKeyword,
+    ["with"]: SyntaxKinds.WithKeyword,
+    ["yield"]: SyntaxKinds.YieldKeyword,
+    ["let"]: SyntaxKinds.LetKeyword,
+    ["delete"]: SyntaxKinds.DeleteKeyword,
+    ["void"]: SyntaxKinds.VoidKeyword,
+    ["typeof"]: SyntaxKinds.TypeofKeyword,
+    ["in"]: SyntaxKinds.InKeyword,
+    ["instanceof"]: SyntaxKinds.InstanceofKeyword,   
 }

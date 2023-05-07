@@ -1,6 +1,6 @@
 import { createLexer } from "@/src/lexer";
-import* as factory from "@/src/syntax/factory";
-import { Expression, Identifier, Property } from "@/src/syntax/ast";
+import * as factory from "@/src/syntax/factory";
+import { Expression, FunctionBody, Identifier, NodeBase, Property } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
     UnaryOperators,
@@ -11,50 +11,157 @@ import {
     UnaryOperatorKinds,
     UpdateOperators,
     UpdateOperatorKinds,
+    Keywords,
  } from "@/src/syntax/operator";
-import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/utils";
+import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/helper";
+
+/** ========================
+ *  Context for parser
+ * =========================
+ */
+interface Context {
+    maybeArrow: boolean;
+    isOptionChain: boolean;
+}
+/**
+ * Create context for parser
+ * @returns {Context}
+ */
+function createContext(): Context {
+    return {
+        maybeArrow: false,
+        isOptionChain: false,
+    }
+}
 
 export function createParser(code: string) {
     const lexer = createLexer(code);
-    /**
-     * 
-     * @returns {}
-     */
+
+/** =========================================================================
+ *   Composition method from lexer, Context of parsr, Util helper for parser
+ * ==========================================================================
+ */
+    const context = createContext();
     function parse() {
-        return parseExpression();
+        return parseProgram();
     }
     return { parse };
-    function match(kind: SyntaxKinds) {
+    /**
+     * Is current token match given kind
+     * @param {SyntaxKinds} kind
+     * @returns {boolean}
+     */
+    function match(kind: SyntaxKinds): boolean {
         return lexer.getToken() === kind;
     }
-    function matchSet(kinds: SyntaxKinds[]) {
-        return kinds.find(value => match(value));
+    /**
+     * Is current token match any of given kinds
+     * @param {Array<SyntaxKinds>} kinds 
+     * @returns {boolean}
+     */
+    function matchSet(kinds: SyntaxKinds[]): boolean {
+        return kinds.find(value => match(value)) > 0;
     }
-    function nextToken() {
+    /**
+     * Move to next token and return next token
+     * @returns {SyntaxKinds}
+     */
+    function nextToken(): SyntaxKinds {
         return lexer.nextToken();
     }
-    function getToken() {
+    /**
+     * Get current token in token stream
+     * @returns {SyntaxKinds}
+     */
+    function getToken(): SyntaxKinds {
         return lexer.getToken();
     }
-    function getValue() {
+    /**
+     * Get string value of current token
+     * @returns {string}
+     */
+    function getValue(): string {
         return lexer.getSourceValue();
     }
-    function lookahead() {
+    /**
+     * Get next token but do not move to next token
+     * @returns {SyntaxKinds}
+     */
+    function lookahead(): SyntaxKinds {
         return lexer.lookahead();
     }
+    /**
+     * Create a error object with message tell developer that get a 
+     * unexpect token.
+     * @param {SyntaxKinds} expectToken 
+     * @param {string?} messsage 
+     * @returns {Error}
+     */
+    function createSyntaxError(expectToken: SyntaxKinds, messsage: string = ""): Error {
+        return new Error(`[Syntax Error]: Expect ${expectToken}, But got ${getToken()}. ${messsage}`);
+    }
+    /**
+     * Given that this parser is recurive decent parser, some
+     * function must call with some start token, if function call
+     * with unexecpt start token, it should throw this error.
+     * @param {string} functionName
+     * @param {Array<SyntaxKinds>} startTokens
+     * @returns {Error}
+     */
+    function createRecuriveDecentError(functionName: string, startTokens: Array<SyntaxKinds>): Error {
+        let message = `[Syntax Error When Recurive Parse]: this function ${functionName} call with unexpect token ${getToken()}, it should call with start token[`;
+        for(const token of startTokens) {
+            message += `${token}, `;
+        }
+        message += "]";
+        return new Error(message);
+    }
+    function createEOFError() {
+
+    }
+/** ==================================================
+ *  Top level parse function 
+ *  ==================================================
+ */
     function parseProgram() {
         const body = [];
         while(!match(SyntaxKinds.EOFToken)) {
             body.push(parseStatementListItem());
         }
+        return factory.createProgram(body);
     }
     function parseStatementListItem() {
-        const token = lexer.getToken();
+        const token = getToken();
         switch(token) {
             default:
                 return parseExpression(); 
         }
     }
+/** =================================================================
+ * Parse Delcarations
+ * entry point reference: https://tc39.es/ecma262/#prod-Declaration
+ * ==================================================================
+ */
+    function parseFunctionBody() {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseFunctionBody", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        const body : Array<NodeBase>= [];
+        while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            body.push(parseStatementListItem());
+        }
+        if(match(SyntaxKinds.EOFToken)) {
+
+        }
+        nextToken();
+        return factory.createFunctionBody(body);
+    }
+/** ====================================================================
+ *  Parse Expression 
+ *  entry point reference : https://tc39.es/ecma262/#sec-comma-operator
+ * =====================================================================
+ */
     function parseExpression(): Expression {
         const exprs = [parseAssigmentExpression()];
         while(match(SyntaxKinds.CommaToken)) {
@@ -69,12 +176,15 @@ export function createParser(code: string) {
         }
     }
     function parseAssigmentExpression(): Expression {
+        if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            context.maybeArrow = true;
+        }
         const left = parseConditionalExpression();
         if (!matchSet(AssigmentOperators)) {
             return left;
         }
         const operator = nextToken();
-        const right = parseConditionalExpression();
+        const right = parseAssigmentExpression();
         return  {
             kind: SyntaxKinds.AssigmentExpression,
             left,
@@ -100,7 +210,6 @@ export function createParser(code: string) {
             consequnce: conseq,
             alter,
         }
-
     }
     function parseBinaryExpression(): Expression {
         const atom = parseUnaryExpression();
@@ -166,8 +275,9 @@ export function createParser(code: string) {
         return argument;
     }
     /**
+     *  LeftHandSideExpression's 
      * 
-     * @returns 
+     *  reference: 
      */
     function parseLeftHandSideExpression(): Expression {
         let base = parsePrimaryExpression();
@@ -181,17 +291,13 @@ export function createParser(code: string) {
                 // memberexpression 
                 base = parseMemberExpression(base);
             }
+            //TODO: taggle-Expression.
             else {
                 shouldStop = true;
             }
         }
         return base;
     }
-    /**
-     * 
-     * @param callee 
-     * @returns 
-     */
     function parseCallExpression(callee: Expression): Expression {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach`);
@@ -205,7 +311,7 @@ export function createParser(code: string) {
     }
     function parseArguments(): Array<Expression> {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw new Error(`Unreach`);
+            throw new Error(`Unreach ${getToken()}`);
         }
         nextToken();
         let isStart = true;
@@ -247,55 +353,30 @@ export function createParser(code: string) {
         nextToken();
         return callerArguments;
     }
-    /**
-     * 
-     * @param base 
-     * @returns 
-     */
     function parseMemberExpression(base: Expression): Expression {
         if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator)) {
-            throw new Error(`Unreach`);
+            throw createRecuriveDecentError("parseMemberExpression", [SyntaxKinds.DotOperator, SyntaxKinds.BracesLeftPunctuator]);
         }
         if(match(SyntaxKinds.DotOperator)) {
             nextToken();
-            const property = parseIdentifer();
-            return {
-                kind: SyntaxKinds.MemberExpression,
-                computed: false,
-                object: base,
-                property,
-            };
+            const property = parseIdentiferWithKeyword();
+            return factory.createMemberExpression(false, base, property);
         }else {
             nextToken();
             const property = parseExpression();
             if(!match(SyntaxKinds.BracketRightPunctuator)) {
-                throw new Error(``);
+                throw createSyntaxError(SyntaxKinds.BracesRightPunctuator);
             }
             nextToken();
-            return {
-                kind: SyntaxKinds.MemberExpression,
-                computed: true,
-                object: base,
-                property,
-            };
+            return factory.createMemberExpression(true, base, property);
         }
     }
     function parsePrimaryExpression(): Expression {
         switch(getToken()) {
             case SyntaxKinds.Identifier:
-                // parse identifier.
                 return parseIdentifer();
             case SyntaxKinds.NumberLiteral:
-                // parse number literal
-                const value = getValue();
-                nextToken();
-                return {
-                    kind: SyntaxKinds.NumberLiteral,
-                    value,
-                }
-            // case SyntaxKinds.BracketLeftPunctuator:
-            //     // parse array expression (array literal)
-            //     return factory.createArrayExpression()
+                return parseNumberLiteral();
             case SyntaxKinds.ImportKeyword:
                 return parseImportMeta();
             case SyntaxKinds.NewKeyword:
@@ -303,38 +384,40 @@ export function createParser(code: string) {
             case SyntaxKinds.SuperKeyword:
                 return parseSuper();
             case SyntaxKinds.BracesLeftPunctuator:
-                // parse object expression (object literal)
-                nextToken();
-                const properties = parseProperties();
-                if(!match(SyntaxKinds.BracesRightPunctuator)) {
-
-                }
-                return {
-                    kind: SyntaxKinds.ObjectExpression,
-                    properties,
-                }
+                return parseObjectExpression();
+            case SyntaxKinds.BracketLeftPunctuator:
+                return parseArrayExpression();
             case SyntaxKinds.ParenthesesLeftPunctuator:
-                nextToken();
-                const expr = parseExpression();
-                if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-                    throw new Error(`[Error]: CoverExpression Must Close with ParenthesesRight.`);
-                }
-                nextToken();
-                return expr;
+                return parseCoverExpressionORArrowFunction();
+            //TODO: function expression
+
             default:
-                throw new Error(`${getToken()}`);
+                throw createRecuriveDecentError("parsePrimaryExpression", []);
         }
     }
     function parseIdentifer(): Identifier {
         if(getToken() !== SyntaxKinds.Identifier) {
-            throw new Error(`${getToken()}`);
+            throw createRecuriveDecentError("parseIdentifer", [SyntaxKinds.Identifier]);
         }
         const name = getValue();
         nextToken();
-        return {
-            kind: SyntaxKinds.Identifier,
-            name,
+        return factory.createIdentifier(name);
+    }
+    function parseIdentiferWithKeyword() {
+        if(!matchSet([SyntaxKinds.Identifier,...Keywords])) {
+            throw createRecuriveDecentError("parseIdentifierWith", [SyntaxKinds.Identifier,...Keywords]);
         }
+        const name = getValue();
+        nextToken();
+        return factory.createIdentifier(name);
+    }
+    function parseNumberLiteral() {
+        if(!match(SyntaxKinds.NumberLiteral)) {
+            throw createRecuriveDecentError("parseNumberLiteral", [SyntaxKinds.NumberLiteral]);
+        }
+        const value = getValue();
+        nextToken();
+        return factory.createNumberLiteral(value);
     }
     function parseImportMeta() {
         if(!match(SyntaxKinds.ImportKeyword)) {
@@ -348,11 +431,38 @@ export function createParser(code: string) {
         const property = parseIdentifer();
         return factory.createMetaProperty(factory.createIdentifier("import"), property);
     }
+    function parseNewExpression() {
+        if(!match(SyntaxKinds.NewKeyword)) {
+            throw createRecuriveDecentError("parseNewExpression", [SyntaxKinds.NewExpression]);
+        }
+        nextToken();
+        if(match(SyntaxKinds.NewKeyword)) {
+            return parseNewExpression();
+        }
+        let base = parsePrimaryExpression();
+        // TODO: refactor this loop to with function -> parseNewExpressionCallee ?
+        while(match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator)) {
+            base = parseMemberExpression(base);
+        }
+        return factory.createNewExpression(base, parseArguments());
+
+    }
     function parseSuper() {
         if(!match(SyntaxKinds.SuperKeyword)) {
-            throw new Error();
+            throw createRecuriveDecentError("parseSuper", [SyntaxKinds.SuperKeyword]);
         }
-        return factory.createCallExpression(factory.createIdentifier("super"), [])
+        return factory.createCallExpression(factory.createSuper(), []);
+    }
+    function parseObjectExpression() {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseObjectExpression", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        const properties = parseProperties();
+        if(!match(SyntaxKinds.BracesRightPunctuator)) {
+            throw createSyntaxError(SyntaxKinds.BracesRightPunctuator);
+        }
+        return factory.createObjectExpression(properties);
     }
     function parseProperties(): Array<Property> {
         // parse properties as Property ` '{' Property [',' Property] ','?  '}' `
@@ -401,19 +511,52 @@ export function createParser(code: string) {
         }
         return propertis;
     }
-    function parseNewExpression() {
-        if(!match(SyntaxKinds.NewKeyword)) {
+    function parseArrayExpression() {
+        if(!match(SyntaxKinds.BracketLeftPunctuator)) {
+            throw createRecuriveDecentError("parseArrayExpression", [SyntaxKinds.BracketLeftPunctuator]);
+        }
+        nextToken();
+        const elements: Array<Expression | null> = [];
+        while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            if(match(SyntaxKinds.CommaToken)) {
+                nextToken();
+                elements.push(null);
+                continue;
+            }
+            const expr = parseAssigmentExpression();
+            elements.push(expr);
+            if(match(SyntaxKinds.CommaToken)) {
+                nextToken();
+            }
+        }
+        if(match(SyntaxKinds.EOFToken)) {
             throw new Error();
         }
         nextToken();
-        if(match(SyntaxKinds.NewKeyword)) {
-            return parseNewExpression();
+        return factory.createArrayExpression(elements);
+    }
+    function parseCoverExpressionORArrowFunction() {
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createRecuriveDecentError("parserCoverExpressionORArrowFunction", [SyntaxKinds.ParenthesesLeftPunctuator]);
         }
-        let base = parsePrimaryExpression();
-        while(match(SyntaxKinds.DotOperator)) {
-            base = parseMemberExpression(base);
+        const maybeArguments = parseArguments();
+        if(!context.maybeArrow) {
+            // transfor to sequence
+            return factory.createSequenceExpression(maybeArguments);
         }
-        return factory.createNewExpression(base, parseArguments());
-
+        if(!match(SyntaxKinds.ArrowOperator)) {
+            throw createSyntaxError(SyntaxKinds.ArrowOperator);
+        }
+        nextToken();
+        let body: Expression | FunctionBody | undefined; 
+        let isExpression = false;
+        if(match(SyntaxKinds.BracesLeftPunctuator)) {
+            body = parseFunctionBody();
+        }else {
+            body = parseExpression();
+            isExpression = true;
+        }
+        context.maybeArrow = false;
+        return factory.createArrowExpression(isExpression, body, maybeArguments);
     }
 }
