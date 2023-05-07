@@ -14,6 +14,7 @@ import {
     Keywords,
  } from "@/src/syntax/operator";
 import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/helper";
+import { ErrorMessageMap } from "@/src/parser/error";
 
 /** ========================
  *  Context for parser
@@ -91,13 +92,20 @@ export function createParser(code: string) {
         return lexer.lookahead();
     }
     /**
+     * Create a Message error from parser's error map.
+     * @param {string} messsage 
+     */
+    function createMessageError(messsage: string) {
+        return new Error(`[Syntax Error]: ${messsage}`);
+    }
+    /**
      * Create a error object with message tell developer that get a 
      * unexpect token.
      * @param {SyntaxKinds} expectToken 
      * @param {string?} messsage 
      * @returns {Error}
      */
-    function createSyntaxError(expectToken: SyntaxKinds, messsage: string = ""): Error {
+    function createUnexpectError(expectToken: SyntaxKinds, messsage: string = ""): Error {
         return new Error(`[Syntax Error]: Expect ${expectToken}, But got ${getToken()}. ${messsage}`);
     }
     /**
@@ -376,7 +384,7 @@ export function createParser(code: string) {
             nextToken();
             const property = parseExpression();
             if(!match(SyntaxKinds.BracketRightPunctuator)) {
-                throw createSyntaxError(SyntaxKinds.BracesRightPunctuator);
+                throw createUnexpectError(SyntaxKinds.BracesRightPunctuator);
             }
             nextToken();
             return factory.createMemberExpression(true, base, property, optional);
@@ -455,7 +463,10 @@ export function createParser(code: string) {
         }
         let base = parsePrimaryExpression();
         // TODO: refactor this loop to with function -> parseNewExpressionCallee ?
-        while(match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator)) {
+        while(match(SyntaxKinds.DotOperator) || match(SyntaxKinds.BracketLeftPunctuator) || match(SyntaxKinds.QustionDotOperator)) {
+            if(match(SyntaxKinds.QustionDotOperator)) {
+                throw createMessageError(ErrorMessageMap.new_expression_cant_using_optional_chain);
+            }
             base = parseMemberExpression(base, false);
         }
         return factory.createNewExpression(base, parseArguments());
@@ -474,7 +485,7 @@ export function createParser(code: string) {
         nextToken();
         const properties = parseProperties();
         if(!match(SyntaxKinds.BracesRightPunctuator)) {
-            throw createSyntaxError(SyntaxKinds.BracesRightPunctuator);
+            throw createUnexpectError(SyntaxKinds.BracesRightPunctuator);
         }
         return factory.createObjectExpression(properties);
     }
@@ -562,7 +573,7 @@ export function createParser(code: string) {
             return factory.createSequenceExpression(maybeArguments);
         }
         if(!match(SyntaxKinds.ArrowOperator)) {
-            throw createSyntaxError(SyntaxKinds.ArrowOperator);
+            throw createUnexpectError(SyntaxKinds.ArrowOperator);
         }
         nextToken();
         let body: Expression | FunctionBody | undefined; 
