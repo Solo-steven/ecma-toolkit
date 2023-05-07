@@ -541,7 +541,10 @@ export function createParser(code: string) {
         }
         const maybeArguments = parseArguments();
         if(!context.maybeArrow) {
-            // transfor to sequence
+            // transfor to sequence or signal expression
+            if(maybeArguments.length === 1) {
+                return maybeArguments[1];
+            }
             return factory.createSequenceExpression(maybeArguments);
         }
         if(!match(SyntaxKinds.ArrowOperator)) {
