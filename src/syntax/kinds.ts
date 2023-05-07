@@ -134,6 +134,7 @@ export enum SyntaxKinds {
     ChainExpression,
     NewExpression,
     MemberExpression,
+    AwaitExpression,
     CallExpression,
     UpdateExpression,
     UnaryExpression,
@@ -141,6 +142,7 @@ export enum SyntaxKinds {
     AssigmentExpression,
     ConditionalExpression,
     SequenceExpression,
+    ExpressionStatement,
     FunctionBody,
     Program,
 }

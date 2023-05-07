@@ -170,6 +170,9 @@ export function createParser(code: string) {
  *  entry point reference : https://tc39.es/ecma262/#sec-comma-operator
  * =====================================================================
  */
+    function parseExpressionStatement() {
+        return 
+    }
     function parseExpression(): Expression {
         const exprs = [parseAssigmentExpression()];
         while(match(SyntaxKinds.CommaToken)) {
@@ -249,13 +252,15 @@ export function createParser(code: string) {
     }
     function parseUnaryExpression(): Expression {
         if(matchSet(UnaryOperators)) {
-            const operator = nextToken();
+            const operator = nextToken() as UnaryOperatorKinds;
             const argument = parseUnaryExpression();
-            return {
-                kind: SyntaxKinds.UnaryExpression,
-                operator: operator as UnaryOperatorKinds,
-                argument,
-            }
+            return factory.createUnaryExpression(argument, operator)
+        }
+        if(match(SyntaxKinds.AwaitKeyword)) {
+            nextToken();
+            const argu = parseUnaryExpression();
+            return factory.createAwaitExpression(argu);
+
         }
         return parseUpdateExpression();
     }
@@ -399,6 +404,8 @@ export function createParser(code: string) {
                 return parseIdentifer();
             case SyntaxKinds.NumberLiteral:
                 return parseNumberLiteral();
+            case SyntaxKinds.StringLiteral:
+                return parseStringLiteral();
             case SyntaxKinds.ImportKeyword:
                 return parseImportMeta();
             case SyntaxKinds.NewKeyword:
@@ -440,6 +447,14 @@ export function createParser(code: string) {
         const value = getValue();
         nextToken();
         return factory.createNumberLiteral(value);
+    }
+    function parseStringLiteral() {
+        if(!match(SyntaxKinds.StringLiteral)) {
+            throw createRecuriveDecentError("parseStringLiteral", [SyntaxKinds.StringLiteral]);
+        }
+        const value = getValue();
+        nextToken();
+        return factory.createStringLiteral(value);
     }
     function parseImportMeta() {
         if(!match(SyntaxKinds.ImportKeyword)) {

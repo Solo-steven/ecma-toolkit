@@ -1,5 +1,6 @@
 import * as AST from './ast';
 import { SyntaxKinds } from "@/src/syntax/kinds";
+import { UnaryOperatorKinds } from './operator';
 
 export function createIdentifier(name: string): AST.Identifier {
     return {
@@ -10,6 +11,12 @@ export function createIdentifier(name: string): AST.Identifier {
 export function createNumberLiteral(value: string | number): AST.NumberLiteral {
     return {
         kind: SyntaxKinds.NumberLiteral,
+        value,
+    }
+}
+export function createStringLiteral(value: string): AST.StringLiteral {
+    return {
+        kind: SyntaxKinds.StringLiteral,
         value,
     }
 }
@@ -34,8 +41,9 @@ export function createSuper(): AST.Super {
 export function createCallExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>, optional: boolean): AST.CallExpression {
     return {
         kind: SyntaxKinds.CallExpression,
+        optional,
         callee, 
-        arguments: calleeArguments, optional,
+        arguments: calleeArguments,
     }
 }
 export function createNewExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>): AST.NewExpression {
@@ -48,18 +56,31 @@ export function createNewExpression(callee: AST.Expression, calleeArguments: Arr
 export function createMemberExpression(computed: boolean, object: AST.Expression, property: AST.Expression, optional: boolean): AST.MemberExpression {
     return {
         kind: SyntaxKinds.MemberExpression,
-        computed,
-        object, property, optional,
+        computed,optional,
+        object, property,
     }
 }
 export function createChainExpression(expr: AST.Expression): AST.ChainExpression {
     return { kind: SyntaxKinds.ChainExpression, expression: expr };
+}
+export function createUnaryExpression(argument: AST.Expression, operator: UnaryOperatorKinds): AST.UnaryExpression {
+    return {
+        kind: SyntaxKinds.UnaryExpression,
+        argument,
+        operator,
+    }
+}
+export function createAwaitExpression(argument: AST.Expression): AST.AwaitExpression {
+    return { kind: SyntaxKinds.AwaitExpression, argument };
 }
 export function createSequenceExpression(exprs: Array<AST.Expression>): AST.SequenceExpression {
     return {
         kind: SyntaxKinds.SequenceExpression,
         exprs,
     }
+}
+export function createExpressionStatement(expr: AST.Expression): AST.ExpressionStatement {
+    return { kind: SyntaxKinds.ExpressionStatement, expr, };
 }
 export function createFunctionBody(body: Array<AST.NodeBase>): AST.FunctionBody {
     return { kind: SyntaxKinds.FunctionBody, body };

@@ -28,6 +28,10 @@ export interface NumberLiteral extends NodeBase {
     kind: SyntaxKinds.NumberLiteral;
     value: string | number;
 }
+export interface StringLiteral extends NodeBase {
+    kind: SyntaxKinds.StringLiteral;
+    value: string;
+}
 export interface ObjectExpression extends NodeBase {
     kind: SyntaxKinds.ObjectExpression;
     properties: Array<Property>;
@@ -56,6 +60,10 @@ export interface MetaProperty extends NodeBase {
     kind: SyntaxKinds.MetaProperty;
     meta: Identifier;
     property: Identifier;
+}
+export interface AwaitExpression extends NodeBase {
+    kind: SyntaxKinds.AwaitExpression;
+    argument: Expression; // actually is unary expression
 }
 export interface NewExpression extends NodeBase {
     kind: SyntaxKinds.NewExpression,
@@ -117,17 +125,25 @@ export type Expression =
     // identifer and super
     Identifier | Super | 
     // literals 
-    NumberLiteral | 
+    NumberLiteral | StringLiteral |
     // composition literal
     ObjectExpression | ArrayExpression | ArrorFunctionExpression |
     // meta property and spread element
     SpreadElement | MetaProperty |
     // other expression
     CallExpression | MemberExpression | ChainExpression |
-    UpdateExpression | UnaryExpression | BinaryExpression |
+    UpdateExpression | UnaryExpression | AwaitExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
 ;
+export interface ExpressionStatement  {
+    kind: SyntaxKinds.ExpressionStatement;
+    expr: Expression;
+}
 
+/** =================================
+ *   Declaration
+ * ==================================
+ */
 export interface FunctionBody {
     kind: SyntaxKinds.FunctionBody;
     body: Array<NodeBase> //TODO: using StatementListItem
