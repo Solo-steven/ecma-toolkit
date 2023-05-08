@@ -9,7 +9,7 @@ interface Context {
     startPosition: SourcePosition;
     endPosition: SourcePosition;
 
-    templateStringStackCounter: number;
+    templateStringStackCounter: Array<number>;
 }
 
 function cloneContext(source: Context) {
@@ -41,7 +41,7 @@ export function createLexer(code: string): Lexer {
         token: null,
         startPosition: createSourcePosition(),
         endPosition: createSourcePosition(),
-        templateStringStackCounter: 0,
+        templateStringStackCounter: [],
     };
     function getSourceValue() {
         return context.sourceValue;
@@ -153,9 +153,10 @@ export function createLexer(code: string): Lexer {
              */
             case "{":
                 eatChar();
+                context.templateStringStackCounter.push(-1);
                 return finishToken(SyntaxKinds.BracesLeftPunctuator, "{");
             case "}":
-                if(context.templateStringStackCounter) {
+                if(context.templateStringStackCounter.pop() > 0) {
                     return readTemplateMiddleORTail();
                 }
                 eatChar();
@@ -618,7 +619,7 @@ export function createLexer(code: string): Lexer {
         }
         if(startWith("${")) {
             eatChar(2);
-            context.templateStringStackCounter ++;
+            context.templateStringStackCounter.push(1);
             return  finishToken(SyntaxKinds.TemplateHead, wordString);
         }
         eatChar(1);
@@ -639,7 +640,7 @@ export function createLexer(code: string): Lexer {
         context.sourceValue = wordString;
         if(startWith("${")) {
             eatChar(2);
-            context.templateStringStackCounter ++;
+            context.templateStringStackCounter.push(1);
             return  finishToken(SyntaxKinds.TemplateMiddle, wordString);
         }
         eatChar(1);

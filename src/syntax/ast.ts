@@ -32,6 +32,16 @@ export interface StringLiteral extends NodeBase {
     kind: SyntaxKinds.StringLiteral;
     value: string;
 }
+export interface TemplateLiteral extends NodeBase {
+    kind: SyntaxKinds.TemplateLiteral,
+    quasis: Array<TemplateElement>;
+    expressions: Array<Expression>;
+}
+export interface TemplateElement extends NodeBase {
+    kind: SyntaxKinds.TemplateElement;
+    value: string;
+    tail: boolean;
+}
 export interface ObjectExpression extends NodeBase {
     kind: SyntaxKinds.ObjectExpression;
     properties: Array<Property>;
@@ -83,6 +93,11 @@ export interface CallExpression extends NodeBase {
     arguments: Array<Expression>;
     optional: boolean;
 }
+export interface TaggedTemplateExpression extends NodeBase {
+    kind: SyntaxKinds.TaggedTemplateExpression;
+    quasi: TemplateLiteral;
+    tag: Expression;
+}
 export interface ChainExpression extends NodeBase {
     kind: SyntaxKinds.ChainExpression;
     expression: Expression;
@@ -125,13 +140,13 @@ export type Expression =
     // identifer and super
     Identifier | Super | 
     // literals 
-    NumberLiteral | StringLiteral |
+    NumberLiteral | StringLiteral | TemplateLiteral |
     // composition literal
     ObjectExpression | ArrayExpression | ArrorFunctionExpression |
     // meta property and spread element
     SpreadElement | MetaProperty |
     // other expression
-    CallExpression | MemberExpression | ChainExpression |
+    CallExpression | MemberExpression | TaggedTemplateExpression |  NewExpression | ChainExpression |
     UpdateExpression | UnaryExpression | AwaitExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
 ;

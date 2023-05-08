@@ -1,12 +1,12 @@
 import { createParser } from "@/src/parser";
 import * as factory from "@/src/syntax/factory"
-
+// todo: add case `await a.test?.(await cc(), aa  ).s.d`
 
 function toAST(code: string) {
     return createParser(code).parse();
 }
-
-describe("expression/additive", () => {
+// test source: https://github.com/jquery/esprima/tree/main/test/fixtures/expression/additive
+describe("fixtures/expression/additive", () => {
     test("x+y", () => {
         expect(toAST("x+y")).toBe(
             factory.createProgram([
@@ -21,3 +21,56 @@ describe("expression/additive", () => {
 
     });
 });
+// test source: https://github.com/jquery/esprima/tree/main/test/fixtures/expression/multiplicative
+describe("fixtures/expression/multiplicative", () => {
+    test("x * y", () => {
+
+    });
+    test("x / y", () => {
+
+    });
+    test("x % y", () => {
+
+    });
+});
+// test source: https://github.com/jquery/esprima/tree/main/test/fixtures/expression/binary-bitwise
+describe("fixtures/expression/binary-bitwise", () => {
+    test("x & y", () => {
+
+    });
+    test("x ^ y", () => {
+        
+    });
+    test("x | y", () => {
+
+    });
+});
+// test source: https://github.com/jquery/esprima/tree/main/test/fixtures/expression/binary-logical
+describe('fixtures/expression/binary-logical', () => {
+    test("x || y", () => {
+
+    });
+    test("x && y", () => {
+
+    });
+    test("x || y || z", () => {
+        
+    });
+    test("x && y && z" , () => {
+
+    });
+    test("x || y && z", () => {
+
+    });
+    test("x || y ^ z", () => {
+
+    });
+});
+describe("fixtures/expression/bitwise-shift", () => {
+    test("x << y", () => {
+
+    });
+    test("x >>> y", () => {
+
+    });
+})

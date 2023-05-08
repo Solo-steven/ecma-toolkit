@@ -20,6 +20,18 @@ export function createStringLiteral(value: string): AST.StringLiteral {
         value,
     }
 }
+export function createTemplateLiteral(quasis: Array<AST.TemplateElement>, expressions: Array<AST.Expression>): AST.TemplateLiteral {
+    return {
+        kind: SyntaxKinds.TemplateLiteral,
+        quasis, expressions,
+    }
+}
+export function createTemplateElement(value: string, tail: boolean): AST.TemplateElement {
+    return {
+        kind: SyntaxKinds.TemplateElement,
+        value, tail
+    }
+}
 export function createArrayExpression(elements: Array<AST.Expression | null>): AST.ArrayExpression {
     return {
         kind: SyntaxKinds.ArrayExpression,
@@ -58,6 +70,14 @@ export function createMemberExpression(computed: boolean, object: AST.Expression
         kind: SyntaxKinds.MemberExpression,
         computed,optional,
         object, property,
+    }
+}
+export function createTagTemplateExpression(base: AST.Expression, quasi: AST.TemplateLiteral): AST.TaggedTemplateExpression {
+    return { 
+        kind: SyntaxKinds.TaggedTemplateExpression,
+        tag: base,
+        quasi,
+
     }
 }
 export function createChainExpression(expr: AST.Expression): AST.ChainExpression {

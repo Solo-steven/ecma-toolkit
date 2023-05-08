@@ -129,11 +129,14 @@ export enum SyntaxKinds {
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
+    TemplateLiteral,
+    TemplateElement,
     ArrowFunctionExpression,
     Property,
     ChainExpression,
     NewExpression,
     MemberExpression,
+    TaggedTemplateExpression,
     AwaitExpression,
     CallExpression,
     UpdateExpression,
@@ -173,6 +176,8 @@ export const LexicalLiteral = {
         "...",
         // Optional Chaining, Chaining
         "?.", ".",
+        // Template Literal
+        "`",
         // Assignment operator,
         "=", "+=", "-=", "*=", "%=", "**=",
         "|=", "&=", ">>=", "<<=", ">>>=", "^=", "~=",
