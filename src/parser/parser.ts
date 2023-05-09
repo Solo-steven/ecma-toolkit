@@ -277,6 +277,15 @@ export function createParser(code: string) {
         nextToken();
         return factory.createFunctionBody(body);
     }
+    function parseClassDeclaration() {
+
+    }
+    function parseClass() {
+
+    }
+    function parseClassBody() {
+
+    }
 /** ====================================================================
  *  Parse Expression 
  *  entry point reference : https://tc39.es/ecma262/#sec-comma-operator
@@ -535,6 +544,8 @@ export function createParser(code: string) {
                 return parseNewExpression();
             case SyntaxKinds.SuperKeyword:
                 return parseSuper();
+            case SyntaxKinds.ThisKeyword:
+                return parseThisExpression();
             case SyntaxKinds.BracesLeftPunctuator:
                 return parseObjectExpression();
             case SyntaxKinds.BracketLeftPunctuator:
@@ -649,7 +660,12 @@ export function createParser(code: string) {
         if(!match(SyntaxKinds.SuperKeyword)) {
             throw createRecuriveDecentError("parseSuper", [SyntaxKinds.SuperKeyword]);
         }
+        nextToken();
         return factory.createCallExpression(factory.createSuper(), [], false);
+    }
+    function parseThisExpression() {
+        nextToken();
+        return factory.createThisExpression();
     }
     function parseObjectExpression() {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {

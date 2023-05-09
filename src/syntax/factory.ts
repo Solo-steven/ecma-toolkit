@@ -70,6 +70,12 @@ export function createSuper(): AST.Super {
         name: "super" 
     }
 }
+export function createThisExpression(): AST.ThisExpression {
+    return {
+        kind: SyntaxKinds.ThisExpression,
+        name: "this",
+    }
+}
 export function createChainExpression(expr: AST.Expression): AST.ChainExpression {
     return { 
         kind: SyntaxKinds.ChainExpression, 

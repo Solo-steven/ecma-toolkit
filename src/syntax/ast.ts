@@ -37,6 +37,10 @@ export interface Super extends NodeBase {
     kind: SyntaxKinds.Super;
     name: "super"
 }
+export interface ThisExpression extends NodeBase {
+    kind: SyntaxKinds.ThisExpression;
+    name: "this",
+}
 export interface Identifier extends NodeBase  {
     kind: SyntaxKinds.Identifier;
     name: string;
@@ -160,8 +164,8 @@ export interface SequenceExpression extends NodeBase {
 }
 
 export type Expression =
-    // identifer and super
-    Identifier | Super | 
+    // identifer and super and ThisExpression
+    Identifier | Super | ThisExpression |
     // literals 
     NumberLiteral | StringLiteral | TemplateLiteral |
     // structal literal

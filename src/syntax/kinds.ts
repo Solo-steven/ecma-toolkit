@@ -127,6 +127,7 @@ export enum SyntaxKinds {
     // ========== Expression ==========
     MetaProperty,
     Super,
+    ThisExpression,
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
