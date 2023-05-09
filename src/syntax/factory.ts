@@ -127,6 +127,20 @@ export function createUnaryExpression(argument: AST.Expression, operator: UnaryO
         argument
     }
 }
+export function createArrowExpression(
+    isExpression: boolean, 
+    body: AST.Expression | AST.FunctionBody, 
+    calleeArguments: Array<AST.Expression>,
+    async: boolean,
+): AST.ArrorFunctionExpression {
+    return {
+        kind: SyntaxKinds.ArrowFunctionExpression,
+        expressionBody: isExpression, 
+        async,
+        arguments: calleeArguments,
+        body,
+    }
+}
 export function createBinaryExpression(left: AST.Expression, right: AST.Expression, operator: BinaryOperatorKinds): AST.BinaryExpression {
     return {
         kind: SyntaxKinds.BinaryExpression,
@@ -167,11 +181,44 @@ export function createFunctionBody(body: Array<AST.NodeBase>): AST.FunctionBody 
         body
     };
 }
-export function createArrowExpression(isExpression: boolean, body: AST.Expression | AST.FunctionBody, calleeArguments: Array<AST.Expression>): AST.ArrorFunctionExpression {
+export function createFunction(
+    name: AST.Function['name'], 
+    body: AST.Function['body'], 
+    params: AST.Function['params'], 
+    generator: AST.Function['generator'],
+    async: AST.Function['async'],
+): AST.Function {
     return {
-        kind: SyntaxKinds.ArrowFunctionExpression,
+        name,
+        generator,
+        async,
         body,
-        expressionBody: isExpression, arguments: calleeArguments,
+        params,
+    };
+}
+export function transFormFunctionToFunctionExpression(func: AST.Function ): AST.FunctionExpression {
+    return {
+        kind: SyntaxKinds.FunctionExpression,
+        ...func,
+    }
+}
+export function transFormFunctionToFunctionDeclaration(func: AST.Function): AST.FunctionDeclaration {
+    return {
+        kind: SyntaxKinds.FunctionDeclaration,
+        ...func,
+    }
+}
+export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
+    return {
+        kind: SyntaxKinds.AssignmentPattern,
+        left, 
+        right
+    }
+}
+export function createRestElement(argument: AST.RestElements['argument']): AST.RestElements {
+    return {
+        kind: SyntaxKinds.RestElements,
+        argument,
     }
 }
 export function createProgram( body: Array<AST.NodeBase>): AST.Program {

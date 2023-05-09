@@ -6,10 +6,26 @@ import {
     AssigmentOperatorKinds
 } from "./operator";
 /** ======================================
- *          AST Node
+ *    Shared, Basic, Top Level AST Node
  * ======================================
  */
 export interface NodeBase {}
+
+export interface Function extends NodeBase {
+    name: Identifier | null;
+    params: Array<Pattern>;
+    body: FunctionBody;
+    generator: boolean;
+    async: boolean;
+}
+export interface FunctionBody extends NodeBase {
+    kind: SyntaxKinds.FunctionBody;
+    body: Array<NodeBase> //TODO: using StatementListItem
+}
+export interface Program {
+    kind: SyntaxKinds.Program;
+    body: Array<NodeBase>; //TODO: using StatementListItem
+}
 
 /** =====================================
  *      Expression
@@ -61,10 +77,15 @@ export interface ArrayExpression extends NodeBase {
     kind: SyntaxKinds.ArrayExpression;
     elements: Array<Expression | null>; // actually need to be assigment expression;
 }
+export interface FunctionExpression extends NodeBase, Function {
+    kind: SyntaxKinds.FunctionExpression
+}
+// TODO: make arrowfunctionExpression extends form function
 export interface ArrorFunctionExpression extends NodeBase {
     kind: SyntaxKinds.ArrowFunctionExpression;
-    arguments: Array<Expression>;
     expressionBody: boolean;
+    async: boolean;
+    arguments: Array<Expression>;
     body: Expression | FunctionBody;
 }
 export interface MetaProperty extends NodeBase {
@@ -142,8 +163,8 @@ export type Expression =
     Identifier | Super | 
     // literals 
     NumberLiteral | StringLiteral | TemplateLiteral |
-    // composition literal
-    ObjectExpression | ArrayExpression | ArrorFunctionExpression |
+    // structal literal
+    ObjectExpression | ArrayExpression | ArrorFunctionExpression | FunctionExpression |
     // meta property and spread element
     SpreadElement | MetaProperty |
     // other expression
@@ -157,15 +178,27 @@ export interface ExpressionStatement  {
 }
 
 /** =================================
- *   Declaration
+ *   Pattern
  * ==================================
  */
-export interface FunctionBody {
-    kind: SyntaxKinds.FunctionBody;
-    body: Array<NodeBase> //TODO: using StatementListItem
+export interface Pattern extends NodeBase {};
+export interface RestElements extends Pattern {
+    kind: SyntaxKinds.RestElements;
+    argument: Expression;
+}
+export interface AssignmentPattern extends Pattern {
+    kind: SyntaxKinds.AssignmentPattern;
+    left: Identifier;
+    right: Expression;
 }
 
-export interface Program {
-    kind: SyntaxKinds.Program;
-    body: Array<NodeBase>; //TODO: using StatementListItem
+/** ================================
+ *  Declaration
+ * =================================
+ */
+export interface FunctionDeclaration extends NodeBase, Function {
+    kind: SyntaxKinds.FunctionDeclaration;
+    name: Identifier
 }
+
+export type Declaration = FunctionDeclaration;

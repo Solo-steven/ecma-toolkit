@@ -1,6 +1,6 @@
 import { createLexer } from "@/src/lexer";
 import * as factory from "@/src/syntax/factory";
-import { Expression, FunctionBody, Identifier, NodeBase, Property, SpreadElement, TemplateElement } from "@/src/syntax/ast";
+import { Expression, FunctionBody, Identifier, NodeBase, Pattern, Property, SpreadElement, TemplateElement } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
     UnaryOperators,
@@ -22,6 +22,7 @@ import { ErrorMessageMap } from "@/src/parser/error";
  */
 interface Context {
     maybeArrow: boolean;
+    inAsync: boolean;
 }
 /**
  * Create context for parser
@@ -30,6 +31,7 @@ interface Context {
 function createContext(): Context {
     return {
         maybeArrow: false,
+        inAsync: false,
     }
 }
 
@@ -147,7 +149,26 @@ export function createParser(code: string) {
     function parseStatementListItem() {
         const token = getToken();
         switch(token) {
+            case SyntaxKinds.FunctionKeyword: 
+                return parseFunctionDeclaration();
             default:
+                if(getValue() === "async") {
+                    nextToken();
+                    context.inAsync = true;
+                    let statement: NodeBase | undefined;
+                    if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+                        context.maybeArrow = true;
+                        const arrowExpr = parseCoverExpressionORArrowFunction();
+                        context.maybeArrow = false;
+                        statement = factory.createExpressionStatement(arrowExpr);
+                    }else if (match(SyntaxKinds.FunctionKeyword)) {
+                        statement = parseFunctionDeclaration();
+                    }else {
+                        return factory.createIdentifier("async");
+                    }
+                    context.inAsync = false;
+                    return statement;
+                }
                 return parseExpressionStatement();
         }
     }
@@ -156,6 +177,91 @@ export function createParser(code: string) {
  * entry point reference: https://tc39.es/ecma262/#prod-Declaration
  * ==================================================================
  */
+    function parseFunctionDeclaration() {
+        const func = parseFunction();
+        if(func.name === null) {
+            throw createMessageError("Function name of FunctionDeclaration can not be null");
+        }
+        return factory.transFormFunctionToFunctionDeclaration(func);
+    }
+    function parseFunction() {
+        let generator = false;
+        if(!match(SyntaxKinds.FunctionKeyword)) {
+            throw createRecuriveDecentError("parseFunctionExpression", [SyntaxKinds.FunctionKeyword]);
+        }
+        nextToken();
+        if(match(SyntaxKinds.MultiplyOperator)) {
+            generator = true;
+            nextToken();
+        }
+        let name: Identifier | null = null;
+        if(match(SyntaxKinds.Identifier)) {
+            name = factory.createIdentifier(getValue());
+            nextToken();
+        }
+        const params = parseBindingElmentList();
+        const body = parseFunctionBody();
+        console.log(context.inAsync)
+        return factory.createFunction(name, body, params, generator, context.inAsync);
+    }
+    /**
+     *  parse `'(' BindingElement? [',' BindingElement?]  ')'`
+     */
+    function parseBindingElmentList() {
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseBindingElementList", [SyntaxKinds.ParenthesesLeftPunctuator]);
+        }
+        nextToken();
+        let isStart = true;
+        const params: Array<Pattern> = [];
+        while(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "params list must seprated by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                continue;
+            }
+            // parse SpreadElement (identifer, Object, Array)
+            if(match(SyntaxKinds.SpreadOperator)) {
+                nextToken();
+                switch(getToken()) {
+                    case SyntaxKinds.Identifier:
+                        params.push(factory.createRestElement(parseIdentifer()));
+                        break;
+                    case SyntaxKinds.BracesLeftPunctuator:
+                        params.push(factory.createRestElement(parseObjectExpression()));
+                        break;
+                    case SyntaxKinds.BracketLeftPunctuator:
+                        params.push(factory.createRestElement(parseArrayExpression()));
+                        break;
+                    default:
+                        throw createMessageError("spread param list in function should be Identifier, objectLiteral, or ArrayLiteral ")
+                }
+                break;
+            }
+            // parse identifier '=' AssigmentExpression
+            const left = parseIdentifer();
+            if(match(SyntaxKinds.AssginOperator)) {
+                nextToken();
+                const right = parseAssigmentExpression();
+                params.push(factory.createAssignmentPattern(left, right));
+            }
+            params.push(left);
+        }
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
+        }   
+        nextToken();
+        return params;
+    }
+    /**
+     * parse `'{' [StatmentListItem] '}'`
+     */
     function parseFunctionBody() {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createRecuriveDecentError("parseFunctionBody", [SyntaxKinds.BracesLeftPunctuator]);
@@ -433,6 +539,8 @@ export function createParser(code: string) {
                 return parseObjectExpression();
             case SyntaxKinds.BracketLeftPunctuator:
                 return parseArrayExpression();
+            case SyntaxKinds.FunctionKeyword:
+                return parseFunctionExpression();
             case SyntaxKinds.ParenthesesLeftPunctuator:
                 return parseCoverExpressionORArrowFunction();
             // TODO: consider wrap as function or default case ?
@@ -647,6 +755,9 @@ export function createParser(code: string) {
         nextToken();
         return factory.createArrayExpression(elements);
     }
+    function parseFunctionExpression() {
+        return factory.transFormFunctionToFunctionExpression(parseFunction());
+    }
     function parseCoverExpressionORArrowFunction() {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw createRecuriveDecentError("parserCoverExpressionORArrowFunction", [SyntaxKinds.ParenthesesLeftPunctuator]);
@@ -674,6 +785,6 @@ export function createParser(code: string) {
             body = parseExpression();
             isExpression = true;
         }
-        return factory.createArrowExpression(isExpression, body, argus);
+        return factory.createArrowExpression(isExpression, body, argus, context.inAsync);
     }
 }

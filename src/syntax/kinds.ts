@@ -129,6 +129,7 @@ export enum SyntaxKinds {
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
+    FunctionExpression,
     TemplateLiteral,
     TemplateElement,
     ArrowFunctionExpression,
@@ -146,6 +147,10 @@ export enum SyntaxKinds {
     ConditionalExpression,
     SequenceExpression,
     ExpressionStatement,
+    Function,
+    AssignmentPattern,
+    RestElements,
+    FunctionDeclaration,
     FunctionBody,
     Program,
 }

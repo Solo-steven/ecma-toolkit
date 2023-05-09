@@ -2,7 +2,12 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
-const code = "{ \"test\": content, a: 10,  }";
+const code = `
+    async (a , b , c = 10 + aa ,) =>  {
+        a + 1
+    }
+
+`;
 const lexer = createLexer(code)
 
 while(1) {
