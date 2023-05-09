@@ -124,12 +124,14 @@ export enum SyntaxKinds {
  *          AST Node
  * ======================================
  */
+    // ========== Expression ==========
     MetaProperty,
     Super,
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
     FunctionExpression,
+    ClassExpression,
     TemplateLiteral,
     TemplateElement,
     ArrowFunctionExpression,
@@ -147,11 +149,16 @@ export enum SyntaxKinds {
     ConditionalExpression,
     SequenceExpression,
     ExpressionStatement,
+    // =========== Declaration ===========
     Function,
     AssignmentPattern,
     RestElements,
     FunctionDeclaration,
     FunctionBody,
+    ClassDeclaration,
+    ClassBody,
+    MethodDefinition,
+    // =========== Top Level ===========
     Program,
 }
 export const LexicalLiteral = {

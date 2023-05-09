@@ -18,9 +18,10 @@ export interface Function extends NodeBase {
     generator: boolean;
     async: boolean;
 }
-export interface FunctionBody extends NodeBase {
-    kind: SyntaxKinds.FunctionBody;
-    body: Array<NodeBase> //TODO: using StatementListItem
+export interface Class extends NodeBase {
+    id: Identifier | null;
+    superClass: Expression | null;
+    body: ClassBody;
 }
 export interface Program {
     kind: SyntaxKinds.Program;
@@ -196,9 +197,30 @@ export interface AssignmentPattern extends Pattern {
  *  Declaration
  * =================================
  */
+export interface FunctionBody extends NodeBase {
+    kind: SyntaxKinds.FunctionBody;
+    body: Array<NodeBase> //TODO: using StatementListItem
+}
 export interface FunctionDeclaration extends NodeBase, Function {
     kind: SyntaxKinds.FunctionDeclaration;
     name: Identifier
 }
 
+export interface Class extends NodeBase {
+    id: Identifier | null;
+    superClass: Expression | null;
+    body: ClassBody;
+}
+interface ClassBody extends NodeBase {
+    kind: SyntaxKinds.ClassBody;
+    body: [ MethodDefinition ];
+}
+interface MethodDefinition extends  Node {
+    kind: SyntaxKinds.MethodDefinition,
+    key: Expression;
+    value: FunctionExpression;
+    type: "constructor" | "method" | "get" | "set";
+    computed: boolean;
+    static: boolean;
+}
 export type Declaration = FunctionDeclaration;
