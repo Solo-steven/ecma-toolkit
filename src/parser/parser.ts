@@ -1,6 +1,6 @@
 import { createLexer } from "@/src/lexer";
 import * as factory from "@/src/syntax/factory";
-import { Expression, FunctionBody, Identifier, NodeBase, Property, TemplateElement } from "@/src/syntax/ast";
+import { Expression, FunctionBody, Identifier, NodeBase, Property, SpreadElement, TemplateElement } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
     UnaryOperators,
@@ -552,52 +552,74 @@ export function createParser(code: string) {
         if(!match(SyntaxKinds.BracesRightPunctuator)) {
             throw createUnexpectError(SyntaxKinds.BracesRightPunctuator);
         }
+        nextToken();
         return factory.createObjectExpression(properties);
     }
-    function parseProperties(): Array<Property> {
-        // parse properties as Property ` '{' Property [',' Property] ','?  '}' `
-        const propertis: Array<Property> = [];
+    function parseProperties(): Array<Property | SpreadElement> {
+        // parse properties as Property => Property? [',' Property?] '}' 
+        const propertis: Array<Property | SpreadElement> = [];
         let isStart = true;
         while(!match(SyntaxKinds.BracesRightPunctuator)) {
+            console.log(propertis);
             if(isStart) {
                 isStart  = false;
             }else {
                 if(!match(SyntaxKinds.CommaToken)) {
-
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "object literal's property must seperated by comma")
                 }
                 nextToken();
             }
             if(match(SyntaxKinds.BracesRightPunctuator)) {
                 break;
             }
-            if(!match(SyntaxKinds.Identifier)) {
-
+            if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.StringLiteral, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.SpreadOperator])) {
+                throw createMessageError("");
             }
+            let key : Property['key'] | undefined;
+            let computed: boolean = false;
             let variant: Property['variant'] = "init";
-            const prefix = getValue();
-            if(prefix === "set" || prefix === 'get') {
-                nextToken();
-                variant = prefix;
-                if(!match(SyntaxKinds.Identifier)) {
-
+            switch (getToken()) {
+                case SyntaxKinds.BracketLeftPunctuator: {
+                    computed = true;
+                    nextToken();
+                    key = parseAssigmentExpression();
+                    if(!match(SyntaxKinds.BracketRightPunctuator)) {
+                        throw createUnexpectError(SyntaxKinds.BracketRightPunctuator, "object computed key must end with BracketRight");
+                    }
+                    nextToken();
+                    break;
+                }
+                case SyntaxKinds.StringLiteral: {
+                    key = factory.createStringLiteral(getValue());
+                    nextToken();
+                    break;
+                }
+                case SyntaxKinds.Identifier: {
+                    const prefix = getValue();
+                    if(prefix === "set" || prefix === 'get') {
+                        nextToken();
+                        variant = prefix;
+                        if(!match(SyntaxKinds.Identifier)) {
+                            throw createUnexpectError(SyntaxKinds.Identifier, "set and get method ");
+                        }
+                    }
+                    key = factory.createIdentifier(getValue());
+                    nextToken();
+                    break
+                }
+                case SyntaxKinds.SpreadOperator: {
+                    nextToken();
+                    const argu = parseExpression();
+                    propertis.push(factory.createSpreadElement(argu));
+                    continue;
                 }
             }
-            const key = {
-                kind: SyntaxKinds.Identifier,
-                name: getValue(),
-            } as Identifier;
-            nextToken();
             if(!match(SyntaxKinds.ColonPunctuator)) {
-
+                throw createUnexpectError(SyntaxKinds.ColonPunctuator, "object property and key must using colon for seperating");
             }
             nextToken();
             const value = parseAssigmentExpression();
-            propertis.push({
-                kind: SyntaxKinds.Property,
-                key,
-                value,
-                variant,
-            })
+            propertis.push(factory.createProperty(key, value, variant, computed));
         }
         return propertis;
     }

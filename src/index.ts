@@ -2,7 +2,7 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
-const code = "styled`color: blus ${props => { props  + 1} }`";
+const code = "{ \"test\": content, a: 10,  }";
 const lexer = createLexer(code)
 
 while(1) {

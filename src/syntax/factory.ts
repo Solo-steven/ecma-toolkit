@@ -1,6 +1,6 @@
 import * as AST from './ast';
 import { SyntaxKinds } from "@/src/syntax/kinds";
-import { UnaryOperatorKinds } from './operator';
+import { AssigmentOperatorKinds, BinaryOperatorKinds, UnaryOperatorKinds, UpdateOperatorKinds } from './operator';
 
 export function createIdentifier(name: string): AST.Identifier {
     return {
@@ -38,8 +38,25 @@ export function createArrayExpression(elements: Array<AST.Expression | null>): A
         elements
     };
 }
-export function createObjectExpression(properties: Array<AST.Property>): AST.ObjectExpression {
-    return { kind: SyntaxKinds.ObjectExpression, properties };
+export function createObjectExpression(properties: Array<AST.Property | AST.SpreadElement>): AST.ObjectExpression {
+    return { 
+        kind: SyntaxKinds.ObjectExpression, 
+        properties 
+    };
+}
+export function createProperty(key: AST.Property['key'], value: AST.Property['value'], variant: AST.Property['variant'], computed: boolean): AST.Property {
+    return {
+        kind: SyntaxKinds.Property,
+        variant,
+        computed,
+        key, value
+    }
+}
+export function createSpreadElement(argument: AST.Expression): AST.SpreadElement {
+    return {
+        kind: SyntaxKinds.SpreadElement,
+        argument,
+    }
 }
  export function createMetaProperty(meta: AST.Identifier, property: AST.Identifier): AST.MetaProperty {
     return {
@@ -48,7 +65,16 @@ export function createObjectExpression(properties: Array<AST.Property>): AST.Obj
     }
 }
 export function createSuper(): AST.Super {
-    return { kind: SyntaxKinds.Super, name: "super" }
+    return { 
+        kind: SyntaxKinds.Super, 
+        name: "super" 
+    }
+}
+export function createChainExpression(expr: AST.Expression): AST.ChainExpression {
+    return { 
+        kind: SyntaxKinds.ChainExpression, 
+        expression: expr 
+    };
 }
 export function createCallExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>, optional: boolean): AST.CallExpression {
     return {
@@ -80,18 +106,48 @@ export function createTagTemplateExpression(base: AST.Expression, quasi: AST.Tem
 
     }
 }
-export function createChainExpression(expr: AST.Expression): AST.ChainExpression {
-    return { kind: SyntaxKinds.ChainExpression, expression: expr };
-}
-export function createUnaryExpression(argument: AST.Expression, operator: UnaryOperatorKinds): AST.UnaryExpression {
+export function createUpdateExpression(argument: AST.Expression, operator: UpdateOperatorKinds, prefix: boolean): AST.UpdateExpression {
     return {
-        kind: SyntaxKinds.UnaryExpression,
-        argument,
+        kind: SyntaxKinds.UpdateExpression,
         operator,
-    }
+        prefix,
+        argument,
+    };
 }
 export function createAwaitExpression(argument: AST.Expression): AST.AwaitExpression {
-    return { kind: SyntaxKinds.AwaitExpression, argument };
+    return { 
+        kind: SyntaxKinds.AwaitExpression, 
+        argument
+    };
+}
+export function createUnaryExpression(argument: AST.Expression, operator: UnaryOperatorKinds, ): AST.UnaryExpression {
+    return {
+        kind: SyntaxKinds.UnaryExpression,
+        operator,
+        argument
+    }
+}
+export function createBinaryExpression(left: AST.Expression, right: AST.Expression, operator: BinaryOperatorKinds): AST.BinaryExpression {
+    return {
+        kind: SyntaxKinds.BinaryExpression,
+        operator,
+        left, right,
+    };
+}
+export function createConditionalExpression(test: AST.Expression, consequnce: AST.Expression, alter: AST.Expression): AST.ConditionalExpression {
+    return {
+        kind: SyntaxKinds.ConditionalExpression,
+        test,
+        consequnce,
+        alter,
+    };
+}
+export function createAssignmentExpression(left: AST.Expression, right: AST.Expression, operator: AssigmentOperatorKinds): AST.AssigmentExpression {
+    return {
+        kind: SyntaxKinds.AssigmentExpression,
+        operator,
+        left, right,
+    }
 }
 export function createSequenceExpression(exprs: Array<AST.Expression>): AST.SequenceExpression {
     return {
@@ -100,10 +156,16 @@ export function createSequenceExpression(exprs: Array<AST.Expression>): AST.Sequ
     }
 }
 export function createExpressionStatement(expr: AST.Expression): AST.ExpressionStatement {
-    return { kind: SyntaxKinds.ExpressionStatement, expr, };
+    return { 
+        kind: SyntaxKinds.ExpressionStatement, 
+        expr
+    };
 }
 export function createFunctionBody(body: Array<AST.NodeBase>): AST.FunctionBody {
-    return { kind: SyntaxKinds.FunctionBody, body };
+    return { 
+        kind: SyntaxKinds.FunctionBody, 
+        body
+    };
 }
 export function createArrowExpression(isExpression: boolean, body: AST.Expression | AST.FunctionBody, calleeArguments: Array<AST.Expression>): AST.ArrorFunctionExpression {
     return {

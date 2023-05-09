@@ -44,12 +44,13 @@ export interface TemplateElement extends NodeBase {
 }
 export interface ObjectExpression extends NodeBase {
     kind: SyntaxKinds.ObjectExpression;
-    properties: Array<Property>;
+    properties: Array<Property | SpreadElement>;
 }
 export interface Property extends NodeBase {
     kind: SyntaxKinds.Property;
-    key: Identifier;
+    key: Identifier | StringLiteral | Expression;
     value: Expression; // actually is assignment expression,
+    computed: boolean;
     variant: "init" | "set" | "get";
 }
 export interface SpreadElement extends NodeBase {
