@@ -38,16 +38,15 @@ export function createArrayExpression(elements: Array<AST.Expression | null>): A
         elements
     };
 }
-export function createObjectExpression(properties: Array<AST.Property | AST.SpreadElement>): AST.ObjectExpression {
+export function createObjectExpression(properties: Array<AST.PropertyDefinition>): AST.ObjectExpression {
     return { 
         kind: SyntaxKinds.ObjectExpression, 
         properties 
     };
 }
-export function createProperty(key: AST.Property['key'], value: AST.Property['value'], variant: AST.Property['variant'], computed: boolean): AST.Property {
+export function createProperty(key: AST.Property['key'], value: AST.Property['value'], computed: boolean): AST.Property {
     return {
         kind: SyntaxKinds.Property,
-        variant,
         computed,
         key, value
     }

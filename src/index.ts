@@ -3,7 +3,16 @@ import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
 const code = `
-    super(1,4,a).i?.a?.(33, d)
+     a = {
+        b: 10 + 10,
+        ...c,
+        c: aa + yy,
+        ...sssa,
+        k,
+        o: (m, v) => {
+
+        }
+     }
 `;
 const lexer = createLexer(code)
 

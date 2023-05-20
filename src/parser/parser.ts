@@ -1,6 +1,17 @@
 import { createLexer } from "@/src/lexer";
 import * as factory from "@/src/syntax/factory";
-import { Expression, FunctionBody, Identifier, NodeBase, Pattern, Property, SpreadElement, TemplateElement } from "@/src/syntax/ast";
+import { 
+    Expression, 
+    FunctionBody, 
+    Identifier, 
+    NodeBase, 
+    Pattern, 
+    Property, 
+    PropertyDefinition,
+    PropertyName, 
+    SpreadElement, 
+    TemplateElement 
+} from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
     UnaryOperators,
@@ -23,6 +34,7 @@ import { ErrorMessageMap } from "@/src/parser/error";
 interface Context {
     maybeArrow: boolean;
     inAsync: boolean;
+    isComputed: boolean;
 }
 /**
  * Create context for parser
@@ -32,6 +44,7 @@ function createContext(): Context {
     return {
         maybeArrow: false,
         inAsync: false,
+        isComputed: false,
     }
 }
 
@@ -667,85 +680,109 @@ export function createParser(code: string) {
         nextToken();
         return factory.createThisExpression();
     }
-    function parseObjectExpression() {
+    /**
+     * Parse ObjectLiterial
+     * ```text
+     *   ObjectLiteral := '{' PropertyDefinitionList ','? '}'
+     *   PropertyDefinitionList := PropertyDefinitionList ',' PropertyDefinition
+     *                          := PropertyDefinition
+     * ```
+     * @returns {Expression} actually is `ObjectExpression`
+     */
+    function parseObjectExpression(): Expression {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createRecuriveDecentError("parseObjectExpression", [SyntaxKinds.BracesLeftPunctuator]);
         }
         nextToken();
-        const properties = parseProperties();
+        let isStart = true;
+        const propertyDefinitionList = [];
+        while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            if(isStart) {
+                propertyDefinitionList.push(parsePropertyDefinition());
+                isStart = false;
+                continue;
+            }
+            if(!match(SyntaxKinds.CommaToken)) {
+                throw createUnexpectError(SyntaxKinds.CommaToken, "object literal's property must seperated by comma");
+            }
+            nextToken();
+            if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
+                break;
+            }
+            propertyDefinitionList.push(parsePropertyDefinition());
+        }
         if(!match(SyntaxKinds.BracesRightPunctuator)) {
             throw createUnexpectError(SyntaxKinds.BracesRightPunctuator);
         }
         nextToken();
-        return factory.createObjectExpression(properties);
+        return factory.createObjectExpression(propertyDefinitionList);
     }
-    function parseProperties(): Array<Property | SpreadElement> {
-        // parse properties as Property => Property? [',' Property?] '}' 
-        const propertis: Array<Property | SpreadElement> = [];
-        let isStart = true;
-        while(!match(SyntaxKinds.BracesRightPunctuator)) {
-            console.log(propertis);
-            if(isStart) {
-                isStart  = false;
-            }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "object literal's property must seperated by comma")
-                }
-                nextToken();
-            }
-            if(match(SyntaxKinds.BracesRightPunctuator)) {
-                break;
-            }
-            if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.StringLiteral, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.SpreadOperator])) {
-                throw createMessageError("");
-            }
-            let key : Property['key'] | undefined;
-            let computed: boolean = false;
-            let variant: Property['variant'] = "init";
-            switch (getToken()) {
-                case SyntaxKinds.BracketLeftPunctuator: {
-                    computed = true;
-                    nextToken();
-                    key = parseAssigmentExpression();
-                    if(!match(SyntaxKinds.BracketRightPunctuator)) {
-                        throw createUnexpectError(SyntaxKinds.BracketRightPunctuator, "object computed key must end with BracketRight");
-                    }
-                    nextToken();
-                    break;
-                }
-                case SyntaxKinds.StringLiteral: {
-                    key = factory.createStringLiteral(getValue());
-                    nextToken();
-                    break;
-                }
-                case SyntaxKinds.Identifier: {
-                    const prefix = getValue();
-                    if(prefix === "set" || prefix === 'get') {
-                        nextToken();
-                        variant = prefix;
-                        if(!match(SyntaxKinds.Identifier)) {
-                            throw createUnexpectError(SyntaxKinds.Identifier, "set and get method ");
-                        }
-                    }
-                    key = factory.createIdentifier(getValue());
-                    nextToken();
-                    break
-                }
-                case SyntaxKinds.SpreadOperator: {
-                    nextToken();
-                    const argu = parseExpression();
-                    propertis.push(factory.createSpreadElement(argu));
-                    continue;
-                }
-            }
-            if(!match(SyntaxKinds.ColonPunctuator)) {
-                throw createUnexpectError(SyntaxKinds.ColonPunctuator, "object property and key must using colon for seperating");
-            }
+    /**
+     * Parse PropertyDefinition
+     * ```text
+     * PropertyDefinition := Identifer
+     *                    := MethodDefintion
+     *                    := Property
+     *                    := SpreadElement
+     * Property := PropertyName '=' AssignmentExpression
+     * SpreadElement := '...' AssigmentExpression
+     * ref: https://tc39.es/ecma262/#prod-PropertyDefinition
+     * ```
+     */
+    function parsePropertyDefinition(): PropertyDefinition {
+        // spreadElement
+        if(match(SyntaxKinds.SpreadOperator)) {
             nextToken();
-            const value = parseAssigmentExpression();
-            propertis.push(factory.createProperty(key, value, variant, computed));
+            return factory.createSpreadElement(parseAssigmentExpression());
         }
-        return propertis;
+        /* Idenifier, MethodDefinition and Property maybe will start with identifer */
+        if(match(SyntaxKinds.Identifier)) {
+            const lookaheadToken = lookahead();
+            // if just identifier, next token only can be comm (start parse next property)
+            // or BracesRight in which case, it mean end of current ObjectLiteral.
+            if(lookaheadToken === SyntaxKinds.CommaToken || lookaheadToken === SyntaxKinds.BracesRightPunctuator) {
+                return parseIdentifer();   
+            }
+        }
+        // if token match '*', 'async', 'set', 'get' or privateName, is must be MethodDefintion
+        if(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator)) {
+            // TODO, should finish when parse Function Literal is Done,
+        }
+        // otherwise, it would be Property start with PropertyName or methodDeinftion start with PropertyName 
+        const propertyName = parsePropertyName();
+        if(match(SyntaxKinds.ColonPunctuator)) {
+            nextToken();
+            const property = factory.createProperty(propertyName, parseAssigmentExpression(), context.isComputed);
+            context.isComputed = false;
+            return property;
+        }
+        // TODO: parse method with propertyName.
+    }
+    /**
+     * Parse PropertyName, using Context to record this property is computed or not.
+     * @returns 
+     */
+    function parsePropertyName(): PropertyName {
+        if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral])) {
+            throw createRecuriveDecentError("parsePropertyName", [SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral]);
+        }
+        if(match(SyntaxKinds.StringLiteral)) {
+            return parseStringLiteral();
+        }
+        if(match(SyntaxKinds.NumberLiteral)) {
+            return parseNumberLiteral();
+        }
+        if(match(SyntaxKinds.Identifier)) {
+            return parseIdentifer();
+        }
+        nextToken();
+        const expr = parseAssigmentExpression();
+        if(match(SyntaxKinds.BracketRightPunctuator)) {
+            context.isComputed = true;
+            nextToken();
+            return expr;
+        }
+        throw createUnexpectError(SyntaxKinds.BracketRightPunctuator, "com");
     }
     function parseArrayExpression() {
         if(!match(SyntaxKinds.BracketLeftPunctuator)) {

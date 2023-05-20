@@ -65,14 +65,25 @@ export interface TemplateElement extends NodeBase {
 }
 export interface ObjectExpression extends NodeBase {
     kind: SyntaxKinds.ObjectExpression;
-    properties: Array<Property | SpreadElement>;
+    properties: Array<PropertyDefinition>;
 }
+export type PropertyDefinition = Property | SpreadElement | MethodDefinition | Identifier;
+export type PropertyName = Identifier | StringLiteral | NumberLiteral | Expression;
 export interface Property extends NodeBase {
     kind: SyntaxKinds.Property;
-    key: Identifier | StringLiteral | Expression;
+    key: PropertyName
     value: Expression; // actually is assignment expression,
     computed: boolean;
-    variant: "init" | "set" | "get";
+}
+interface MethodDefinition extends NodeBase {
+    kind: SyntaxKinds.MethodDefinition,
+    key: PropertyName; // 
+    body: FunctionBody;
+    type: "constructor" | "method" | "get" | "set";
+    computed: boolean;
+    generator: boolean;
+    async: boolean;
+    static: boolean;
 }
 export interface SpreadElement extends NodeBase {
     kind: SyntaxKinds.SpreadElement,
