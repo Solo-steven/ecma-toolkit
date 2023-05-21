@@ -626,7 +626,6 @@ export function createParser(code: string) {
             throw createEOFError("");
         }
         quasis.push(factory.createTemplateElement(getValue(), true));
-        console.log(quasis, expressions);
         nextToken();
         return factory.createTemplateLiteral(quasis, expressions);
 
@@ -643,7 +642,19 @@ export function createParser(code: string) {
         const property = parseIdentifer();
         return factory.createMetaProperty(factory.createIdentifier("import"), property);
     }
-    function parseNewExpression() {
+    /**
+     * Parse New Expression
+     * new expression is a trick one, because is not always right to left, 
+     * for a new expression, last right component must be a CallExpression,
+     * and before that CallExpression, it can be a series of MemberExpression,
+     * or enent another NewExpression
+     * ```
+     * NewExpression := 'new' NewExpression
+     *               := 'new' MemberExpressionWithoutOptional Arugment 
+     * ```
+     * @returns {Expression}
+     */
+    function parseNewExpression():Expression {
         if(!match(SyntaxKinds.NewKeyword)) {
             throw createRecuriveDecentError("parseNewExpression", [SyntaxKinds.NewExpression]);
         }
