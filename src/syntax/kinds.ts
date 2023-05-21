@@ -118,6 +118,7 @@ export enum SyntaxKinds {
     BlockComment,
     // ========= Identifier ===========
     Identifier,
+    PrivateName,
     // ========== EOF ==========
     EOFToken,
 /** ======================================
@@ -131,8 +132,12 @@ export enum SyntaxKinds {
     SpreadElement,
     ArrayExpression,
     ObjectExpression,
-    FunctionExpression,
+    ObjectProperty,
+    ObjectMethodDefintion,
     ClassExpression,
+    ClassProperty,
+    ClassMethodDefinition,
+    FunctionExpression,
     TemplateLiteral,
     TemplateElement,
     ArrowFunctionExpression,
@@ -158,7 +163,6 @@ export enum SyntaxKinds {
     FunctionBody,
     ClassDeclaration,
     ClassBody,
-    MethodDefinition,
     // =========== Top Level ===========
     Program,
 }

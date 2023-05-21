@@ -11,7 +11,13 @@ import {
     PropertyName, 
     MethodDefinition,
     SpreadElement, 
-    TemplateElement 
+    TemplateElement, 
+    PrivateName,
+    ObjectMethodDefinition,
+    ClassMethodDefinition,
+    ClassElement,
+    ClassBody,
+    Class
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -27,6 +33,7 @@ import {
  } from "@/src/syntax/operator";
 import { getBinaryPrecedence, isBinaryOps, isComputedPropertyName } from "@/src/parser/helper";
 import { ErrorMessageMap } from "@/src/parser/error";
+import { throws } from "assert";
 
 /** ========================
  *  Context for parser
@@ -254,13 +261,67 @@ export function createParser(code: string) {
         nextToken();
         return factory.createFunctionBody(body);
     }
-    function parseClassDeclaration() {
-
+    function parseClass(): Class {
+        if(!match(SyntaxKinds.ClassKeyword)) {
+            throw createRecuriveDecentError("parseClass", [SyntaxKinds.ClassKeyword]);
+        }
+        nextToken();
+        let name: Identifier | null = null;
+        if(match(SyntaxKinds.Identifier)) {
+            name = parseIdentifer();
+        }
+        return factory.createClass(name, null, parseClassBody());
     }
-    function parseClass() {
-
-    }
+    /**
+     * 
+     */
     function parseClassBody() {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseClassBody", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        const classbody: ClassBody['body'] = []
+        while(!match(SyntaxKinds.BracesRightPunctuator) && ! match(SyntaxKinds.EOFToken)) {
+            classbody.push(parseClassElement());
+        }
+        if(!match(SyntaxKinds.BracesRightPunctuator)) {
+            // TODO: add eof error
+        }
+        nextToken();
+        return factory.createClassBody(classbody);
+    }
+    function parseClassElement(): ClassElement {
+        // parse static modifier
+        let isStatic = false;
+        if(getValue() === "static") {
+            nextToken();
+            isStatic = true;
+        }
+        // early stop        
+        if(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator)) {
+            return parseMethodDefintion(true, undefined, isStatic) as ClassMethodDefinition;
+        }
+        // parse ClassElementName 
+        let key: PropertyName | PrivateName | undefined;
+        if(match(SyntaxKinds.PrivateName)) {
+            key = parsePrivateName();
+        }else {
+            key = parsePropertyName();
+        }
+        // case 1: method defintion.
+        if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            const a = parseMethodDefintion(true, key, isStatic) as ClassMethodDefinition;
+            console.log(a)
+            return a;
+        }
+        // case 2: fiedlDefintion
+        if(matchSet([SyntaxKinds.AssginOperator])) {
+            nextToken();
+            return factory.createClassProperty(key, parseAssigmentExpression(), isComputedPropertyName(key), isStatic);
+        }
+        // case 3: static block 
+        // TODO: implement static block
+        throw new Error(`[Unexpect Token]: ${getToken()}, value: ${getValue()}`);
 
     }
 /** ====================================================================
@@ -558,9 +619,13 @@ export function createParser(code: string) {
                 return parseArrayExpression();
             case SyntaxKinds.FunctionKeyword:
                 return parseFunctionExpression();
+            case SyntaxKinds.ClassKeyword:
+                return parseClassExpression();
             case SyntaxKinds.ParenthesesLeftPunctuator:
                 return parseCoverExpressionORArrowFunction();
             // TODO: consider wrap as function or default case ?
+            case SyntaxKinds.PrivateName:
+                return parsePrivateName();
             case SyntaxKinds.Identifier: {
                 if(lookahead() === SyntaxKinds.ArrowOperator) {
                     const argus = [factory.createIdentifier(getValue())];
@@ -588,6 +653,14 @@ export function createParser(code: string) {
         const name = getValue();
         nextToken();
         return factory.createIdentifier(name);
+    }
+    function parsePrivateName() {
+        if(!match(SyntaxKinds.PrivateName)) {
+            throw createRecuriveDecentError("parsePrivateName", [SyntaxKinds.PrivateName]);
+        }
+        const name = getValue();
+        nextToken();
+        return factory.createPrivateName(name);
     }
     function parseNumberLiteral() {
         if(!match(SyntaxKinds.NumberLiteral)) {
@@ -723,15 +796,15 @@ export function createParser(code: string) {
     }
     /**
      * Parse PropertyDefinition
-     * ```text
+     * ```
      * PropertyDefinition := Identifer
      *                    := MethodDefintion
      *                    := Property
      *                    := SpreadElement
      * Property := PropertyName '=' AssignmentExpression
      * SpreadElement := '...' AssigmentExpression
-     * ref: https://tc39.es/ecma262/#prod-PropertyDefinition
      * ```
+     * ref: https://tc39.es/ecma262/#prod-PropertyDefinition
      */
     function parsePropertyDefinition(): PropertyDefinition {
         // spreadElement
@@ -750,17 +823,17 @@ export function createParser(code: string) {
         }
         // if token match '*', 'async', 'set', 'get' or privateName, is must be MethodDefintion
         if(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator)) {
-            return parseMethodDefintion();
+            return parseMethodDefintion() as ObjectMethodDefinition;
         }
         // otherwise, it would be Property start with PropertyName or MethodDeinftion start with PropertyName 
         const propertyName = parsePropertyName();
         if(match(SyntaxKinds.ColonPunctuator)) {
             nextToken();
-            const property = factory.createProperty(propertyName, parseAssigmentExpression(), isComputedPropertyName(propertyName));
+            const property = factory.createObjectProperty(propertyName, parseAssigmentExpression(), isComputedPropertyName(propertyName));
             return property;
         }
         // parse MethodDeifintion with existed propertyName.
-        return parseMethodDefintion(propertyName);
+        return parseMethodDefintion(false, propertyName) as ObjectMethodDefinition;
         
     }
     /**
@@ -811,7 +884,7 @@ export function createParser(code: string) {
      * @param {PropertyNameundefined} withPropertyName parse methodDeinfition with exited propertyName or not
      * @returns {MethodDefinition}
      */
-    function parseMethodDefintion(withPropertyName: PropertyName | undefined = undefined): MethodDefinition {
+    function parseMethodDefintion(inClass: boolean = false, withPropertyName: PropertyName | undefined = undefined, isStatic: boolean = false): ObjectMethodDefinition | ClassMethodDefinition {
         if(
             !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
             && !withPropertyName
@@ -868,7 +941,10 @@ export function createParser(code: string) {
                 type = "constructor";
             }
         }
-        return factory.createMethodDefintion(withPropertyName, body, parmas, isAsync, type, generator, false, computed);
+        if(inClass) {
+            return factory.createClassMethodDefintion(withPropertyName, body, parmas, isAsync, type, generator, computed, isStatic);
+        }
+        return factory.createObjectMethodDefintion(withPropertyName, body, parmas, isAsync, type as ObjectMethodDefinition['type'], generator, computed);
     }
     function parseArrayExpression() {
         if(!match(SyntaxKinds.BracketLeftPunctuator)) {
@@ -896,6 +972,9 @@ export function createParser(code: string) {
     }
     function parseFunctionExpression() {
         return factory.transFormFunctionToFunctionExpression(parseFunction());
+    }
+    function parseClassExpression() {
+        return factory.transFormClassToClassExpression(parseClass());
     }
     function parseCoverExpressionORArrowFunction() {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {

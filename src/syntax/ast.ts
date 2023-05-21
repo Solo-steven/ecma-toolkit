@@ -10,22 +10,28 @@ import {
  * ======================================
  */
 export interface NodeBase {}
-
-export interface Function extends NodeBase {
-    name: Identifier | null;
-    params: Array<Pattern>;
-    body: FunctionBody;
-    generator: boolean;
-    async: boolean;
-}
-export interface Class extends NodeBase {
-    id: Identifier | null;
-    superClass: Expression | null;
-    body: ClassBody;
-}
 export interface Program {
     kind: SyntaxKinds.Program;
     body: Array<NodeBase>; //TODO: using StatementListItem
+}
+export type PropertyName = Identifier | StringLiteral | NumberLiteral | Expression;
+export interface Property extends NodeBase {
+    kind: SyntaxKinds;
+    key: PropertyName | PrivateName;
+    value: Expression; // actually is assignment expression,
+    computed: boolean;
+    static: boolean;
+}
+export interface MethodDefinition extends NodeBase {
+    kind: SyntaxKinds;
+    key: PropertyName | PrivateName;
+    body: FunctionBody;
+    params: Array<Pattern>
+    type: "constructor" | "method" | "get" | "set";
+    computed: boolean;
+    generator: boolean;
+    async: boolean;
+    static: boolean;
 }
 
 /** =====================================
@@ -43,6 +49,10 @@ export interface ThisExpression extends NodeBase {
 }
 export interface Identifier extends NodeBase  {
     kind: SyntaxKinds.Identifier;
+    name: string;
+}
+export interface PrivateName extends NodeBase {
+    kind: SyntaxKinds.PrivateName;
     name: string;
 }
 export interface NumberLiteral extends NodeBase {
@@ -67,28 +77,22 @@ export interface ObjectExpression extends NodeBase {
     kind: SyntaxKinds.ObjectExpression;
     properties: Array<PropertyDefinition>;
 }
-export type PropertyDefinition = Property | SpreadElement | MethodDefinition | Identifier;
-export type PropertyName = Identifier | StringLiteral | NumberLiteral | Expression;
-export interface Property extends NodeBase {
-    kind: SyntaxKinds.Property;
-    key: PropertyName
-    value: Expression; // actually is assignment expression,
-    computed: boolean;
+export type PropertyDefinition = Identifier | ObjectProperty |  ObjectMethodDefinition | SpreadElement;
+export interface ObjectProperty extends Omit<Property, "static"> {
+    kind: SyntaxKinds.ObjectProperty;
+    key: PropertyName;
 }
-export interface MethodDefinition extends NodeBase {
-    kind: SyntaxKinds.MethodDefinition,
-    key: PropertyName; // 
-    body: FunctionBody;
-    params: Array<Pattern>
-    type: "constructor" | "method" | "get" | "set";
-    computed: boolean;
-    generator: boolean;
-    async: boolean;
-    static: boolean;
+export interface ObjectMethodDefinition extends Omit<MethodDefinition, "static"> {
+    kind: SyntaxKinds.ObjectMethodDefintion;
+    key: PropertyName;
+    type: "method" | "get" | "set";
 }
 export interface SpreadElement extends NodeBase {
     kind: SyntaxKinds.SpreadElement,
     argument: Expression,
+}
+export interface ClassExpression extends Class {
+    kind: SyntaxKinds.ClassExpression
 }
 export interface ArrayExpression extends NodeBase {
     kind: SyntaxKinds.ArrayExpression;
@@ -177,11 +181,11 @@ export interface SequenceExpression extends NodeBase {
 
 export type Expression =
     // identifer and super and ThisExpression
-    Identifier | Super | ThisExpression |
+    Identifier  | PrivateName | Super | ThisExpression |
     // literals 
     NumberLiteral | StringLiteral | TemplateLiteral |
     // structal literal
-    ObjectExpression | ArrayExpression | ArrorFunctionExpression | FunctionExpression |
+    ObjectExpression | ArrayExpression | ArrorFunctionExpression | FunctionExpression | ClassExpression |
     // meta property and spread element
     SpreadElement | MetaProperty |
     // other expression
@@ -213,6 +217,13 @@ export interface AssignmentPattern extends Pattern {
  *  Declaration
  * =================================
  */
+export interface Function extends NodeBase {
+    name: Identifier | null;
+    params: Array<Pattern>;
+    body: FunctionBody;
+    generator: boolean;
+    async: boolean;
+}
 export interface FunctionBody extends NodeBase {
     kind: SyntaxKinds.FunctionBody;
     body: Array<NodeBase> //TODO: using StatementListItem
@@ -221,14 +232,20 @@ export interface FunctionDeclaration extends NodeBase, Function {
     kind: SyntaxKinds.FunctionDeclaration;
     name: Identifier
 }
-
 export interface Class extends NodeBase {
     id: Identifier | null;
     superClass: Expression | null;
     body: ClassBody;
 }
-interface ClassBody extends NodeBase {
+export interface ClassBody extends NodeBase {
     kind: SyntaxKinds.ClassBody;
-    body: [ MethodDefinition ];
+    body: Array<ClassElement>;
 }
+export interface ClassProperty extends Property {
+    kind: SyntaxKinds.ClassProperty;
+};
+export interface ClassMethodDefinition extends MethodDefinition {
+    kind: SyntaxKinds.ClassMethodDefinition;
+}
+export type ClassElement = Identifier | ClassProperty | ClassMethodDefinition;
 export type Declaration = FunctionDeclaration;

@@ -5,8 +5,14 @@ import { AssigmentOperatorKinds, BinaryOperatorKinds, UnaryOperatorKinds, Update
 export function createIdentifier(name: string): AST.Identifier {
     return {
         kind: SyntaxKinds.Identifier,
-        name: name,
+        name,
     };
+}
+export function createPrivateName(name: string): AST.PrivateName {
+    return {
+        kind: SyntaxKinds.PrivateName,
+        name,
+    }
 }
 export function createNumberLiteral(value: string | number): AST.NumberLiteral {
     return {
@@ -44,27 +50,29 @@ export function createObjectExpression(properties: Array<AST.PropertyDefinition>
         properties 
     };
 }
-export function createMethodDefintion(
-    key: AST.MethodDefinition['key'],
-    body: AST.MethodDefinition['body'],
-    params: AST.MethodDefinition['params'],
-    async: AST.MethodDefinition['async'],
-    type: AST.MethodDefinition['type'],
-    generator: AST.MethodDefinition['generator'],
-    isStatic: AST.MethodDefinition['static'],
-    computed: AST.MethodDefinition['computed']
-): AST.MethodDefinition {
+export function createObjectProperty(
+    key: AST.ObjectProperty['key'],
+    value: AST.ObjectProperty['value'],
+    computed: AST.ObjectProperty['computed']
+): AST.ObjectProperty {
     return {
-        kind: SyntaxKinds.MethodDefinition,
-        async, type, generator, static: isStatic, computed,
-        key, params, body,
+        kind: SyntaxKinds.ObjectProperty,
+        computed, key, value
     }
 }
-export function createProperty(key: AST.Property['key'], value: AST.Property['value'], computed: boolean): AST.Property {
+export function createObjectMethodDefintion(
+    key: AST.ObjectMethodDefinition['key'],
+    body: AST.ObjectMethodDefinition['body'],
+    params: AST.ObjectMethodDefinition['params'],
+    async: AST.ObjectMethodDefinition['async'],
+    type: AST.ObjectMethodDefinition['type'],
+    generator: AST.ObjectMethodDefinition['generator'],
+    computed: AST.ObjectMethodDefinition['computed']
+): AST.ObjectMethodDefinition {
     return {
-        kind: SyntaxKinds.Property,
-        computed,
-        key, value
+        kind: SyntaxKinds.ObjectMethodDefintion,
+        async, type, generator, computed,
+        key, params, body,
     }
 }
 export function createSpreadElement(argument: AST.Expression): AST.SpreadElement {
@@ -229,6 +237,58 @@ export function transFormFunctionToFunctionDeclaration(func: AST.Function): AST.
         ...func,
     }
 }
+export function createClass(name: AST.Class['id'], superClass: AST.Class['superClass'], body: AST.Class['body']): AST.Class {
+    return {
+        id: name,
+        superClass, 
+        body,
+    }
+}
+export function createClassBody(body: AST.ClassBody['body']): AST.ClassBody {
+    return {
+        kind: SyntaxKinds.ClassBody,
+        body
+    };
+}
+export function createClassProperty(
+    key: AST.ClassProperty['key'],
+    value: AST.ClassProperty['value'],
+    computed: AST.ClassProperty['computed'],
+    isStatic: AST.ClassProperty['static']
+): AST.ClassProperty {
+    return {
+        kind: SyntaxKinds.ClassProperty,
+        computed, static: isStatic, key, value
+    }
+}
+export function createClassMethodDefintion(
+    key: AST.ClassMethodDefinition['key'],
+    body: AST.ClassMethodDefinition['body'],
+    params: AST.ClassMethodDefinition['params'],
+    async: AST.ClassMethodDefinition['async'],
+    type: AST.ClassMethodDefinition['type'],
+    generator: AST.ClassMethodDefinition['generator'],
+    computed: AST.ClassMethodDefinition['computed'],
+    isStatic: AST.ClassMethodDefinition['static']
+): AST.ClassMethodDefinition {
+    return {
+        kind: SyntaxKinds.ClassMethodDefinition,
+        async, type, generator, computed, static: isStatic,
+        key, params, body,
+    }
+}
+export function transFormClassToClassExpression(classNode: AST.Class ): AST.ClassExpression {
+    return {
+        kind: SyntaxKinds.ClassExpression,
+        ...classNode,
+    }
+}
+// export function transFormFunctionToFunctionDeclaration(func: AST.Function): AST.FunctionDeclaration {
+//     return {
+//         kind: SyntaxKinds.FunctionDeclaration,
+//         ...func,
+//     }
+// }
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,

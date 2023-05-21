@@ -250,6 +250,9 @@ export function createLexer(code: string): Lexer {
             case '`': {
                 return readTemplateHeadORNoSubstitution();
             }
+            case '#': {
+                return readPrivateName();
+            }
             /** ==========================================
              *  Keyword, Id, Literal
              *   -> start from 0 ~ 9 , is number literal.
@@ -627,7 +630,7 @@ export function createLexer(code: string): Lexer {
     }
     function readTemplateMiddleORTail() {
         if(!startWith("}")) {
-            throw subStateMachineError("eadTemplateMiddleORTail", "}");
+            throw subStateMachineError("readTemplateMiddleORTail", "}");
         }
         eatChar(1);
         let wordString = "";
@@ -645,6 +648,23 @@ export function createLexer(code: string): Lexer {
         }
         eatChar(1);
         return finishToken(SyntaxKinds.TemplateTail, wordString);
+    }
+    function readPrivateName() {
+        if(!startWith("#")) {
+            throw subStateMachineError("readPrivateName", "#");
+        }
+        eatChar(1);
+        let word = "";
+        while(!startWithSet(
+            [ ...LexicalLiteral.punctuators,
+                ...LexicalLiteral.operator, 
+                ...LexicalLiteral.newLineChars, 
+                ...LexicalLiteral.whiteSpaceChars
+            ]
+        ) && !eof()) {
+            word += eatChar();
+        }
+        return finishToken(SyntaxKinds.PrivateName, word);
     }
 
     /** ================================================
