@@ -9,6 +9,7 @@ import {
     Property, 
     PropertyDefinition,
     PropertyName, 
+    MethodDefinition,
     SpreadElement, 
     TemplateElement 
 } from "@/src/syntax/ast";
@@ -24,7 +25,7 @@ import {
     UpdateOperatorKinds,
     Keywords,
  } from "@/src/syntax/operator";
-import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/helper";
+import { getBinaryPrecedence, isBinaryOps, isComputedPropertyName } from "@/src/parser/helper";
 import { ErrorMessageMap } from "@/src/parser/error";
 
 /** ========================
@@ -34,7 +35,7 @@ import { ErrorMessageMap } from "@/src/parser/error";
 interface Context {
     maybeArrow: boolean;
     inAsync: boolean;
-    isComputed: boolean;
+    inClass: boolean,
 }
 /**
  * Create context for parser
@@ -44,7 +45,7 @@ function createContext(): Context {
     return {
         maybeArrow: false,
         inAsync: false,
-        isComputed: false,
+        inClass: false,
     }
 }
 
@@ -148,6 +149,15 @@ export function createParser(code: string) {
     function createEOFError(message: string) {
 
     }
+    /**
+     * There maybe some simpke sematic check in this parser,
+     * while find any semantics error, it should create this error
+     * @param {string} message
+     * @return {Error}
+     */
+    function createSemanticsError(message: string): Error {
+        return new Error(message);
+    }
 /** ==================================================
  *  Top level parse function 
  *  ==================================================
@@ -197,6 +207,10 @@ export function createParser(code: string) {
         }
         return factory.transFormFunctionToFunctionDeclaration(func);
     }
+    /**
+     * 
+     * @returns 
+     */
     function parseFunction() {
         let generator = false;
         if(!match(SyntaxKinds.FunctionKeyword)) {
@@ -214,68 +228,18 @@ export function createParser(code: string) {
         }
         const params = parseBindingElmentList();
         const body = parseFunctionBody();
-        console.log(context.inAsync)
         return factory.createFunction(name, body, params, generator, context.inAsync);
     }
     /**
-     *  parse `'(' BindingElement? [',' BindingElement?]  ')'`
+     * Parse Function Body
+     * ```
+     *  FunctionBody  := '{' StatementList '}'
+     *  StatementList := StatementList StatementListItem
+     *                := StatementListItem 
+     * ```
+     * @return {FunctionBody}
      */
-    function parseBindingElmentList() {
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseBindingElementList", [SyntaxKinds.ParenthesesLeftPunctuator]);
-        }
-        nextToken();
-        let isStart = true;
-        const params: Array<Pattern> = [];
-        while(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-            if(isStart) {
-                isStart = false;
-            }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "params list must seprated by comma");
-                }
-                nextToken();
-            }
-            if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
-                continue;
-            }
-            // parse SpreadElement (identifer, Object, Array)
-            if(match(SyntaxKinds.SpreadOperator)) {
-                nextToken();
-                switch(getToken()) {
-                    case SyntaxKinds.Identifier:
-                        params.push(factory.createRestElement(parseIdentifer()));
-                        break;
-                    case SyntaxKinds.BracesLeftPunctuator:
-                        params.push(factory.createRestElement(parseObjectExpression()));
-                        break;
-                    case SyntaxKinds.BracketLeftPunctuator:
-                        params.push(factory.createRestElement(parseArrayExpression()));
-                        break;
-                    default:
-                        throw createMessageError("spread param list in function should be Identifier, objectLiteral, or ArrayLiteral ")
-                }
-                break;
-            }
-            // parse identifier '=' AssigmentExpression
-            const left = parseIdentifer();
-            if(match(SyntaxKinds.AssginOperator)) {
-                nextToken();
-                const right = parseAssigmentExpression();
-                params.push(factory.createAssignmentPattern(left, right));
-            }
-            params.push(left);
-        }
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
-        }   
-        nextToken();
-        return params;
-    }
-    /**
-     * parse `'{' [StatmentListItem] '}'`
-     */
-    function parseFunctionBody() {
+    function parseFunctionBody(): FunctionBody {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createRecuriveDecentError("parseFunctionBody", [SyntaxKinds.BracesLeftPunctuator]);
         }
@@ -422,9 +386,14 @@ export function createParser(code: string) {
         return argument;
     }
     /**
-     *  LeftHandSideExpression's 
-     * 
-     *  reference: 
+     * Parse Left hand side Expression
+     * ```
+     *  LeftHandSideExpression := Atoms '?.' CallExpression
+     *                         := Atoms '?.' MemberExpression
+     *                         := Atoms TagTemplateExpression 
+     * // notes: this syntax is reference babel function, which is simplify original syntax of TS39
+     * ```
+     * @returns {Expression}
      */
     function parseLeftHandSideExpression(): Expression {
         let base = parsePrimaryExpression();
@@ -446,8 +415,9 @@ export function createParser(code: string) {
                 base = parseMemberExpression(base, optional);
             }
             else if (match(SyntaxKinds.TemplateHead) || match(SyntaxKinds.TemplateNoSubstitution)) {
+                // tag template expressuin
                 if(optional) {
-                    throw new Error();
+                    throw createSemanticsError(ErrorMessageMap.tag_template_expression_can_not_use_option_chain);
                 }
                 base = parseTagTemplateExpression(base);
             }
@@ -460,6 +430,15 @@ export function createParser(code: string) {
         }
         return base;
     }
+    /**
+     * Parse CallExpression 
+     * ```
+     * CallExpresion := GivenBase(base, optional) '(' Arguments ')'
+     * ```
+     * @param {Expression} callee base expression 
+     * @param {boolean} optional is this call optional ?
+     * @returns {Expression}
+     */
     function parseCallExpression(callee: Expression, optional: boolean): Expression {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach`);
@@ -515,6 +494,18 @@ export function createParser(code: string) {
         nextToken();
         return callerArguments;
     }
+    /**
+     * Parse MemberExpression with base
+     * ```
+     * MemberExpression := GivenBase(base ,optional) '.' IdentiferWithKeyword
+     *                  := GivenBase(base, optional) '[' Expreession ']'
+     *                  := GivenBase(base, optional) IdentiferWithKeyword
+     * // for last condition, optional prope must be True
+     * ```
+     * @param {Expression} base base expression
+     * @param {boolean} optional is base expression contain a optional
+     * @returns {Expression}
+     */
     function parseMemberExpression(base: Expression, optional: boolean): Expression {
         if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator) && !optional) {
             throw createRecuriveDecentError("parseMemberExpression", [SyntaxKinds.DotOperator, SyntaxKinds.BracesLeftPunctuator]);
@@ -735,7 +726,7 @@ export function createParser(code: string) {
             nextToken();
             return factory.createSpreadElement(parseAssigmentExpression());
         }
-        /* Idenifier, MethodDefinition and Property maybe will start with identifer */
+        // Idenifier, MethodDefinition and Property maybe will start with identifer
         if(match(SyntaxKinds.Identifier)) {
             const lookaheadToken = lookahead();
             // if just identifier, next token only can be comm (start parse next property)
@@ -746,21 +737,30 @@ export function createParser(code: string) {
         }
         // if token match '*', 'async', 'set', 'get' or privateName, is must be MethodDefintion
         if(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator)) {
-            // TODO, should finish when parse Function Literal is Done,
+            return parseMethodDefintion();
         }
-        // otherwise, it would be Property start with PropertyName or methodDeinftion start with PropertyName 
+        // otherwise, it would be Property start with PropertyName or MethodDeinftion start with PropertyName 
         const propertyName = parsePropertyName();
         if(match(SyntaxKinds.ColonPunctuator)) {
             nextToken();
-            const property = factory.createProperty(propertyName, parseAssigmentExpression(), context.isComputed);
-            context.isComputed = false;
+            const property = factory.createProperty(propertyName, parseAssigmentExpression(), isComputedPropertyName(propertyName));
             return property;
         }
-        // TODO: parse method with propertyName.
+        // parse MethodDeifintion with existed propertyName.
+        return parseMethodDefintion(propertyName);
+        
     }
     /**
      * Parse PropertyName, using Context to record this property is computed or not.
-     * @returns 
+     * ```
+     * PropertyName := Identifer
+     *              := NumberLiteral
+     *              := StringLiteral
+     *              := ComputedPropertyName
+     * ComputedPropertyName := '[' AssignmentExpression ']'
+     * ```
+     * ref: https://tc39.es/ecma262/#prod-PropertyName
+     * @returns {PropertyName}
      */
     function parsePropertyName(): PropertyName {
         if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral])) {
@@ -778,11 +778,84 @@ export function createParser(code: string) {
         nextToken();
         const expr = parseAssigmentExpression();
         if(match(SyntaxKinds.BracketRightPunctuator)) {
-            context.isComputed = true;
             nextToken();
             return expr;
         }
         throw createUnexpectError(SyntaxKinds.BracketRightPunctuator, "com");
+    }
+    /** Parse MethodDefintion
+     * ```
+     * MethodDefintion := ClassElementName BindingList FunctionBody
+     *                 := AyncMethod
+     *                 := GeneratorMethod
+     *                 := AsyncGeneratorMethod
+     *                 := 'set' ClassElementName BindingList FunctionBody
+     *                 := 'get' ClassElementName '('')' FunctionBody
+     * AyncMethod := 'async' ClassElementName BindingList FunctionBody
+     * GeneratorMethod := '*' ClassElementName BindingList FunctionBody
+     * AsyncGeneratorMethod := 'async' '*' ClassElementName BindingList FunctionBody
+     * ```
+     * @param {PropertyNameundefined} withPropertyName parse methodDeinfition with exited propertyName or not
+     * @returns {MethodDefinition}
+     */
+    function parseMethodDefintion(withPropertyName: PropertyName | undefined = undefined): MethodDefinition {
+        if(
+            !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
+            && !withPropertyName
+        ) {
+            throw createRecuriveDecentError("parseMethodDefintion", [SyntaxKinds.MultiplyAssignOperator, SyntaxKinds.Identifier]);
+        }
+        let type: MethodDefinition['type'] = "method";
+        let isAsync: MethodDefinition['async'] = false;
+        let generator: MethodDefinition['generator'] = false;
+        let computed: MethodDefinition['computed'] = false;
+        // if not with propertyName , parse modifier frist
+        // otherwise, if with propertyName, it shouldn't do anything.
+        if(!withPropertyName) {
+            if(getValue() === "set") {
+                // setter
+                type = "set";
+                nextToken();
+            }
+            else if(getValue() === "get") {
+                // getter
+                type = "get"
+                nextToken();
+            }
+            else if(getValue() === "async") {
+                // aync or aync generator
+                isAsync = true;
+                type = "method";
+                nextToken();
+                if(match(SyntaxKinds.MultiplyOperator)) {
+                    nextToken();
+                    generator = true;
+                }
+            }
+            else if(match(SyntaxKinds.MultiplyOperator)) {
+                // generator
+                type = "method";
+                generator = true;
+                nextToken();
+            }
+            withPropertyName = parsePropertyName();
+            // TODO: maybe is private identifer (only existed in class)
+            computed = isComputedPropertyName(withPropertyName)
+        }
+        const parmas = parseBindingElmentList();
+        const body = parseFunctionBody();
+        // semantics check and operation
+        if(type === "get" && parmas.length > 0) {
+            throw createSemanticsError(ErrorMessageMap.getter_should_never_has_params);
+        }
+        // object literal can has method which name is constructor, but in which case ,
+        // is not a constructor method, it just a method name as constructor.
+        if(withPropertyName.kind === SyntaxKinds.Identifier) {
+            if(withPropertyName.name === "constructor" && context.inClass) {
+                type = "constructor";
+            }
+        }
+        return factory.createMethodDefintion(withPropertyName, body, parmas, isAsync, type, generator, false, computed);
     }
     function parseArrayExpression() {
         if(!match(SyntaxKinds.BracketLeftPunctuator)) {
@@ -840,4 +913,65 @@ export function createParser(code: string) {
         }
         return factory.createArrowExpression(isExpression, body, argus, context.inAsync);
     }
+/** ================================================================================
+ *  Parse Pattern
+ *  entry point: https://tc39.es/ecma262/#sec-destructuring-binding-patterns
+ * ==================================================================================
+ */
+    /**
+     *  parse `'(' BindingElement? [',' BindingElement?]  ')'`
+     */
+    function parseBindingElmentList() {
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseBindingElementList", [SyntaxKinds.ParenthesesLeftPunctuator]);
+        }
+        nextToken();
+        let isStart = true;
+        const params: Array<Pattern> = [];
+        while(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "params list must seprated by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                continue;
+            }
+            // parse SpreadElement (identifer, Object, Array)
+            if(match(SyntaxKinds.SpreadOperator)) {
+                nextToken();
+                switch(getToken()) {
+                    case SyntaxKinds.Identifier:
+                        params.push(factory.createRestElement(parseIdentifer()));
+                        break;
+                    case SyntaxKinds.BracesLeftPunctuator:
+                        params.push(factory.createRestElement(parseObjectExpression()));
+                        break;
+                    case SyntaxKinds.BracketLeftPunctuator:
+                        params.push(factory.createRestElement(parseArrayExpression()));
+                        break;
+                    default:
+                        throw createMessageError("spread param list in function should be Identifier, objectLiteral, or ArrayLiteral ")
+                }
+                break;
+            }
+            // parse identifier '=' AssigmentExpression
+            const left = parseIdentifer();
+            if(match(SyntaxKinds.AssginOperator)) {
+                nextToken();
+                const right = parseAssigmentExpression();
+                params.push(factory.createAssignmentPattern(left, right));
+            }
+            params.push(left);
+        }
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
+        }   
+        nextToken();
+        return params;
+    }
+
 }

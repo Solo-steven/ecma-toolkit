@@ -44,6 +44,22 @@ export function createObjectExpression(properties: Array<AST.PropertyDefinition>
         properties 
     };
 }
+export function createMethodDefintion(
+    key: AST.MethodDefinition['key'],
+    body: AST.MethodDefinition['body'],
+    params: AST.MethodDefinition['params'],
+    async: AST.MethodDefinition['async'],
+    type: AST.MethodDefinition['type'],
+    generator: AST.MethodDefinition['generator'],
+    isStatic: AST.MethodDefinition['static'],
+    computed: AST.MethodDefinition['computed']
+): AST.MethodDefinition {
+    return {
+        kind: SyntaxKinds.MethodDefinition,
+        async, type, generator, static: isStatic, computed,
+        key, params, body,
+    }
+}
 export function createProperty(key: AST.Property['key'], value: AST.Property['value'], computed: boolean): AST.Property {
     return {
         kind: SyntaxKinds.Property,

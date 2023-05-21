@@ -9,7 +9,13 @@ const code = `
         c: aa + yy,
         ...sssa,
         k,
-        o: (m, v) => {
+        async *p(mm, d) {
+
+        },
+        async [bb] () {
+
+        },
+        o: (m = 10, v) => {
 
         }
      }

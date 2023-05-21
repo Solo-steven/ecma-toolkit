@@ -75,10 +75,11 @@ export interface Property extends NodeBase {
     value: Expression; // actually is assignment expression,
     computed: boolean;
 }
-interface MethodDefinition extends NodeBase {
+export interface MethodDefinition extends NodeBase {
     kind: SyntaxKinds.MethodDefinition,
     key: PropertyName; // 
     body: FunctionBody;
+    params: Array<Pattern>
     type: "constructor" | "method" | "get" | "set";
     computed: boolean;
     generator: boolean;
@@ -229,13 +230,5 @@ export interface Class extends NodeBase {
 interface ClassBody extends NodeBase {
     kind: SyntaxKinds.ClassBody;
     body: [ MethodDefinition ];
-}
-interface MethodDefinition extends  Node {
-    kind: SyntaxKinds.MethodDefinition,
-    key: Expression;
-    value: FunctionExpression;
-    type: "constructor" | "method" | "get" | "set";
-    computed: boolean;
-    static: boolean;
 }
 export type Declaration = FunctionDeclaration;
