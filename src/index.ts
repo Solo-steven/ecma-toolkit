@@ -3,22 +3,8 @@ import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
 const code = `
-     a = {
-        b: 10 + 10,
-        ...c,
-        c: aa + yy,
-        ...sssa,
-        k,
-        async *p(mm, d) {
 
-        },
-        async [bb] () {
-
-        },
-        o: (m = 10, v) => {
-
-        }
-     }
+(1, 2) + 1
 `;
 const lexer = createLexer(code)
 

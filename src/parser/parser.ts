@@ -390,8 +390,10 @@ export function createParser(code: string) {
      * ```
      *  LeftHandSideExpression := Atoms '?.' CallExpression
      *                         := Atoms '?.' MemberExpression
-     *                         := Atoms TagTemplateExpression 
+     *                         := Atoms TagTemplateExpression
      * // notes: this syntax is reference babel function, which is simplify original syntax of TS39
+     * // notes: 'this' and super 'super' would be meanful when apper at start of atoms, which can be handle by parseAtoms.
+     * // notes: NewExpression is a spacial case , because it can not using optionalChain, so i handle it into a atom.
      * ```
      * @returns {Expression}
      */
@@ -889,7 +891,7 @@ export function createParser(code: string) {
             throw createRecuriveDecentError("parserCoverExpressionORArrowFunction", [SyntaxKinds.ParenthesesLeftPunctuator]);
         }
         const maybeArguments = parseArguments();
-        if(!context.maybeArrow) {
+        if(!context.maybeArrow || !match(SyntaxKinds.ArrowOperator)) {
             // transfor to sequence or signal expression
             if(maybeArguments.length === 1) {
                 return maybeArguments[1];
