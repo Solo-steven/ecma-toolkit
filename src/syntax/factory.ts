@@ -53,11 +53,12 @@ export function createObjectExpression(properties: Array<AST.PropertyDefinition>
 export function createObjectProperty(
     key: AST.ObjectProperty['key'],
     value: AST.ObjectProperty['value'],
-    computed: AST.ObjectProperty['computed']
+    computed: AST.ObjectProperty['computed'],
+    shorted: AST.ObjectProperty['shorted']
 ): AST.ObjectProperty {
     return {
         kind: SyntaxKinds.ObjectProperty,
-        computed, key, value
+        computed, shorted, key, value
     }
 }
 export function createObjectMethodDefintion(
@@ -254,11 +255,12 @@ export function createClassProperty(
     key: AST.ClassProperty['key'],
     value: AST.ClassProperty['value'],
     computed: AST.ClassProperty['computed'],
-    isStatic: AST.ClassProperty['static']
+    isStatic: AST.ClassProperty['static'],
+    shorted: AST.ClassProperty['shorted']
 ): AST.ClassProperty {
     return {
         kind: SyntaxKinds.ClassProperty,
-        computed, static: isStatic, key, value
+        computed, static: isStatic, shorted, key, value
     }
 }
 export function createClassMethodDefintion(

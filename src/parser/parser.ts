@@ -6,11 +6,9 @@ import {
     Identifier, 
     NodeBase, 
     Pattern, 
-    Property, 
     PropertyDefinition,
     PropertyName, 
     MethodDefinition,
-    SpreadElement, 
     TemplateElement, 
     PrivateName,
     ObjectMethodDefinition,
@@ -31,9 +29,8 @@ import {
     UpdateOperatorKinds,
     Keywords,
  } from "@/src/syntax/operator";
-import { getBinaryPrecedence, isBinaryOps, isComputedPropertyName } from "@/src/parser/helper";
+import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/helper";
 import { ErrorMessageMap } from "@/src/parser/error";
-import { throws } from "assert";
 
 /** ========================
  *  Context for parser
@@ -256,11 +253,18 @@ export function createParser(code: string) {
             body.push(parseStatementListItem());
         }
         if(match(SyntaxKinds.EOFToken)) {
-
+            // TODO: add eof error
         }
         nextToken();
         return factory.createFunctionBody(body);
     }
+    /**
+     * Parse Class
+     * ```
+     * Class := 'class' identifer ('extends' LeftHandSideExpression) ClassBody
+     * ```
+     * @returns {Class}
+     */
     function parseClass(): Class {
         if(!match(SyntaxKinds.ClassKeyword)) {
             throw createRecuriveDecentError("parseClass", [SyntaxKinds.ClassKeyword]);
@@ -270,12 +274,17 @@ export function createParser(code: string) {
         if(match(SyntaxKinds.Identifier)) {
             name = parseIdentifer();
         }
+        // TODO: parse ClassExtends
         return factory.createClass(name, null, parseClassBody());
     }
-    /**
-     * 
+    /** 
+     * Parse ClassBody
+     * ```
+     *  ClassBody := '{' [ClassElement] '}'
+     * ```
+     * @return {ClassBody}
      */
-    function parseClassBody() {
+    function parseClassBody(): ClassBody {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createRecuriveDecentError("parseClassBody", [SyntaxKinds.BracesLeftPunctuator]);
         }
@@ -290,38 +299,53 @@ export function createParser(code: string) {
         nextToken();
         return factory.createClassBody(classbody);
     }
+    /**
+     * Parse ClassElement
+     * ```
+     * ClassElement := MethodDefinition
+     *              := 'static' MethodDefinition
+     *              := FieldDefintion
+     *              := 'static' FieldDefintion
+     *              := ClassStaticBlock
+     * FieldDefintion := ClassElementName ('=' AssignmentExpression)?
+     * ```
+     * - frist, parse 'static' keyword if possible, next follow cases
+     *   1. start with some method modifier like 'set', 'get', 'async', '*' must be methodDefintion
+     *   2. start with '{', must be static block
+     * - then parse ClassElement
+     *    1. if next token is '(', must be MethodDefintion,
+     *    2. else this only case is FieldDefinition with init or not. 
+     * @returns {ClassElement}
+     */
     function parseClassElement(): ClassElement {
         // parse static modifier
         let isStatic = false;
         if(getValue() === "static") {
             nextToken();
             isStatic = true;
-        }
-        // early stop        
+        }    
         if(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator)) {
             return parseMethodDefintion(true, undefined, isStatic) as ClassMethodDefinition;
         }
+        if(match(SyntaxKinds.BracesLeftPunctuator)) {
+            // TODO: parse static block
+        }
         // parse ClassElementName 
+        const isComputedRef = { isComputed: false };
         let key: PropertyName | PrivateName | undefined;
         if(match(SyntaxKinds.PrivateName)) {
             key = parsePrivateName();
         }else {
-            key = parsePropertyName();
+            key = parsePropertyName(isComputedRef);
         }
-        // case 1: method defintion.
         if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            const a = parseMethodDefintion(true, key, isStatic) as ClassMethodDefinition;
-            console.log(a)
-            return a;
+            return parseMethodDefintion(true, key, isStatic) as ClassMethodDefinition;
         }
-        // case 2: fiedlDefintion
         if(matchSet([SyntaxKinds.AssginOperator])) {
             nextToken();
-            return factory.createClassProperty(key, parseAssigmentExpression(), isComputedPropertyName(key), isStatic);
+            return factory.createClassProperty(key, parseAssigmentExpression(), isComputedRef.isComputed, isStatic, false);
         }
-        // case 3: static block 
-        // TODO: implement static block
-        throw new Error(`[Unexpect Token]: ${getToken()}, value: ${getValue()}`);
+        return factory.createClassProperty(key, undefined, isComputedRef.isComputed, isStatic, true);
 
     }
 /** ====================================================================
@@ -513,6 +537,17 @@ export function createParser(code: string) {
             arguments: callerArguments, optional
         }
     }
+    /**
+     * Parse Arguments
+     * ```
+     * Arguments := '(' ArgumentList ')'
+     * ArgumentList := ArgumentList AssigmentExpression
+     *              := ArgumentList SpreadElement
+     *              := AssignmentExpression
+     *              := SpreadElement
+     * ```
+     * @returns {Array<Expression>}
+     */
     function parseArguments(): Array<Expression> {
         if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             throw new Error(`Unreach ${getToken()}`);
@@ -718,9 +753,9 @@ export function createParser(code: string) {
     /**
      * Parse New Expression
      * new expression is a trick one, because is not always right to left, 
-     * for a new expression, last right component must be a CallExpression,
+     * for a new expression, last the rightest component must be a CallExpression,
      * and before that CallExpression, it can be a series of MemberExpression,
-     * or enent another NewExpression
+     * or event another NewExpression
      * ```
      * NewExpression := 'new' NewExpression
      *               := 'new' MemberExpressionWithoutOptional Arugment 
@@ -797,44 +832,45 @@ export function createParser(code: string) {
     /**
      * Parse PropertyDefinition
      * ```
-     * PropertyDefinition := Identifer
-     *                    := MethodDefintion
-     *                    := Property
-     *                    := SpreadElement
+     *  PropertyDefinition := MethodDefintion
+     *                     := Property
+     *                     := SpreadElement
      * Property := PropertyName '=' AssignmentExpression
      * SpreadElement := '...' AssigmentExpression
      * ```
-     * ref: https://tc39.es/ecma262/#prod-PropertyDefinition
+     * ### How to parse
+     * - start with `...` operator, must be SpreadElment
+     * - start with some method modifier like `set`, `get`, `async`, `*` must be MethodDefintion
+     * then parse PropertyName frist
+     *   - start with `(`, must be MethodDefintion
+     *   - otherwise, is ObjectProperty with or without init. 
+     * #### ref: https://tc39.es/ecma262/#prod-PropertyDefinition
      */
     function parsePropertyDefinition(): PropertyDefinition {
+        // semantics check for private 
+        if(match(SyntaxKinds.PrivateName)) {
+            throw createSemanticsError(ErrorMessageMap.private_field_can_not_use_in_object);
+        }
         // spreadElement
         if(match(SyntaxKinds.SpreadOperator)) {
             nextToken();
             return factory.createSpreadElement(parseAssigmentExpression());
-        }
-        // Idenifier, MethodDefinition and Property maybe will start with identifer
-        if(match(SyntaxKinds.Identifier)) {
-            const lookaheadToken = lookahead();
-            // if just identifier, next token only can be comm (start parse next property)
-            // or BracesRight in which case, it mean end of current ObjectLiteral.
-            if(lookaheadToken === SyntaxKinds.CommaToken || lookaheadToken === SyntaxKinds.BracesRightPunctuator) {
-                return parseIdentifer();   
-            }
         }
         // if token match '*', 'async', 'set', 'get' or privateName, is must be MethodDefintion
         if(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator)) {
             return parseMethodDefintion() as ObjectMethodDefinition;
         }
         // otherwise, it would be Property start with PropertyName or MethodDeinftion start with PropertyName 
-        const propertyName = parsePropertyName();
+        const isComputedRef = { isComputed: false };
+        const propertyName = parsePropertyName(isComputedRef);
+        if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            parseMethodDefintion(false, propertyName) as ObjectMethodDefinition;
+        }
         if(match(SyntaxKinds.ColonPunctuator)) {
             nextToken();
-            const property = factory.createObjectProperty(propertyName, parseAssigmentExpression(), isComputedPropertyName(propertyName));
-            return property;
+            return factory.createObjectProperty(propertyName, parseAssigmentExpression(), isComputedRef.isComputed, false);
         }
-        // parse MethodDeifintion with existed propertyName.
-        return parseMethodDefintion(false, propertyName) as ObjectMethodDefinition;
-        
+        return factory.createObjectProperty(propertyName, undefined, isComputedRef.isComputed, true);
     }
     /**
      * Parse PropertyName, using Context to record this property is computed or not.
@@ -848,7 +884,7 @@ export function createParser(code: string) {
      * ref: https://tc39.es/ecma262/#prod-PropertyName
      * @returns {PropertyName}
      */
-    function parsePropertyName(): PropertyName {
+    function parsePropertyName(isComputedRef: { isComputed: boolean }): PropertyName {
         if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral])) {
             throw createRecuriveDecentError("parsePropertyName", [SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral]);
         }
@@ -865,6 +901,7 @@ export function createParser(code: string) {
         const expr = parseAssigmentExpression();
         if(match(SyntaxKinds.BracketRightPunctuator)) {
             nextToken();
+            isComputedRef.isComputed = true;
             return expr;
         }
         throw createUnexpectError(SyntaxKinds.BracketRightPunctuator, "com");
@@ -880,11 +917,17 @@ export function createParser(code: string) {
      * AyncMethod := 'async' ClassElementName BindingList FunctionBody
      * GeneratorMethod := '*' ClassElementName BindingList FunctionBody
      * AsyncGeneratorMethod := 'async' '*' ClassElementName BindingList FunctionBody
+     * ClassElementName := PropertyName
+     *                  := PrivateName
      * ```
      * @param {PropertyNameundefined} withPropertyName parse methodDeinfition with exited propertyName or not
      * @returns {MethodDefinition}
      */
-    function parseMethodDefintion(inClass: boolean = false, withPropertyName: PropertyName | undefined = undefined, isStatic: boolean = false): ObjectMethodDefinition | ClassMethodDefinition {
+    function parseMethodDefintion(
+        inClass: boolean = false, 
+        withPropertyName: PropertyName | PrivateName | undefined = undefined, 
+        isStatic: boolean = false
+    ): ObjectMethodDefinition | ClassMethodDefinition {
         if(
             !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
             && !withPropertyName
@@ -924,9 +967,13 @@ export function createParser(code: string) {
                 generator = true;
                 nextToken();
             }
-            withPropertyName = parsePropertyName();
-            // TODO: maybe is private identifer (only existed in class)
-            computed = isComputedPropertyName(withPropertyName)
+            if(match(SyntaxKinds.PrivateName)) {
+                withPropertyName = parsePrivateName();
+            }else {
+                const isComputedRef = { isComputed: false };
+                withPropertyName = parsePropertyName(isComputedRef);
+                computed = isComputedRef.isComputed
+            }
         }
         const parmas = parseBindingElmentList();
         const body = parseFunctionBody();

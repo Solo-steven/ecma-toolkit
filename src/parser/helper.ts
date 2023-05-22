@@ -46,7 +46,3 @@ export function getBinaryPrecedence(kind: SyntaxKinds) {
 export function isBinaryOps(kind: SyntaxKinds) {
     return getBinaryPrecedence(kind) > 0;
 }
-
-export function isComputedPropertyName(propertyName: AST.PropertyName) {
-    return !(propertyName.kind === SyntaxKinds.Identifier  || propertyName.kind === SyntaxKinds.StringLiteral || propertyName.kind === SyntaxKinds.NumberLiteral )
-}

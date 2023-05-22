@@ -1,11 +1,8 @@
 import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
-`
+const code_1 = `
      a = {
-        #test: 10,
-        #for: 10,
-        #while: 10,
         b: 10 + 10,
         ...c,
         c: aa + yy,
@@ -19,10 +16,14 @@ import { createParser } from "@/src/parser";
         },
         o: (m = 10, v) => {
 
+        },
+        I: function j(c, f) {
+
         }
      }
 `
-const code = `
+const code = code_1;
+`
      s = class {
         #test = 10
         static async i() {

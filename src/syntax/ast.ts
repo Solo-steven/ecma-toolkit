@@ -18,8 +18,9 @@ export type PropertyName = Identifier | StringLiteral | NumberLiteral | Expressi
 export interface Property extends NodeBase {
     kind: SyntaxKinds;
     key: PropertyName | PrivateName;
-    value: Expression; // actually is assignment expression,
+    value: Expression | undefined; // actually is assignment expression,
     computed: boolean;
+    shorted: boolean;
     static: boolean;
 }
 export interface MethodDefinition extends NodeBase {
@@ -77,7 +78,7 @@ export interface ObjectExpression extends NodeBase {
     kind: SyntaxKinds.ObjectExpression;
     properties: Array<PropertyDefinition>;
 }
-export type PropertyDefinition = Identifier | ObjectProperty |  ObjectMethodDefinition | SpreadElement;
+export type PropertyDefinition = ObjectProperty |  ObjectMethodDefinition | SpreadElement;
 export interface ObjectProperty extends Omit<Property, "static"> {
     kind: SyntaxKinds.ObjectProperty;
     key: PropertyName;
@@ -247,5 +248,5 @@ export interface ClassProperty extends Property {
 export interface ClassMethodDefinition extends MethodDefinition {
     kind: SyntaxKinds.ClassMethodDefinition;
 }
-export type ClassElement = Identifier | ClassProperty | ClassMethodDefinition;
+export type ClassElement = ClassProperty | ClassMethodDefinition;
 export type Declaration = FunctionDeclaration;
