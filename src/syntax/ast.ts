@@ -250,3 +250,26 @@ export interface ClassMethodDefinition extends MethodDefinition {
 }
 export type ClassElement = ClassProperty | ClassMethodDefinition;
 export type Declaration = FunctionDeclaration;
+
+/** ==========================================
+ * Import Declaration
+ * ===========================================
+ */
+export interface ImportDeclaration {
+    kind: SyntaxKinds.ImportDeclaration;
+    specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier>;
+    source: StringLiteral;
+}
+export interface ImportDefaultSpecifier {
+    kind: SyntaxKinds.ImportDefaultSpecifier;
+    imported: Identifier;
+}
+export interface ImportSpecifier {
+    kind: SyntaxKinds.ImportSpecifier;
+    imported: Identifier | StringLiteral;
+    local?: Identifier;
+}
+export interface ImportNamespaceSpecifier {
+    kind: SyntaxKinds.ImportNamespaceSpecifier;
+    imported: Identifier;
+}

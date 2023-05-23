@@ -163,6 +163,10 @@ export enum SyntaxKinds {
     FunctionBody,
     ClassDeclaration,
     ClassBody,
+    ImportDeclaration,
+    ImportSpecifier,
+    ImportDefaultSpecifier,
+    ImportNamespaceSpecifier,
     // =========== Top Level ===========
     Program,
 }

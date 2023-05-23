@@ -307,3 +307,29 @@ export function createRestElement(argument: AST.RestElements['argument']): AST.R
 export function createProgram( body: Array<AST.NodeBase>): AST.Program {
     return { kind: SyntaxKinds.Program, body };
 }
+export function createImportDeclaration(specifiers: AST.ImportDeclaration['specifiers'],source: AST.ImportDeclaration['source']): AST.ImportDeclaration {
+    return {
+        kind: SyntaxKinds.ImportDeclaration,
+        specifiers,
+        source,
+    }
+}
+export function createImportDefaultSpecifier(imported: AST.ImportDefaultSpecifier['imported']): AST.ImportDefaultSpecifier {
+    return {
+        kind: SyntaxKinds.ImportDefaultSpecifier,
+        imported,
+    }
+}
+export function createImportNamespaceSpecifier(imported: AST.ImportNamespaceSpecifier['imported']): AST.ImportNamespaceSpecifier {
+    return {
+        kind: SyntaxKinds.ImportNamespaceSpecifier,
+        imported,
+    }
+}
+export function createImportSpecifier(imported: AST.ImportSpecifier['imported'], local?: AST.ImportSpecifier['local']): AST.ImportSpecifier {
+    return {
+        kind: SyntaxKinds.ImportSpecifier,
+        imported,
+        local,
+    }
+}

@@ -15,7 +15,11 @@ import {
     ClassMethodDefinition,
     ClassElement,
     ClassBody,
-    Class
+    Class,
+    ImportDeclaration,
+    ImportDefaultSpecifier,
+    ImportNamespaceSpecifier,
+    ImportSpecifier,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -176,6 +180,13 @@ export function createParser(code: string) {
     function parseStatementListItem() {
         const token = getToken();
         switch(token) {
+            case SyntaxKinds.ImportKeyword: {
+                const lookaheadToken = lookahead();
+                if(lookaheadToken !== SyntaxKinds.ParenthesesLeftPunctuator && lookaheadToken !== SyntaxKinds.DotOperator) {
+                    return parseImportDeclaration();
+                }
+                // else fallback to parseExpression,
+            }
             case SyntaxKinds.FunctionKeyword: 
                 return parseFunctionDeclaration();
             default:
@@ -640,6 +651,7 @@ export function createParser(code: string) {
             case SyntaxKinds.TemplateHead:
             case SyntaxKinds.TemplateNoSubstitution:
                 return parseTemplateLiteral();
+            // TODO import call
             case SyntaxKinds.ImportKeyword:
                 return parseImportMeta();
             case SyntaxKinds.NewKeyword:
@@ -1112,5 +1124,119 @@ export function createParser(code: string) {
         nextToken();
         return params;
     }
+/** ================================================================================
+ *  Parse Import Declaration
+ *  entry point: https://tc39.es/ecma262/#sec-imports
+ * ==================================================================================
+ */
+    /**
+     * Parse Import Declaration
+     */
+    function parseImportDeclaration(): ImportDeclaration {
+        function expectFormKeyword() {
+            if(getValue() !== "from") {
+                throw createUnexpectError(SyntaxKinds.Identifier, "expect from keyword");
+            }
+            nextToken();
+        }
+        if(!match(SyntaxKinds.ImportKeyword)) {
+            throw createRecuriveDecentError("parseImportDeclaration", [SyntaxKinds.ImportKeyword]);
+        }
+        nextToken();
+        const specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier> = [];
+        if(match(SyntaxKinds.StringLiteral)) {
+            const source = parseStringLiteral();
+            expectFormKeyword();
+            return factory.createImportDeclaration(specifiers, source);
+        }
+        if(match(SyntaxKinds.MultiplyOperator)) {
+            specifiers.push(parseImportNamespaceSpecifier());
+            expectFormKeyword();
+            const source = parseStringLiteral();
+            return factory.createImportDeclaration(specifiers, source);
+        }
+        if(match(SyntaxKinds.BracesLeftPunctuator)) {
+            parseImportSpecifiers(specifiers);
+            expectFormKeyword();
+            const source = parseStringLiteral();
+            return factory.createImportDeclaration(specifiers, source);
+        }
+        specifiers.push(parseImportDefaultSpecifier());
+        if(match(SyntaxKinds.CommaToken)) {
+            nextToken();
+            if(match(SyntaxKinds.BracesLeftPunctuator)) {
+                parseImportSpecifiers(specifiers);
+            }else if (match(SyntaxKinds.MultiplyOperator)) {
+                specifiers.push(parseImportNamespaceSpecifier());
+            }else {
+                throw createMessageError("import default specifier can only concat with namespace of import named specifier");
+            }
+        }
+        expectFormKeyword();
+        const source = parseStringLiteral();
+        return factory.createImportDeclaration(specifiers, source);
+
+    }
+    function parseImportDefaultSpecifier() {
+        if(!match(SyntaxKinds.Identifier)) {
+            throw createRecuriveDecentError("parseImportDefaultSpecifier", [SyntaxKinds.ImportDefaultSpecifier]);
+        }
+        const name = parseIdentifer();
+        return factory.createImportDefaultSpecifier(name);
+    }
+    function parseImportNamespaceSpecifier(): ImportNamespaceSpecifier {
+        if(!match(SyntaxKinds.MultiplyOperator)) {
+            throw createRecuriveDecentError("parseImportNamespaceSpecifie", [SyntaxKinds.MultiplyOperator])
+        }
+        nextToken();
+        if(getValue()!== "as") {
+            throw createMessageError("import namespace specifier must has 'as'");
+        }
+        nextToken();
+        return factory.createImportNamespaceSpecifier(parseIdentifer());
+    }
+    function parseImportSpecifiers(specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier>): void {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseImportSpecifiers", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        let isStart = true;
+        while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "import specifier should spread by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
+                break;
+            }
+            if(match(SyntaxKinds.Identifier)) {
+                const imported = parseIdentifer();
+                let local: Identifier | undefined;
+                if(getValue() == "as") {
+                    nextToken();
+                    local = parseIdentifer();
+                }
+                specifiers.push(factory.createImportSpecifier(imported, local));
+            }else if(match(SyntaxKinds.StringLiteral)) {
+                const imported = parseStringLiteral();
+                if(getValue() !== "as") {
+                    createUnexpectError(SyntaxKinds.Identifier, "if import specifier start with string literal, must has 'as' clause");
+                }
+                nextToken();
+                const local = parseIdentifer();
+                specifiers.push(factory.createImportSpecifier(imported, local));
+            }else {
+                createUnexpectError(SyntaxKinds.Identifier, "import specifier must start with strinhLiteral or identifer")
+            }
+        }
+        if(!match(SyntaxKinds.BracesRightPunctuator)) {
+            throw createEOFError("import specifiers should end with BracesRight");
+        }
+        nextToken();
+    } 
 
 }

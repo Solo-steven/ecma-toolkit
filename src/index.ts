@@ -22,7 +22,7 @@ const code_1 = `
         }
      }
 `
-const code = code_1;
+const code_2 =
 `
      s = class {
         #test = 10
@@ -38,6 +38,10 @@ const code = code_1;
      }
 
 `;
+
+const code = `
+     import  { useState } , React from "react"
+`
 const lexer = createLexer(code)
 
 while(1) {
