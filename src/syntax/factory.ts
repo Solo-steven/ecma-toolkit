@@ -82,7 +82,7 @@ export function createSpreadElement(argument: AST.Expression): AST.SpreadElement
         argument,
     }
 }
- export function createMetaProperty(meta: AST.Identifier, property: AST.Identifier): AST.MetaProperty {
+ export function createMetaProperty(meta: AST.MetaProperty['meta'], property: AST.MetaProperty['property']): AST.MetaProperty {
     return {
         kind: SyntaxKinds.MetaProperty,
         meta, property

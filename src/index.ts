@@ -40,7 +40,7 @@ const code_2 =
 `;
 
 const code = `
-     import  { useState } , React from "react"
+root.layer.something?.maybe.other
 `
 const lexer = createLexer(code)
 

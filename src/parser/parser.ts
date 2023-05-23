@@ -180,15 +180,16 @@ export function createParser(code: string) {
     function parseStatementListItem() {
         const token = getToken();
         switch(token) {
+            case SyntaxKinds.FunctionKeyword: 
+                return parseFunctionDeclaration();
             case SyntaxKinds.ImportKeyword: {
                 const lookaheadToken = lookahead();
                 if(lookaheadToken !== SyntaxKinds.ParenthesesLeftPunctuator && lookaheadToken !== SyntaxKinds.DotOperator) {
                     return parseImportDeclaration();
+                }else {
+                    return parseExpressionStatement();
                 }
-                // else fallback to parseExpression,
             }
-            case SyntaxKinds.FunctionKeyword: 
-                return parseFunctionDeclaration();
             default:
                 if(getValue() === "async") {
                     nextToken();
@@ -655,6 +656,10 @@ export function createParser(code: string) {
             case SyntaxKinds.ImportKeyword:
                 return parseImportMeta();
             case SyntaxKinds.NewKeyword:
+                const lookaheadToken = lookahead();
+                if(lookaheadToken === SyntaxKinds.DotOperator) {
+                    return parseNewTarget();
+                }
                 return parseNewExpression();
             case SyntaxKinds.SuperKeyword:
                 return parseSuper();
@@ -761,6 +766,21 @@ export function createParser(code: string) {
         nextToken();
         const property = parseIdentifer();
         return factory.createMetaProperty(factory.createIdentifier("import"), property);
+    }
+    function parseNewTarget() {
+        if(!match(SyntaxKinds.NewKeyword)) {
+            throw createRecuriveDecentError("parseNewTarget", [SyntaxKinds.NewKeyword]);
+        } 
+        nextToken();
+        if(!match(SyntaxKinds.DotOperator)) {
+            throw createUnexpectError(SyntaxKinds.DotOperator, "new target meta property should has dot");
+        }
+        nextToken();
+        if(getValue() !== "target") {
+            throw createUnexpectError(SyntaxKinds.Identifier, "new concat with dot should only be used in meta property");
+        }
+        nextToken();
+        return factory.createMetaProperty(factory.createIdentifier("new"), factory.createIdentifier("target"));
     }
     /**
      * Parse New Expression

@@ -1,6 +1,185 @@
-import { createParser } from "@/src/parser";
-
+import { toAST } from "../helper";
+import * as factory  from "@/src/syntax/factory";
 
 // todo: add case `await a.test?.(await cc(), aa  ).s.d`
 // todo add case `{ "test": content, ...a , }`
 // to ass case `a = { b: 10 + 10, ...c, c: aa + yy, ...sssa, k, async *p(mm, d) {}, async [bb] () {}, o: (m = 10, v) => {} }`
+
+describe('unClassify-test/Meta property in subscription', () => {
+    test("should parse import.meta as meta property when is in the start of subscriptions", () => {
+        expect(toAST("import.meta.url.value.testProperty")).toStrictEqual(
+            factory.createProgram([
+                factory.createExpressionStatement(
+                    factory.createMemberExpression(
+                        false, 
+                        factory.createMemberExpression(
+                            false,
+                            factory.createMemberExpression(
+                                false,
+                                factory.createMetaProperty(
+                                    factory.createIdentifier("import"),
+                                    factory.createIdentifier("meta"),
+                                ),
+                                factory.createIdentifier("url"),
+                                false,
+                            ),
+                            factory.createIdentifier("value"),
+                            false,
+                        ),
+                        factory.createIdentifier("testProperty"),
+                        false,
+                    )
+                )
+            ])
+        )
+    });
+    test("should parse import.meta as regular member expression when is in the middle of subscriptions", () => {
+        expect(toAST("root.layer.import.meta.other")).toStrictEqual(
+            factory.createProgram([
+                factory.createExpressionStatement(
+                    factory.createMemberExpression(
+                        false, 
+                        factory.createMemberExpression(
+                            false,
+                            factory.createMemberExpression(
+                                false,
+                                factory.createMemberExpression(
+                                    false,
+                                    factory.createIdentifier("root"),
+                                    factory.createIdentifier("layer"),
+                                    false,
+                                ),
+                                factory.createIdentifier("import"),
+                                false,
+                            ),
+                            factory.createIdentifier("meta"),
+                            false,
+                        ),
+                        factory.createIdentifier("other"),
+                        false,
+                    )
+                )
+            ])
+        )
+    });
+    test("should parse new.target as meta property when is in the start of subscriptions", () => {
+        expect(toAST("new.target.props.prop.property")).toStrictEqual(
+            factory.createProgram([
+                factory.createExpressionStatement(
+                    factory.createMemberExpression(
+                        false, 
+                        factory.createMemberExpression(
+                            false,
+                            factory.createMemberExpression(
+                                false,
+                                factory.createMetaProperty(
+                                    factory.createIdentifier("new"),
+                                    factory.createIdentifier("target"),
+                                ),
+                                factory.createIdentifier("props"),
+                                false,
+                            ),
+                            factory.createIdentifier("prop"),
+                            false,
+                        ),
+                        factory.createIdentifier("property"),
+                        false,
+                    )
+                )
+            ])
+        )
+    });
+    test("should parse new.target as regular member expression when is in the middle of subscriptions", () => {
+        expect(toAST("props.new.target.prop.property")).toStrictEqual(
+            factory.createProgram([
+                factory.createExpressionStatement(
+                    factory.createMemberExpression(
+                        false, 
+                        factory.createMemberExpression(
+                            false,
+                            factory.createMemberExpression(
+                                false,
+                                factory.createMemberExpression(
+                                    false,
+                                    factory.createIdentifier("props"),
+                                    factory.createIdentifier("new"),
+                                    false,
+                                ),
+                                factory.createIdentifier("target"),
+                                false,
+                            ),
+                            factory.createIdentifier("prop"),
+                            false,
+                        ),
+                        factory.createIdentifier("property"),
+                        false,
+                    )
+                )
+            ])
+        )
+    });
+});
+
+describe("unClassify-test/chain expression in subscription ", () => {
+    test("chain expression with optional call expression", () => {
+        expect(toAST("root.layer?.call(a,b,c).other")).toStrictEqual(
+            factory.createProgram([
+                factory.createExpressionStatement(
+                    factory.createChainExpression(
+                        factory.createMemberExpression(
+                            false,
+                            factory.createCallExpression(
+                                factory.createMemberExpression(
+                                    false,
+                                    factory.createMemberExpression(
+                                        false,
+                                        factory.createIdentifier("root"),
+                                        factory.createIdentifier("layer"),
+                                        false,
+                                    ),
+                                    factory.createIdentifier("call"),
+                                    true,
+                                ),
+                                [factory.createIdentifier("a"), factory.createIdentifier("b"), factory.createIdentifier("c")],
+                                false,
+                            ),
+                            factory.createIdentifier("other"),
+                            false,
+                        )
+                    )
+                )
+            ])
+        )
+    });
+    test("chain expression with optional member expression", () => {
+        expect(toAST("root.layer.something?.maybe.other")).toStrictEqual(
+            factory.createProgram([
+                factory.createExpressionStatement(
+                    factory.createChainExpression(
+                        factory.createMemberExpression(
+                            false,
+                            factory.createMemberExpression(
+                                false,
+                                factory.createMemberExpression(
+                                    false,
+                                    factory.createMemberExpression(
+                                        false,
+                                        factory.createIdentifier("root"),
+                                        factory.createIdentifier("layer"),
+                                        false,
+                                    ),
+                                    factory.createIdentifier("something"),
+                                    false,
+                                ),
+                                factory.createIdentifier("maybe"),
+                                true,
+                            ),
+                            factory.createIdentifier("other"),
+                            false,
+                        )
+                    )
+                )
+            ])
+        )
+    });
+})
