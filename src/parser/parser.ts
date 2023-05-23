@@ -1131,6 +1131,23 @@ export function createParser(code: string) {
  */
     /**
      * Parse Import Declaration
+     * ```
+     * ImportDeclaration := 'import'  ImportClasue FromClause
+     *                   := 'import'  StringLiteral
+     * FromClause := 'from' StringLiteral
+     * ImportClause := ImportDefaultBinding
+     *              := ImportNamesapce
+     *              := ImportNamed
+     *              := ImportDefaultBindling ',' ImportNamed
+     *              := ImportDefaultBindling ',' ImportNamespace
+     * ```
+     * - frist, eat import keyword
+     *   1. if it is string literal, must be `import StringLiteral`
+     *   2. if it start with `*`, must be import name space
+     *   3. if it start with '{', must be import named 
+     *   4. fallback case: default import with import named or import namesspace
+     *      or nothing
+     * @returns {ImportDeclaration}
      */
     function parseImportDeclaration(): ImportDeclaration {
         function expectFormKeyword() {
@@ -1175,15 +1192,28 @@ export function createParser(code: string) {
         expectFormKeyword();
         const source = parseStringLiteral();
         return factory.createImportDeclaration(specifiers, source);
-
     }
-    function parseImportDefaultSpecifier() {
+    /**
+     * Parse Default import binding
+     * ```
+     * ImportDefaultBinding := Identifer
+     * ```
+     * @returns {ImportDefaultSpecifier}
+     */
+    function parseImportDefaultSpecifier(): ImportDefaultSpecifier {
         if(!match(SyntaxKinds.Identifier)) {
             throw createRecuriveDecentError("parseImportDefaultSpecifier", [SyntaxKinds.ImportDefaultSpecifier]);
         }
         const name = parseIdentifer();
         return factory.createImportDefaultSpecifier(name);
     }
+    /**
+     * Parse namespace import 
+     * ```
+     * ImportNamespace := '*' 'as' Identifer
+     * ```
+     * @returns {ImportNamespaceSpecifier}
+     */
     function parseImportNamespaceSpecifier(): ImportNamespaceSpecifier {
         if(!match(SyntaxKinds.MultiplyOperator)) {
             throw createRecuriveDecentError("parseImportNamespaceSpecifie", [SyntaxKinds.MultiplyOperator])
@@ -1195,6 +1225,17 @@ export function createParser(code: string) {
         nextToken();
         return factory.createImportNamespaceSpecifier(parseIdentifer());
     }
+    /**
+     * Parse Import Nameds
+     * ```
+     *  ImportNamed := '{' ImportList ','? '}'
+     *  ImportList  := [ ImportItem ]
+     *  ImportItem  := Identifer 
+     *              := (Identifer | StringLiteral) 'as' Identifer
+     * ```
+     * @param specifiers
+     * @return {void}
+     */
     function parseImportSpecifiers(specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier>): void {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createRecuriveDecentError("parseImportSpecifiers", [SyntaxKinds.BracesLeftPunctuator]);
@@ -1238,5 +1279,4 @@ export function createParser(code: string) {
         }
         nextToken();
     } 
-
 }
