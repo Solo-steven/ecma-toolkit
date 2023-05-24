@@ -1,5 +1,5 @@
 {
-  "name": "ecma-estree-parser",
+  "name": "ecma-parser",
   "packageManager": "yarn@3.4.1",
   "scripts": {
     "dev": "nodemon ./src/index.ts",

@@ -950,8 +950,11 @@ export function createParser(code: string) {
      * GeneratorMethod := '*' ClassElementName BindingList FunctionBody
      * AsyncGeneratorMethod := 'async' '*' ClassElementName BindingList FunctionBody
      * ClassElementName := PropertyName
-     *                  := PrivateName
+     *                   := PrivateName
      * ```
+     * this method should allow using when in class or in object literal, ClassElement can be PrivateName, when it 
+     * used in object literal, it should throw a error.
+     * @param {boolean} inClass is used in class or not. 
      * @param {PropertyNameundefined} withPropertyName parse methodDeinfition with exited propertyName or not
      * @returns {MethodDefinition}
      */
