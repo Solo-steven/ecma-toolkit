@@ -224,7 +224,7 @@ export interface AssignmentPattern extends NodeBase {
 }
 export interface RestElement extends NodeBase {
     kind: SyntaxKinds.RestElement;
-    argument: Expression;
+    argument: Expression | Pattern;
 }
 
 export type Pattern = RestElement | AssignmentPattern | ObjectPattern | ArrayPattern | Identifier;

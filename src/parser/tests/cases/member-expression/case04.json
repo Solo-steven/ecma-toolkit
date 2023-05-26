@@ -1,0 +1,48 @@
+{
+    "kind": 10162,
+    "body": [
+      {
+        "kind": 10147,
+        "expr": {
+          "kind": 10137,
+          "computed": false,
+          "optional": false,
+          "object": {
+            "kind": 10137,
+            "computed": false,
+            "optional": false,
+            "object": {
+              "kind": 10137,
+              "computed": false,
+              "optional": false,
+              "object": {
+                "kind": 10137,
+                "computed": false,
+                "optional": false,
+                "object": {
+                  "kind": 10116,
+                  "name": "props"
+                },
+                "property": {
+                  "kind": 10116,
+                  "name": "new"
+                }
+              },
+              "property": {
+                "kind": 10116,
+                "name": "target"
+              }
+            },
+            "property": {
+              "kind": 10116,
+              "name": "prop"
+            }
+          },
+          "property": {
+            "kind": 10116,
+            "name": "property"
+          }
+        }
+      }
+    ]
+  }

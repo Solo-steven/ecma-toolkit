@@ -1263,7 +1263,26 @@ export function createParser(code: string) {
             if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
                continue;
             }
-            // parse object property
+            // parse Rest property
+            if(match(SyntaxKinds.SpreadOperator)) {
+                nextToken();
+                if(match(SyntaxKinds.Identifier)) {
+                    properties.push(factory.createRestElement(parseIdentifer()));
+                }else {
+                    properties.push(factory.createRestElement(parseBindingPattern()));
+                }
+                // sematic check, Rest Property Must be last,
+                if(
+                    !(
+                        match(SyntaxKinds.BracesRightPunctuator) ||
+                        match(SyntaxKinds.CommaToken) && lookahead() === SyntaxKinds.BracesRightPunctuator
+                    )
+                ) {
+                    throw createSemanticsError(ErrorMessageMap.rest_element_should_be_last_property);
+                }
+                continue;
+            }
+            // parse Object pattern property
             const isComputedRef = { isComputed: false }
             const propertyName = parsePropertyName(isComputedRef);
             if(match(SyntaxKinds.AssginOperator)) {

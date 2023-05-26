@@ -40,11 +40,11 @@ const code_2 =
 `;
 
 const code_3 = `
-     function test({a: {m,},k}, b, c) {
+     function test({a: {m, ...lll},k}, b, c) {
 
      }
 `;
-const code =  code_3
+const code = `root.layer.something?.maybe.other`
 const lexer = createLexer(code)
 
 

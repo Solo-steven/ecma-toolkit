@@ -1,0 +1,1 @@
+new.target.props.prop.property
