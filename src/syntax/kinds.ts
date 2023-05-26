@@ -155,10 +155,14 @@ export enum SyntaxKinds {
     ConditionalExpression,
     SequenceExpression,
     ExpressionStatement,
+    // =========== Pattern ==========
+    AssignmentPattern,
+    ObjectPattern,
+    ObjectPatternProperty,
+    ArrayPattern,
+    RestElement,
     // =========== Declaration ===========
     Function,
-    AssignmentPattern,
-    RestElements,
     FunctionDeclaration,
     FunctionBody,
     ClassDeclaration,

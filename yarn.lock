@@ -1690,9 +1690,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ecma-estree-parser@workspace:.":
+"ecma-parser@workspace:.":
   version: 0.0.0-use.local
-  resolution: "ecma-estree-parser@workspace:."
+  resolution: "ecma-parser@workspace:."
   dependencies:
     "@swc/core": ^1.3.56
     "@swc/jest": ^0.2.26

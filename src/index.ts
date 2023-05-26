@@ -39,11 +39,25 @@ const code_2 =
 
 `;
 
-const code = `
-root.layer.something?.maybe.other
-`
+const code_3 = `
+     function test({a: {m,},k}, b, c) {
+
+     }
+`;
+const code =  code_3
 const lexer = createLexer(code)
 
+
+const obj = {
+    a: {
+        b: 10,
+        c: 100,
+    },
+    d: 1,
+}
+
+const { a: {b} } = obj;
+ 
 while(1) {
     const t = lexer.nextToken();
     if(t === SyntaxKinds.EOFToken) {

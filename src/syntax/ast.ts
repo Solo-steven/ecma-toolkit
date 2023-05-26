@@ -203,16 +203,31 @@ export interface ExpressionStatement  {
  *   Pattern
  * ==================================
  */
-export interface Pattern extends NodeBase {};
-export interface RestElements extends Pattern {
-    kind: SyntaxKinds.RestElements;
+export interface ObjectPattern extends NodeBase {
+    kind: SyntaxKinds.ObjectPattern,
+    properties: Array<any>;
+}
+export interface ObjectPatternProperty extends NodeBase {
+    kind: SyntaxKinds.ObjectPatternProperty,
+    key: PropertyName;
+    value: Pattern | Expression | undefined;
+    computed: boolean;
+    shorted: boolean;
+}
+export interface ArrayPattern extends NodeBase {
+    kind: SyntaxKinds.ArrayPattern,
+}
+export interface AssignmentPattern extends NodeBase {
+    kind: SyntaxKinds.AssignmentPattern;
+    left: Pattern;
+    right: Expression | undefined;
+}
+export interface RestElement extends NodeBase {
+    kind: SyntaxKinds.RestElement;
     argument: Expression;
 }
-export interface AssignmentPattern extends Pattern {
-    kind: SyntaxKinds.AssignmentPattern;
-    left: Identifier;
-    right: Expression;
-}
+
+export type Pattern = RestElement | AssignmentPattern | ObjectPattern | ArrayPattern | Identifier;
 
 /** ================================
  *  Declaration

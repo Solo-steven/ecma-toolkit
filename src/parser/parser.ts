@@ -20,6 +20,9 @@ import {
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
     ImportSpecifier,
+    RestElement,
+    ObjectPattern,
+    ArrayPattern,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -242,7 +245,7 @@ export function createParser(code: string) {
             name = factory.createIdentifier(getValue());
             nextToken();
         }
-        const params = parseBindingElmentList();
+        const params = parseFunctionParam();
         const body = parseFunctionBody();
         return factory.createFunction(name, body, params, generator, context.inAsync);
     }
@@ -269,6 +272,44 @@ export function createParser(code: string) {
         }
         nextToken();
         return factory.createFunctionBody(body);
+    }
+    /**
+     * Parse Function Params
+     * ```
+     * 
+     * ```
+     */
+    function parseFunctionParam(): Array<Pattern> {
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseFunctionParams", [SyntaxKinds.ParenthesesLeftPunctuator]);
+        }
+        nextToken();
+        let isStart = true;
+        const params: Array<Pattern> = [];
+        while(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "params list must seprated by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                continue;
+            }
+            // parse SpreadElement (identifer, Object, Array)
+            if(match(SyntaxKinds.SpreadOperator)) {
+                params.push(parseRestElement());
+                break;
+            }
+            params.push(parseBindingElement());
+        }
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
+        }   
+        nextToken();
+        return params;
     }
     /**
      * Parse Class
@@ -1146,6 +1187,108 @@ export function createParser(code: string) {
         }   
         nextToken();
         return params;
+    }
+    /**
+     * Parse BindingElement
+     * ```
+     * BindingElemet := Identifer ('=' AssigmentExpression)?
+     *               := BindingPattern ('=' AssigmentExpression)?
+     * ```
+     * @returns 
+     */
+    function parseBindingElement(): Pattern {
+        if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator])) {
+            throw createRecuriveDecentError("parseBindingElement", [SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
+        }
+        let left: Pattern | undefined ;
+        if(match(SyntaxKinds.Identifier)) {
+            left = parseIdentifer();
+        }else {
+            left = parseBindingPattern();
+        }
+        if(match(SyntaxKinds.AssginOperator)) {
+            nextToken();
+          const right = parseAssigmentExpression();
+          return factory.createAssignmentPattern(left, right);
+        }
+        return left;
+    }
+    function parseRestElement(): RestElement {
+        if(!matchSet([SyntaxKinds.SpreadOperator])) {
+            throw createRecuriveDecentError("parseRestElement", [SyntaxKinds.SpreadOperator]);
+        }
+        nextToken();
+        if(match(SyntaxKinds.Identifier)) {
+            return factory.createRestElement(parseIdentifer());
+        }
+    }
+    /**
+     * Parse BindingPattern
+     * ```
+     * BindingPattern := ObjectPattern
+     *                := ArrayPattern
+     * ```
+     */
+    function parseBindingPattern(): ObjectPattern | ArrayPattern {
+        if(!matchSet([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator])) {
+            throw createRecuriveDecentError("parseBindingElement", [SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
+        }
+        if(match(SyntaxKinds.BracesLeftPunctuator)) {
+            return parseObjectPattern();
+        }
+        return parseArrayPattern();
+    }
+    /** Parse Object Pattern
+     * ```
+     * ```
+     * @return {ObjectPattern}
+     */
+    function parseObjectPattern(): ObjectPattern {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseObjectPattern", [SyntaxKinds.BracesLeftPunctuator]);   
+        }
+        nextToken();
+        let isStart = false;
+        const properties = [];
+        while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            // eat comma.
+            if(!isStart) {
+                isStart = true;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "Object Pattern properties must separet by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
+               continue;
+            }
+            // parse object property
+            const isComputedRef = { isComputed: false }
+            const propertyName = parsePropertyName(isComputedRef);
+            if(match(SyntaxKinds.AssginOperator)) {
+                nextToken();
+                const expr =  parseAssigmentExpression();
+                properties.push(factory.createObjectPatternProperty(propertyName, expr, isComputedRef.isComputed, false))
+                continue;
+            }
+            if(match(SyntaxKinds.ColonPunctuator)) {
+                nextToken();
+                const pattern = parseBindingElement();
+                properties.push(factory.createObjectPatternProperty(propertyName, pattern, isComputedRef.isComputed, false));
+            }
+            properties.push(factory.createObjectPatternProperty(propertyName, undefined, isComputedRef.isComputed, false));
+        }
+        if(match(SyntaxKinds.EOFToken)) {
+            throw createEOFError("");
+        }
+        nextToken();
+        return factory.createObjectPattern(properties);
+    }
+    function parseArrayPattern(): ArrayPattern {
+        return {
+            kind: SyntaxKinds.ArrayPattern,
+        }
     }
 /** ================================================================================
  *  Parse Import Declaration

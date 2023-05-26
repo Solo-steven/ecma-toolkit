@@ -298,9 +298,27 @@ export function createAssignmentPattern(left: AST.AssignmentPattern['left'], rig
         right
     }
 }
-export function createRestElement(argument: AST.RestElements['argument']): AST.RestElements {
+export function createObjectPattern(properties: AST.ObjectPattern['properties']): AST.ObjectPattern {
     return {
-        kind: SyntaxKinds.RestElements,
+        kind: SyntaxKinds.ObjectPattern,
+        properties,
+    }
+}
+export function createObjectPatternProperty(
+    key: AST.ObjectPatternProperty['key'],
+    value: AST.ObjectPatternProperty['value'],
+    computed: AST.ObjectPatternProperty['computed'],
+    shorted: AST.ObjectPatternProperty['shorted'],
+): AST.ObjectPatternProperty {
+    return {
+        kind:  SyntaxKinds.ObjectPatternProperty,
+        computed, shorted,
+        key, value
+    }
+}
+export function createRestElement(argument: AST.RestElement['argument']): AST.RestElement {
+    return {
+        kind: SyntaxKinds.RestElement,
         argument,
     }
 }
