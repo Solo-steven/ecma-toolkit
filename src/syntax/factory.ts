@@ -298,6 +298,12 @@ export function createAssignmentPattern(left: AST.AssignmentPattern['left'], rig
         right
     }
 }
+export function createArrayPattern(elements: AST.ArrayPattern['elements']): AST.ArrayPattern {
+    return {
+        kind: SyntaxKinds.ArrayPattern,
+        elements,
+    };
+}
 export function createObjectPattern(properties: AST.ObjectPattern['properties']): AST.ObjectPattern {
     return {
         kind: SyntaxKinds.ObjectPattern,

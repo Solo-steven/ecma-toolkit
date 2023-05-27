@@ -1,0 +1,55 @@
+{
+    "kind": 10162,
+    "body": [
+      {
+        "kind": 10147,
+        "expr": {
+          "kind": 10144,
+          "left": {
+            "kind": 10116,
+            "name": "variable"
+          },
+          "right": {
+            "kind": 10124,
+            "properties": [
+              {
+                "kind": 10125,
+                "computed": false,
+                "shorted": false,
+                "key": {
+                  "kind": 10116,
+                  "name": "numberProperty"
+                },
+                "value": {
+                  "kind": 10113,
+                  "value": "10"
+                }
+              },
+              {
+                "kind": 10125,
+                "computed": true,
+                "shorted": false,
+                "key": {
+                  "kind": 10143,
+                  "left": {
+                    "kind": 10113,
+                    "value": "9"
+                  },
+                  "right": {
+                    "kind": 10113,
+                    "value": "8"
+                  },
+                  "operator": 10045
+                },
+                "value": {
+                  "kind": 10113,
+                  "value": "10"
+                }
+              }
+            ]
+          },
+          "operator": 10093
+        }
+      }
+    ]
+  }

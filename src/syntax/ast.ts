@@ -204,18 +204,19 @@ export interface ExpressionStatement  {
  * ==================================
  */
 export interface ObjectPattern extends NodeBase {
-    kind: SyntaxKinds.ObjectPattern,
+    kind: SyntaxKinds.ObjectPattern;
     properties: Array<any>;
 }
 export interface ObjectPatternProperty extends NodeBase {
-    kind: SyntaxKinds.ObjectPatternProperty,
+    kind: SyntaxKinds.ObjectPatternProperty;
     key: PropertyName;
     value: Pattern | Expression | undefined;
     computed: boolean;
     shorted: boolean;
 }
 export interface ArrayPattern extends NodeBase {
-    kind: SyntaxKinds.ArrayPattern,
+    kind: SyntaxKinds.ArrayPattern;
+    elements: Array<Pattern | null>;
 }
 export interface AssignmentPattern extends NodeBase {
     kind: SyntaxKinds.AssignmentPattern;

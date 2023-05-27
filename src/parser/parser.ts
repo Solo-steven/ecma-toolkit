@@ -131,7 +131,7 @@ export function createParser(code: string) {
      * @returns {Error}
      */
     function createUnexpectError(expectToken: SyntaxKinds, messsage: string = ""): Error {
-        return new Error(`[Syntax Error]: Expect ${expectToken}, But got ${getToken()}. ${messsage}`);
+        return new Error(`[Syntax Error]: Expect ${expectToken}, But got ${getToken()}(${getValue()}). ${messsage}`);
     }
     /**
      * Given that this parser is recurive decent parser, some
@@ -142,7 +142,7 @@ export function createParser(code: string) {
      * @returns {Error}
      */
     function createRecuriveDecentError(functionName: string, startTokens: Array<SyntaxKinds>): Error {
-        let message = `[Syntax Error When Recurive Parse]: this function ${functionName} call with unexpect token ${getToken()}, it should call with start token[`;
+        let message = `[Syntax Error When Recurive Parse]: in function ${functionName} call with unexpect token ${getToken()} (${getValue()}), it should call with start token[`;
         for(const token of startTokens) {
             message += `${token}, `;
         }
@@ -937,7 +937,7 @@ export function createParser(code: string) {
         const isComputedRef = { isComputed: false };
         const propertyName = parsePropertyName(isComputedRef);
         if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            parseMethodDefintion(false, propertyName) as ObjectMethodDefinition;
+            return parseMethodDefintion(false, propertyName) as ObjectMethodDefinition;
         }
         if(match(SyntaxKinds.ColonPunctuator)) {
             nextToken();
@@ -1197,7 +1197,7 @@ export function createParser(code: string) {
      * @returns 
      */
     function parseBindingElement(): Pattern {
-        if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator])) {
+        if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])) {
             throw createRecuriveDecentError("parseBindingElement", [SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
         }
         let left: Pattern | undefined ;
@@ -1230,8 +1230,8 @@ export function createParser(code: string) {
      * ```
      */
     function parseBindingPattern(): ObjectPattern | ArrayPattern {
-        if(!matchSet([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator])) {
-            throw createRecuriveDecentError("parseBindingElement", [SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
+        if(!matchSet([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])) {
+            throw createRecuriveDecentError("parseBindingPattern", [SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator]);
         }
         if(match(SyntaxKinds.BracesLeftPunctuator)) {
             return parseObjectPattern();
@@ -1305,8 +1305,37 @@ export function createParser(code: string) {
         return factory.createObjectPattern(properties);
     }
     function parseArrayPattern(): ArrayPattern {
+        if(!match(SyntaxKinds.BracketLeftPunctuator)) {
+            throw createRecuriveDecentError("parseArrayPattern", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        let isStart = true;
+        const elements: Array<Pattern | null> = [];
+        while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "array pattern's element must seprate by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.BracketLeftPunctuator) || match(SyntaxKinds.EOFToken)) {
+                continue;
+            }
+            if(match(SyntaxKinds.CommaToken)) {
+                elements.push(null);
+                continue;
+            }
+            elements.push(parseBindingElement());
+        }
+        if(match(SyntaxKinds.EOFToken)) {
+            throw createEOFError("array pattern is not close with bracket right token");
+        }
+        nextToken();
         return {
             kind: SyntaxKinds.ArrayPattern,
+            elements,
         }
     }
 /** ================================================================================

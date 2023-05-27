@@ -1,0 +1,51 @@
+{
+    "kind": 10162,
+    "body": [
+      {
+        "kind": 10147,
+        "expr": {
+          "kind": 10135,
+          "expression": {
+            "kind": 10137,
+            "computed": false,
+            "optional": false,
+            "object": {
+              "kind": 10137,
+              "computed": false,
+              "optional": true,
+              "object": {
+                "kind": 10137,
+                "computed": false,
+                "optional": false,
+                "object": {
+                  "kind": 10137,
+                  "computed": false,
+                  "optional": false,
+                  "object": {
+                    "kind": 10116,
+                    "name": "root"
+                  },
+                  "property": {
+                    "kind": 10116,
+                    "name": "layer"
+                  }
+                },
+                "property": {
+                  "kind": 10116,
+                  "name": "something"
+                }
+              },
+              "property": {
+                "kind": 10116,
+                "name": "maybe"
+              }
+            },
+            "property": {
+              "kind": 10116,
+              "name": "other"
+            }
+          }
+        }
+      }
+    ]
+  }

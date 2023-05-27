@@ -44,7 +44,14 @@ const code_3 = `
 
      }
 `;
-const code = `root.layer.something?.maybe.other`
+const code = `
+variable = {
+    numberProperty: 10,
+    "key": value,
+    "num" : 10,
+    "value": "string",
+}
+`
 const lexer = createLexer(code)
 
 
