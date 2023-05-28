@@ -182,7 +182,7 @@ export function createParser(code: string) {
     }
     function parseStatementListItem() {
         const token = getToken();
-        switch(token) {
+        switch(token) {          
             case SyntaxKinds.FunctionKeyword: 
                 return parseFunctionDeclaration();
             case SyntaxKinds.ImportKeyword: {
@@ -276,7 +276,13 @@ export function createParser(code: string) {
     /**
      * Parse Function Params
      * ```
-     * 
+     * FunctionParams := '(' FunctionParamsList ')'
+     *                := '(' FunctionParamsList ',' ')' 
+     *                := '(' FunctionPramsList ',' RestElement ')'
+     *                := '(' RestElement ')'
+     * FunctiinParamList := FunctionParamList ',' FunctionParam
+     *                   := FunctionParam
+     * FunctionParam := BindingElement
      * ```
      */
     function parseFunctionParam(): Array<Pattern> {
@@ -285,6 +291,7 @@ export function createParser(code: string) {
         }
         nextToken();
         let isStart = true;
+        let isEndWithRest = false;
         const params: Array<Pattern> = [];
         while(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
             if(isStart) {
@@ -300,12 +307,16 @@ export function createParser(code: string) {
             }
             // parse SpreadElement (identifer, Object, Array)
             if(match(SyntaxKinds.SpreadOperator)) {
+                isEndWithRest = true;
                 params.push(parseRestElement());
                 break;
             }
             params.push(parseBindingElement());
         }
         if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            if(isEndWithRest && match(SyntaxKinds.CommaToken)) {
+                throw createSemanticsError(ErrorMessageMap.rest_element_can_not_end_with_comma);
+            }
             throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
         }   
         nextToken();
@@ -1240,6 +1251,13 @@ export function createParser(code: string) {
     }
     /** Parse Object Pattern
      * ```
+     * ObjectPattern := '{' ObjectPatternProperties  '}'
+     *               := '{' ObjtecPatternProperties ',' '}'
+     *               := '{' ObjectPatternProperties ',' RestElement '}'
+     *               := '{' RestElement '}
+     * ObjectPatternProperties := ObjectPatternProperties ',' ObjectPatternProperty
+     * ObjectPatternProperty   := Identifer ('=' AssigmentExpression)
+     *                          := BindingPattern ('=' AssignmentExpression) 
      * ```
      * @return {ObjectPattern}
      */

@@ -40,18 +40,11 @@ const code_2 =
 `;
 
 const code_3 = `
-     function test({a: {m, ...lll},k}, b, c) {
+     function test({a: {m, ...lll},k}, b, c, ...p) {
 
      }
 `;
-const code = `
-variable = {
-    numberProperty: 10,
-    "key": value,
-    "num" : 10,
-    "value": "string",
-}
-`
+const code = code_3
 const lexer = createLexer(code)
 
 
