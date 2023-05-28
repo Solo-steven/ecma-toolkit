@@ -43,7 +43,7 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-     for (let i = 2 ; i< 10 ; ++i) {
+     export default async function test() {
 
      }
 `

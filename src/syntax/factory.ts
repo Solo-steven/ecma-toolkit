@@ -285,12 +285,12 @@ export function transFormClassToClassExpression(classNode: AST.Class ): AST.Clas
         ...classNode,
     }
 }
-// export function transFormFunctionToFunctionDeclaration(func: AST.Function): AST.FunctionDeclaration {
-//     return {
-//         kind: SyntaxKinds.FunctionDeclaration,
-//         ...func,
-//     }
-// }
+export function transFormClassToClassDeclaration(classNode: AST.Class): AST.ClassDeclaration {
+    return {
+        kind: SyntaxKinds.ClassDeclaration,
+        ...classNode,
+    }
+}
 export function createVariableDeclaration(declarations: AST.VariableDeclaration['declarations'], variant: AST.VariableDeclaration['variant'] ): AST.VariableDeclaration{
     return {
         kind: SyntaxKinds.VariableDeclaration,
@@ -494,5 +494,34 @@ export function createImportSpecifier(imported: AST.ImportSpecifier['imported'],
         kind: SyntaxKinds.ImportSpecifier,
         imported,
         local,
+    }
+}
+
+export function createExportAllDeclaration(exported: AST.ExportAllDeclaration['exported'], source: AST.ExportAllDeclaration['source']): AST.ExportAllDeclaration {
+    return {
+        kind: SyntaxKinds.ExportAllDeclaration,
+        exported, source
+    }
+}
+export function createExportNamedDeclaration(
+    specifiers: AST.ExportNamedDeclarations['specifiers'],
+    declaration: AST.ExportNamedDeclarations['declaration'],
+    source: AST.ExportNamedDeclarations['source'],
+): AST.ExportNamedDeclarations {
+    return {
+        kind: SyntaxKinds.ExportNamedDeclaration,
+        specifiers, declaration, source,
+    }
+}
+export function createExportSpecifier( exported: AST.ExportSpecifier['exported'], local: AST.ExportSpecifier['local']): AST.ExportSpecifier {
+    return {
+        kind: SyntaxKinds.ExportSpecifier,
+        exported, local,
+    }
+}
+export function createExportDefaultDeclaration(declaration: AST.ExportDefaultDeclaration['declaration']): AST.ExportDefaultDeclaration {
+    return {
+        kind: SyntaxKinds.ExportDefaultDeclaration,
+        declaration,
     }
 }

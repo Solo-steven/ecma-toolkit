@@ -44,6 +44,15 @@ import {
     ForStatement,
     ForInStatement,
     ForOfStatement,
+    ExportDeclaration,
+    ExportAllDeclaration,
+    ExportNamedDeclarations,
+    ExportSpecifier,
+    ExportDefaultDeclaration,
+    FunctionDeclaration,
+    FunctionExpression,
+    ClassDeclaration,
+    ClassExpression,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -209,7 +218,7 @@ export function createParser(code: string) {
                 return parseImportDeclaration();
             case SyntaxKinds.ExportKeyword:
                 // TODO
-                throw new Error("Not Implement parse Export");
+                return parseExportDeclaration();
             default:
                 return parseStatementListItem();
         }
@@ -1820,6 +1829,12 @@ export function createParser(code: string) {
             elements,
         }
     }
+function expectFormKeyword() {
+    if(getValue() !== "from") {
+        throw createUnexpectError(SyntaxKinds.Identifier, "expect from keyword");
+    }
+    nextToken();
+}
 /** ================================================================================
  *  Parse Import Declaration
  *  entry point: https://tc39.es/ecma262/#sec-imports
@@ -1846,12 +1861,6 @@ export function createParser(code: string) {
      * @returns {ImportDeclaration}
      */
     function parseImportDeclaration(): ImportDeclaration {
-        function expectFormKeyword() {
-            if(getValue() !== "from") {
-                throw createUnexpectError(SyntaxKinds.Identifier, "expect from keyword");
-            }
-            nextToken();
-        }
         if(!match(SyntaxKinds.ImportKeyword)) {
             throw createRecuriveDecentError("parseImportDeclaration", [SyntaxKinds.ImportKeyword]);
         }
@@ -1975,4 +1984,125 @@ export function createParser(code: string) {
         }
         nextToken();
     } 
+/** ================================================================================
+ *  Parse Export Declaration
+ *  entry point: https://tc39.es/ecma262/#prod-ExportDeclaration
+ * ==================================================================================
+ */
+    /**
+     * Parse Export Declaration
+     * ```
+     * ExportDeclaration := 'export' ExportNamedDeclaration
+     *                   := 'export' ExportDefaultDeclaration
+     *                   := 'export' ExportAllDeclaration
+     * ExportNamedDeclaration := '{' ExportList  '}' ('from' StringLiteral)?
+     *                        := Declaration
+     *                        := VarStatement
+     * ExportAllDeclaration := '*' 'from' StringLiteral
+     *                      := '*' 'as'  Identifer 'from' StringLiteral
+     * ```
+     * @returns {ExportDeclaration}
+     */
+    function parseExportDeclaration(): ExportDeclaration {
+        if(!match(SyntaxKinds.ExportKeyword)) {
+            throw createRecuriveDecentError("parseExportDeclaration", [SyntaxKinds.ExportKeyword]);
+        }
+        nextToken();
+        if(match(SyntaxKinds.DefaultKeyword)) {
+            return parseExportDefaultDeclaration();
+        }
+        if(match(SyntaxKinds.MultiplyOperator)) {
+            return parseExportAllDeclaration();
+        }
+        if(match(SyntaxKinds.BracesLeftPunctuator)) {
+            return parseExportNamedDeclaration();
+        }
+        const declaration = match(SyntaxKinds.VarKeyword) ? parseVariableDeclaration() : parseDeclaration();
+        return factory.createExportNamedDeclaration([], declaration, null);
+    }
+    function parseExportDefaultDeclaration(): ExportDefaultDeclaration{
+        if(!match(SyntaxKinds.DefaultKeyword)) {
+            throw createRecuriveDecentError("parseExportDefaultDeclaration", [SyntaxKinds.DefaultKeyword]);
+        }
+        nextToken();
+        if(match(SyntaxKinds.ClassKeyword)) {
+            let classDeclar = parseClass();
+            if(classDeclar.id === null) {
+                classDeclar = factory.transFormClassToClassExpression(classDeclar)
+            }else {
+                classDeclar = factory.transFormClassToClassDeclaration(classDeclar);
+            }
+            return factory.createExportDefaultDeclaration(classDeclar as ClassDeclaration | ClassExpression);
+        }
+        if(match(SyntaxKinds.FunctionKeyword)) {
+            let funDeclar = parseFunction()
+            if(funDeclar.name === null) {
+                funDeclar = factory.transFormFunctionToFunctionExpression(funDeclar)
+            }else {
+                funDeclar = factory.transFormFunctionToFunctionDeclaration(funDeclar);
+            }
+            return factory.createExportDefaultDeclaration(funDeclar as FunctionDeclaration | FunctionExpression);
+        }   
+        if(getValue() === "async" && lookahead() === SyntaxKinds.FunctionKeyword) {
+            nextToken();
+            context.inAsync = true;
+            const funDeclar = parseFunctionDeclaration();
+            context.inAsync = false;
+            return factory.createExportDefaultDeclaration(funDeclar);
+        }
+        const expr = parseAssigmentExpression();
+    }
+    function parseExportNamedDeclaration(): ExportNamedDeclarations {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseExportNamedDeclaration", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        const specifier: Array<ExportSpecifier> = []; 
+        let isStart = true;
+        while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    throw createUnexpectError(SyntaxKinds.CommaToken, "export list must spread by comma");
+                }
+                nextToken();
+            }
+            if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
+                break;
+            }
+            // TODO: parseModuleName ?
+            const exported = match(SyntaxKinds.Identifier) ? parseIdentifer() : parseStringLiteral();
+            if(getValue() === "as") {
+                nextToken();
+                const local = match(SyntaxKinds.Identifier) ? parseIdentifer() : parseStringLiteral();
+                specifier.push(factory.createExportSpecifier(exported, local));
+                continue;
+            }
+            specifier.push(factory.createExportSpecifier(exported, null));
+        }
+        if(match(SyntaxKinds.EOFToken)) {
+            throw createUnexpectError(SyntaxKinds.BracesRightPunctuator, "export list must close with Braces")
+        }
+        nextToken();
+        expectFormKeyword();
+        const source = parseStringLiteral();
+        return factory.createExportNamedDeclaration(specifier, null, source);
+    }
+    function parseExportAllDeclaration(): ExportAllDeclaration {
+        if(!match(SyntaxKinds.MultiplyOperator)) {
+            throw createRecuriveDecentError("parseExportAllDeclaration", [SyntaxKinds.MultiplyOperator]);
+        }
+        nextToken();
+        let exported: Identifier | null = null;
+        if(getValue() === "as") {
+            nextToken();
+            exported = parseIdentifer();
+        }else {
+            exported  = null;
+        }
+        expectFormKeyword();
+        const source = parseStringLiteral();
+        return factory.createExportAllDeclaration(exported, source);
+    }
 }

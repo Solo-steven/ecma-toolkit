@@ -196,6 +196,11 @@ export enum SyntaxKinds {
     ImportSpecifier,
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
+    // ========= ImportDeclaration ==========
+    ExportNamedDeclaration,
+    ExportSpecifier,
+    ExportDefaultDeclaration,
+    ExportAllDeclaration,
 
 }
 export const LexicalLiteral = {

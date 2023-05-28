@@ -379,7 +379,9 @@ export interface ClassMethodDefinition extends MethodDefinition {
     kind: SyntaxKinds.ClassMethodDefinition;
 }
 export type ClassElement = ClassProperty | ClassMethodDefinition;
-
+export interface ClassDeclaration extends Class {
+    kind: SyntaxKinds.ClassDeclaration;
+}
 export type Declaration = FunctionDeclaration | VariableDeclaration ;
 
 /** ==========================================
@@ -404,3 +406,29 @@ export interface ImportNamespaceSpecifier {
     kind: SyntaxKinds.ImportNamespaceSpecifier;
     imported: Identifier;
 }
+/** ==========================================
+ * export Declaration
+ * ===========================================
+ */
+
+export interface ExportNamedDeclarations {
+    kind: SyntaxKinds.ExportNamedDeclaration;
+    specifiers: Array<ExportSpecifier>;
+    declaration: Declaration | null;
+    source: StringLiteral | null;
+}
+export interface ExportSpecifier extends ModuleItem {
+    kind: SyntaxKinds.ExportSpecifier;
+    exported: Identifier | StringLiteral;
+    local: Identifier | StringLiteral | null;
+}
+export interface ExportDefaultDeclaration {
+    kind: SyntaxKinds.ExportDefaultDeclaration;
+    declaration: FunctionDeclaration | FunctionExpression | ClassDeclaration | ClassExpression;
+}
+export interface ExportAllDeclaration {
+    kind: SyntaxKinds.ExportAllDeclaration;
+    exported: Identifier | null;
+    source: StringLiteral;
+}
+export type ExportDeclaration = ExportNamedDeclarations | ExportDefaultDeclaration | ExportAllDeclaration;
