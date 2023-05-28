@@ -144,6 +144,9 @@ export enum SyntaxKinds {
     ThrowStatement,
     DebuggerStatement,
     WithStatement,
+    ForInStatement,
+    ForOfStatement,
+    ForStatement,
     // =========== Declaration ===========
     VariableDeclaration,
     VariableDeclarator,

@@ -396,6 +396,40 @@ export function createDebuggerStatement(): AST.DebuggerStatement {
         kind: SyntaxKinds.DebuggerStatement
     }
 }
+export function createForStatement(
+    body: AST.ForStatement['body'],
+    init?: AST.ForStatement['init'],
+    test?: AST.ForStatement['test'],
+    update?: AST.ForStatement['update'],
+): AST.ForStatement {
+    return {
+        kind: SyntaxKinds.ForStatement,
+        init, test, update, body
+
+    }
+}
+export function createForInStatement(
+    left: AST.ForInStatement['left'],
+    right: AST.ForInStatement['right'],
+    body: AST.ForInStatement['body']
+): AST.ForInStatement {
+    return {
+        kind: SyntaxKinds.ForInStatement,
+        left, right, body
+    }
+}
+export function createForOfStatement(
+    isAwait: boolean, 
+    left: AST.ForOfStatement['left'],
+    right: AST.ForOfStatement['right'],
+    body: AST.ForOfStatement['body']
+): AST.ForOfStatement {
+    return {
+        kind: SyntaxKinds.ForOfStatement,
+        await: isAwait,
+        left, right, body
+    }
+}
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,

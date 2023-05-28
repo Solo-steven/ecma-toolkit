@@ -305,8 +305,29 @@ export interface WithStatement extends ModuleItem {
 export interface DebuggerStatement extends ModuleItem {
     kind: SyntaxKinds.DebuggerStatement;
 }
+export interface ForStatement extends ModuleItem {
+    kind: SyntaxKinds.ForStatement;
+    init: Expression | VariableDeclaration | null;
+    test: Expression | null;
+    update: Expression | null;
+    body: Statement;
+}
+export interface ForOfStatement extends ModuleItem {
+    kind: SyntaxKinds.ForOfStatement;
+    left: Expression | VariableDeclaration;
+    right: Expression;
+    await: boolean;
+    body: Statement;
+}
+export interface ForInStatement extends ModuleItem {
+    kind: SyntaxKinds.ForInStatement;
+    left: Expression | VariableDeclaration;
+    right: Expression;
+    body: Statement;
+}
 export type Statement = 
     IfStatement | BlockStatement | SwitchStatement |
+    ForInStatement | ForOfStatement | ForStatement |
     BreakStatement | ContinueStatement | ReturnStatement | LabeledStatement |
     WhileStatement | DoWhileStatement |
     TryStatement | ThrowStatement |

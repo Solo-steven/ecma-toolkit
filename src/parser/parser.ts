@@ -41,6 +41,9 @@ import {
     BlockStatement,
     WithStatement,
     DebuggerStatement,
+    ForStatement,
+    ForInStatement,
+    ForOfStatement,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -304,6 +307,8 @@ export function createParser(code: string) {
                 return parseDebuggerStatement();
             case SyntaxKinds.IfKeyword:
                 return parseIfStatement();
+            case SyntaxKinds.ForKeyword:
+                return parseForStatement();
             case SyntaxKinds.WhileKeyword:
                 return parseWhileStatement();
             case SyntaxKinds.DoKeyword:
@@ -337,6 +342,74 @@ export function createParser(code: string) {
  * entry point reference: https://tc39.es/ecma262/#prod-Statement
  * ==================================================================
  */
+    /**
+     * 
+     */
+   function parseForStatement(): ForStatement | ForInStatement | ForOfStatement {
+        if(!match(SyntaxKinds.ForKeyword)) {
+            // TODO
+        }
+        nextToken();
+        let isAwait = false, leftOrInit: VariableDeclaration | Expression | null = null;
+        if(match(SyntaxKinds.AwaitKeyword)) {
+            nextToken();
+            isAwait = true;
+        }
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            // TODO
+        }
+        nextToken();
+        if(matchSet([SyntaxKinds.LetKeyword, SyntaxKinds.ConstKeyword, SyntaxKinds.VarKeyword])) {
+            leftOrInit = parseVariableDeclaration();
+        }else if (match(SyntaxKinds.SemiPunctuator)) {
+            leftOrInit = null;
+        }else {
+            leftOrInit = parseExpression();
+        }
+        // branch
+        if(match(SyntaxKinds.SemiPunctuator)) {
+            // ForStatement
+            nextToken();
+            let test: Expression | null = null, update: Expression | null = null;
+            if(!match(SyntaxKinds.SemiPunctuator)) {
+                test = parseExpression();
+            }
+            if(!match(SyntaxKinds.SemiPunctuator)) {
+                throw createUnexpectError(SyntaxKinds.SemiPunctuator, "for statement test expression must concat a semi");
+            }
+            nextToken();
+            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                update = parseExpression();
+            }
+            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "for statement updatet expression must concat ParenthesesRigh");
+            }
+            nextToken();
+            const body = parseStatement();
+            console.log(body);
+            return factory.createForStatement(body,leftOrInit, test, update);
+        }else if (match(SyntaxKinds.InKeyword)) {
+            // ForInStatement
+            nextToken();
+            const right = parseAssigmentExpression();
+            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                // TODO
+            }
+            nextToken();
+            const body = parseStatement();
+            return factory.createForInStatement(leftOrInit, right, body);
+        }else if(getValue() === "of") {
+            // ForOfStatement
+            nextToken();
+            const right = parseAssigmentExpression();
+            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                // TODO
+            }
+            nextToken();
+            const body = parseStatement();
+            return factory.createForOfStatement(isAwait,leftOrInit, right, body);
+        }
+   }
    function parseIfStatement(): IfStatement {
       if(!match(SyntaxKinds.IfKeyword)) {
         throw createRecuriveDecentError("parseIfStatement", [SyntaxKinds.IfKeyword]);
@@ -359,6 +432,44 @@ export function createParser(code: string) {
       }
       return factory.createIfStatement(test, consequnce);
    }
+   function parseWhileStatement(): WhileStatement {
+        if(!match(SyntaxKinds.WhileKeyword)) {
+            // TODO
+        }
+        nextToken();
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+        }
+        nextToken();
+        const test = parseExpression();
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+        }
+        nextToken();
+        const body = parseStatement();
+        return factory.createWhileStatement(test, body);
+    }
+    function parseDoWhileStatement(): DoWhileStatement {
+        if(!match(SyntaxKinds.DoKeyword)) {
+
+        }
+        nextToken();
+        const body = parseStatement();
+        if(!match(SyntaxKinds.WhileKeyword)) {
+
+        }
+        nextToken();
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+        }
+        nextToken();
+        const test = parseExpression();
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+        }
+        nextToken();
+        return factory.createDoWhileStatement(test, body);
+    }
    function parseBlockStatement() {
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createRecuriveDecentError("parseBlockStatement", [SyntaxKinds.BracesLeftPunctuator]);
@@ -474,45 +585,6 @@ export function createParser(code: string) {
             return factory.createReturnStatement(parseExpression());
        }
        return factory.createReturnStatement();
-   }
-   function parseWhileStatement(): WhileStatement {
-      if(!match(SyntaxKinds.WhileKeyword)) {
-
-      }
-      nextToken();
-      if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-      }
-      nextToken();
-      const test = parseExpression();
-      if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-      }
-      nextToken();
-      const body = parseStatement();
-      return factory.createWhileStatement(test, body);
-
-   }
-   function parseDoWhileStatement(): DoWhileStatement {
-    if(!match(SyntaxKinds.DoKeyword)) {
-
-    }
-    nextToken();
-    const body = parseStatement();
-    if(!match(SyntaxKinds.WhileKeyword)) {
-
-    }
-    nextToken();
-    if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-      throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-    }
-    nextToken();
-    const test = parseExpression();
-    if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-      throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-    }
-    nextToken();
-    return factory.createDoWhileStatement(test, body);
    }
    function parseTryStatement(): TryStatement {
         if(!match(SyntaxKinds.TryKeyword)) {
