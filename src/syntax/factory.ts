@@ -205,7 +205,7 @@ export function createExpressionStatement(expr: AST.Expression): AST.ExpressionS
         expr
     };
 }
-export function createFunctionBody(body: Array<AST.NodeBase>): AST.FunctionBody {
+export function createFunctionBody(body: Array<AST.StatementListItem>): AST.FunctionBody {
     return { 
         kind: SyntaxKinds.FunctionBody, 
         body
@@ -304,6 +304,20 @@ export function createVariableDeclarator(id: AST.VariableDeclarator['id'], init:
         id, init,
     } 
 }
+export function createIfStatement(test: AST.IfStatement['test'], conseqence: AST.IfStatement['conseqence'], alter?: AST.IfStatement['alternative']): AST.IfStatement {
+    return {
+        kind: SyntaxKinds.IfStatement,
+        test,
+        conseqence,
+        alternative: alter
+    }
+}
+export function createBlockStatement(body: AST.BlockStatement['body']): AST.BlockStatement {
+    return {
+        kind: SyntaxKinds.BlockStatement,
+        body,
+    }
+}
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,
@@ -341,7 +355,7 @@ export function createRestElement(argument: AST.RestElement['argument']): AST.Re
         argument,
     }
 }
-export function createProgram( body: Array<AST.NodeBase>): AST.Program {
+export function createProgram( body: Array<AST.ModuleItem>): AST.Program {
     return { kind: SyntaxKinds.Program, body };
 }
 export function createImportDeclaration(specifiers: AST.ImportDeclaration['specifiers'],source: AST.ImportDeclaration['source']): AST.ImportDeclaration {

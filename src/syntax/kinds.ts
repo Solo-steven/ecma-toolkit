@@ -175,6 +175,9 @@ export enum SyntaxKinds {
     ImportNamespaceSpecifier,
     // =========== Top Level ===========
     Program,
+    // =========== Statement ===========
+    IfStatement,
+    BlockStatement,
 }
 export const LexicalLiteral = {
     whiteSpaceChars: [" ", "\t"],

@@ -9,13 +9,14 @@ import {
  *    Shared, Basic, Top Level AST Node
  * ======================================
  */
-export interface NodeBase {}
+export interface ModuleItem {}
+export type StatementListItem = Statement | Declaration;
 export interface Program {
     kind: SyntaxKinds.Program;
-    body: Array<NodeBase>; //TODO: using StatementListItem
+    body: Array<ModuleItem>; //TODO: using StatementListItem
 }
 export type PropertyName = Identifier | StringLiteral | NumberLiteral | Expression;
-export interface Property extends NodeBase {
+export interface Property extends ModuleItem {
     kind: SyntaxKinds;
     key: PropertyName | PrivateName;
     value: Expression | undefined; // actually is assignment expression,
@@ -23,7 +24,7 @@ export interface Property extends NodeBase {
     shorted: boolean;
     static: boolean;
 }
-export interface MethodDefinition extends NodeBase {
+export interface MethodDefinition extends ModuleItem {
     kind: SyntaxKinds;
     key: PropertyName | PrivateName;
     body: FunctionBody;
@@ -39,41 +40,41 @@ export interface MethodDefinition extends NodeBase {
  *      Expression
  * ======================================
  */
-export interface Super extends NodeBase {
+export interface Super extends ModuleItem {
     kind: SyntaxKinds.Super;
     name: "super"
 }
-export interface ThisExpression extends NodeBase {
+export interface ThisExpression extends ModuleItem {
     kind: SyntaxKinds.ThisExpression;
     name: "this",
 }
-export interface Identifier extends NodeBase  {
+export interface Identifier extends ModuleItem  {
     kind: SyntaxKinds.Identifier;
     name: string;
 }
-export interface PrivateName extends NodeBase {
+export interface PrivateName extends ModuleItem {
     kind: SyntaxKinds.PrivateName;
     name: string;
 }
-export interface NumberLiteral extends NodeBase {
+export interface NumberLiteral extends ModuleItem {
     kind: SyntaxKinds.NumberLiteral;
     value: string | number;
 }
-export interface StringLiteral extends NodeBase {
+export interface StringLiteral extends ModuleItem {
     kind: SyntaxKinds.StringLiteral;
     value: string;
 }
-export interface TemplateLiteral extends NodeBase {
+export interface TemplateLiteral extends ModuleItem {
     kind: SyntaxKinds.TemplateLiteral,
     quasis: Array<TemplateElement>;
     expressions: Array<Expression>;
 }
-export interface TemplateElement extends NodeBase {
+export interface TemplateElement extends ModuleItem {
     kind: SyntaxKinds.TemplateElement;
     value: string;
     tail: boolean;
 }
-export interface ObjectExpression extends NodeBase {
+export interface ObjectExpression extends ModuleItem {
     kind: SyntaxKinds.ObjectExpression;
     properties: Array<PropertyDefinition>;
 }
@@ -87,94 +88,94 @@ export interface ObjectMethodDefinition extends Omit<MethodDefinition, "static">
     key: PropertyName;
     type: "method" | "get" | "set";
 }
-export interface SpreadElement extends NodeBase {
+export interface SpreadElement extends ModuleItem {
     kind: SyntaxKinds.SpreadElement,
     argument: Expression,
 }
 export interface ClassExpression extends Class {
     kind: SyntaxKinds.ClassExpression
 }
-export interface ArrayExpression extends NodeBase {
+export interface ArrayExpression extends ModuleItem {
     kind: SyntaxKinds.ArrayExpression;
     elements: Array<Expression | null>; // actually need to be assigment expression;
 }
-export interface FunctionExpression extends NodeBase, Function {
+export interface FunctionExpression extends ModuleItem, Function {
     kind: SyntaxKinds.FunctionExpression
 }
 // TODO: make arrowfunctionExpression extends form function
-export interface ArrorFunctionExpression extends NodeBase {
+export interface ArrorFunctionExpression extends ModuleItem {
     kind: SyntaxKinds.ArrowFunctionExpression;
     expressionBody: boolean;
     async: boolean;
     arguments: Array<Expression>;
     body: Expression | FunctionBody;
 }
-export interface MetaProperty extends NodeBase {
+export interface MetaProperty extends ModuleItem {
     kind: SyntaxKinds.MetaProperty;
     meta: Identifier;
     property: Identifier;
 }
-export interface AwaitExpression extends NodeBase {
+export interface AwaitExpression extends ModuleItem {
     kind: SyntaxKinds.AwaitExpression;
     argument: Expression; // actually is unary expression
 }
-export interface NewExpression extends NodeBase {
+export interface NewExpression extends ModuleItem {
     kind: SyntaxKinds.NewExpression,
     callee: Expression;
     arguments:Array<Expression>;
 }
-export interface MemberExpression extends NodeBase {
+export interface MemberExpression extends ModuleItem {
     kind: SyntaxKinds.MemberExpression;
     object: Expression;
     property: Expression;
     computed: boolean;
     optional: boolean;
 }
-export interface CallExpression extends NodeBase {
+export interface CallExpression extends ModuleItem {
     kind: SyntaxKinds.CallExpression;
     callee: Expression;
     arguments: Array<Expression>;
     optional: boolean;
 }
-export interface TaggedTemplateExpression extends NodeBase {
+export interface TaggedTemplateExpression extends ModuleItem {
     kind: SyntaxKinds.TaggedTemplateExpression;
     quasi: TemplateLiteral;
     tag: Expression;
 }
-export interface ChainExpression extends NodeBase {
+export interface ChainExpression extends ModuleItem {
     kind: SyntaxKinds.ChainExpression;
     expression: Expression;
   }
-export interface UpdateExpression extends NodeBase {
+export interface UpdateExpression extends ModuleItem {
     kind: SyntaxKinds.UpdateExpression;
     argument: Expression;
     prefix: boolean;
     operator: UpdateOperatorKinds;
 }
-export interface UnaryExpression extends NodeBase  {
+export interface UnaryExpression extends ModuleItem  {
     kind: SyntaxKinds.UnaryExpression;
     argument: Expression;
     operator: UnaryOperatorKinds;
 }
-export interface BinaryExpression extends NodeBase {
+export interface BinaryExpression extends ModuleItem {
     kind: SyntaxKinds.BinaryExpression;
     left: Expression;
     right: Expression;
     operator: BinaryOperatorKinds;
 }
-export interface ConditionalExpression extends NodeBase {
+export interface ConditionalExpression extends ModuleItem {
     kind: SyntaxKinds.ConditionalExpression;
     test: Expression;
     consequnce: Expression;
     alter: Expression;
 }
-export interface AssigmentExpression extends NodeBase {
+export interface AssigmentExpression extends ModuleItem {
     kind: SyntaxKinds.AssigmentExpression;
     left: Expression;
     right: Expression;
     operator: AssigmentOperatorKinds;
 }
-export interface SequenceExpression extends NodeBase {
+export interface SequenceExpression extends ModuleItem {
     kind: SyntaxKinds.SequenceExpression;
     exprs: Array<Expression>
 }
@@ -202,68 +203,87 @@ export interface ExpressionStatement  {
  *   Pattern
  * ==================================
  */
-export interface ObjectPattern extends NodeBase {
+export interface ObjectPattern extends ModuleItem {
     kind: SyntaxKinds.ObjectPattern;
     properties: Array<any>;
 }
-export interface ObjectPatternProperty extends NodeBase {
+export interface ObjectPatternProperty extends ModuleItem {
     kind: SyntaxKinds.ObjectPatternProperty;
     key: PropertyName;
     value: Pattern | Expression | undefined;
     computed: boolean;
     shorted: boolean;
 }
-export interface ArrayPattern extends NodeBase {
+export interface ArrayPattern extends ModuleItem {
     kind: SyntaxKinds.ArrayPattern;
     elements: Array<Pattern | null>;
 }
-export interface AssignmentPattern extends NodeBase {
+export interface AssignmentPattern extends ModuleItem {
     kind: SyntaxKinds.AssignmentPattern;
     left: Pattern;
     right: Expression | undefined;
 }
-export interface RestElement extends NodeBase {
+export interface RestElement extends ModuleItem {
     kind: SyntaxKinds.RestElement;
     argument: Expression | Pattern;
 }
 
 export type Pattern = RestElement | AssignmentPattern | ObjectPattern | ArrayPattern | Identifier;
 
+/** ==========================
+ * Statement
+ * ===========================
+ */
+export interface IfStatement extends ModuleItem {
+    kind: SyntaxKinds.IfStatement;
+    test: Expression;
+    conseqence: Statement;
+    alternative: Statement;
+
+}
+export interface BlockStatement extends ModuleItem  {
+    kind: SyntaxKinds.BlockStatement;
+    body: Array<StatementListItem>;
+}
+export type Statement = 
+    IfStatement | BlockStatement | 
+    ExpressionStatement | VariableDeclaration /** when is `var` */;
+
 /** ================================
  *  Declaration
  * =================================
  */
-export interface VariableDeclaration extends NodeBase {
+export interface VariableDeclaration extends ModuleItem {
     kind: SyntaxKinds.VariableDeclaration;
     declarations: Array<VariableDeclarator>;
     variant: "let" | "const" | "var";
 }
-export interface VariableDeclarator extends NodeBase {
+export interface VariableDeclarator extends ModuleItem {
     kind: SyntaxKinds.VariableDeclarator;
     id: Pattern;
     init?: Expression;
 }
-export interface Function extends NodeBase {
+export interface Function extends ModuleItem {
     name: Identifier | null;
     params: Array<Pattern>;
     body: FunctionBody;
     generator: boolean;
     async: boolean;
 }
-export interface FunctionBody extends NodeBase {
+export interface FunctionBody extends ModuleItem {
     kind: SyntaxKinds.FunctionBody;
-    body: Array<NodeBase> //TODO: using StatementListItem
+    body: Array<StatementListItem> //TODO: using StatementListItem
 }
-export interface FunctionDeclaration extends NodeBase, Function {
+export interface FunctionDeclaration extends ModuleItem, Function {
     kind: SyntaxKinds.FunctionDeclaration;
     name: Identifier
 }
-export interface Class extends NodeBase {
+export interface Class extends ModuleItem {
     id: Identifier | null;
     superClass: Expression | null;
     body: ClassBody;
 }
-export interface ClassBody extends NodeBase {
+export interface ClassBody extends ModuleItem {
     kind: SyntaxKinds.ClassBody;
     body: Array<ClassElement>;
 }

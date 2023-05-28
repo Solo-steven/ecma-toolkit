@@ -4,7 +4,7 @@ import {
     Expression, 
     FunctionBody, 
     Identifier, 
-    NodeBase, 
+    ModuleItem, 
     Pattern, 
     PropertyDefinition,
     PropertyName, 
@@ -25,6 +25,10 @@ import {
     RestElement,
     ObjectPattern,
     ArrayPattern,
+    StatementListItem,
+    Declaration,
+    Statement,
+    IfStatement,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -178,41 +182,81 @@ export function createParser(code: string) {
     function parseProgram() {
         const body = [];
         while(!match(SyntaxKinds.EOFToken)) {
-            body.push(parseStatementListItem());
+            body.push(parseModuleItem());
         }
         return factory.createProgram(body);
     }
-    function parseStatementListItem() {
+    function parseModuleItem(): ModuleItem {
+        const token = getToken();
+        switch(token) {
+            // TODO import.meta or import call need fall
+            case SyntaxKinds.ImportKeyword:
+                return parseImportDeclaration();
+            case SyntaxKinds.ExportKeyword:
+                // TODO
+                throw new Error("Not Implement parse Export");
+            default:
+                return parseStatementListItem();
+        }
+    }
+    function parseStatementListItem(): StatementListItem {
+        const token = getToken();
+        switch(token) {
+            // TODO 'aync' maybe is
+            // 1. aync function  -> declaration
+            // 2. aync arrow function -> statement(expressionStatement)
+            // 3. identifer -> statement (expressionStatement)
+            case SyntaxKinds.ConstKeyword:
+            case SyntaxKinds.LetKeyword:
+            case SyntaxKinds.FunctionKeyword: 
+            case SyntaxKinds.ClassKeyword:
+                return parseDeclaration();
+            default:
+                return parseStatement();
+        }
+    }
+    /**
+     * 
+     * ref: https://tc39.es/ecma262/#prod-Declaration
+     * @returns 
+     */
+    function parseDeclaration(): Declaration {
         const token = getToken();
         switch(token) {
             case SyntaxKinds.ConstKeyword:
-            case SyntaxKinds.VarKeyword:
             case SyntaxKinds.LetKeyword:
                 return parseVariableDeclaration();
+            // TODO: 'async', '*', 
             case SyntaxKinds.FunctionKeyword: 
                 return parseFunctionDeclaration();
-            case SyntaxKinds.ImportKeyword: {
-                const lookaheadToken = lookahead();
-                if(lookaheadToken !== SyntaxKinds.ParenthesesLeftPunctuator && lookaheadToken !== SyntaxKinds.DotOperator) {
-                    return parseImportDeclaration();
-                }else {
-                    return parseExpressionStatement();
-                }
-            }
+            case SyntaxKinds.ClassKeyword:
+                // TODO
+        }
+    }
+    /**
+     * ref: https://tc39.es/ecma262/#prod-Statement
+     */
+    function parseStatement(): Statement {
+        const token = getToken();
+        switch(token) {
+            case SyntaxKinds.BracesLeftPunctuator:
+                return parseBlockStatement();
+            case SyntaxKinds.IfKeyword:
+                return parseIfStatement();
+            case SyntaxKinds.VarKeyword:
+                return parseVariableDeclaration();
             default:
                 if(getValue() === "async") {
                     nextToken();
                     context.inAsync = true;
-                    let statement: NodeBase | undefined;
+                    let statement: Statement | undefined;
                     if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
                         context.maybeArrow = true;
                         const arrowExpr = parseCoverExpressionORArrowFunction();
                         context.maybeArrow = false;
                         statement = factory.createExpressionStatement(arrowExpr);
-                    }else if (match(SyntaxKinds.FunctionKeyword)) {
-                        statement = parseFunctionDeclaration();
                     }else {
-                        return factory.createIdentifier("async");
+                        return  factory.createExpressionStatement(factory.createIdentifier("async"));
                     }
                     context.inAsync = false;
                     return statement;
@@ -220,6 +264,48 @@ export function createParser(code: string) {
                 return parseExpressionStatement();
         }
     }
+/** =================================================================
+ * Parse Statement
+ * entry point reference: https://tc39.es/ecma262/#prod-Statement
+ * ==================================================================
+ */
+   function parseIfStatement(): IfStatement {
+      if(!match(SyntaxKinds.IfKeyword)) {
+        throw createRecuriveDecentError("parseIfStatement", [SyntaxKinds.IfKeyword]);
+      }
+      nextToken();
+      if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "if statement' test condition should wrap in Parentheses");
+      }
+      nextToken();
+      const test = parseExpression();
+      if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "if statement' test condition should wrap in Parentheses");
+      }
+      nextToken();
+      const consequnce = parseStatement();
+      if(match(SyntaxKinds.ElseKeyword)) {
+        nextToken();
+        const alter = parseStatement();
+        return factory.createIfStatement(test, consequnce, alter);
+      }
+      return factory.createIfStatement(test, consequnce);
+   }
+   function parseBlockStatement() {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseBlockStatement", [SyntaxKinds.BracesLeftPunctuator]);
+        }
+        nextToken();
+        const body: Array<StatementListItem> = [];
+        while(!match(SyntaxKinds.BracesRightPunctuator) &&  !match(SyntaxKinds.EOFToken) ) {
+            body.push(parseStatementListItem());
+        }
+        if(match(SyntaxKinds.EOFToken)) {
+            throw createEOFError("body statement should end with Braces");
+        }
+        nextToken();
+        return factory.createBlockStatement(body);
+   }
 /** =================================================================
  * Parse Delcarations
  * entry point reference: https://tc39.es/ecma262/#prod-Declaration
@@ -302,7 +388,7 @@ export function createParser(code: string) {
             throw createRecuriveDecentError("parseFunctionBody", [SyntaxKinds.BracesLeftPunctuator]);
         }
         nextToken();
-        const body : Array<NodeBase>= [];
+        const body : Array<StatementListItem>= [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             body.push(parseStatementListItem());
         }
