@@ -36,6 +36,9 @@ import {
     ReturnStatement,
     WhileStatement,
     DoWhileStatement,
+    TryStatement,
+    CatchClause,
+    BlockStatement,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -289,6 +292,10 @@ export function createParser(code: string) {
                 return parseReturnStatement();
             case SyntaxKinds.BracesLeftPunctuator:
                 return parseBlockStatement();
+            case SyntaxKinds.TryKeyword:
+                return parseTryStatement();
+            case SyntaxKinds.ThrowKeyword:
+                return parseThrowStatement();
             case SyntaxKinds.IfKeyword:
                 return parseIfStatement();
             case SyntaxKinds.WhileKeyword:
@@ -500,6 +507,40 @@ export function createParser(code: string) {
     }
     nextToken();
     return factory.createDoWhileStatement(test, body);
+   }
+   function parseTryStatement(): TryStatement {
+        if(!match(SyntaxKinds.TryKeyword)) {
+            // TODO
+        }
+        nextToken();
+        const body = parseBlockStatement();
+        let handler: CatchClause | null = null, finalizer: BlockStatement | null = null;
+        if(match(SyntaxKinds.CatchKeyword)) {
+            nextToken();
+            if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+                nextToken();
+                const param = parseBindingElement();
+                if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+                    // TODO: unexpect
+                }
+                nextToken();
+                handler = factory.createCatchClause( param , parseBlockStatement());
+            }else {
+                handler = factory.createCatchClause(null, parseBlockStatement());
+            }
+        }
+        if(match(SyntaxKinds.FinallyKeyword)) {
+            nextToken();
+            finalizer = parseBlockStatement();
+        }
+        return factory.createTryStatement(body, handler, finalizer);
+   }
+   function parseThrowStatement() {
+     if(!match(SyntaxKinds.ThrowKeyword)) {
+        // TODO
+     }
+     nextToken();
+     return factory.createThrowStatement(parseExpression());
    }
 /** =================================================================
  * Parse Delcarations

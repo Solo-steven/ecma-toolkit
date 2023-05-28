@@ -43,13 +43,12 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-     do {
-        const a = 10
-        a + b
-        {
-            var c = a * b
-        }
-     } while(!condition)
+    try {
+        await fetch("url")
+        throw new Error("")
+    }finally {
+        cc
+    }
 `
 const lexer = createLexer(code)
 

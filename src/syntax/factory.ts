@@ -367,6 +367,24 @@ export function createDoWhileStatement(test: AST.DoWhileStatement['test'], body:
         test, body,
     }
 }
+export function createTryStatement(block: AST.TryStatement['block'], handler?: AST.TryStatement['handler'], finalizer?: AST.TryStatement['finalizer']): AST.TryStatement {
+    return {
+        kind: SyntaxKinds.TryStatement,
+        block, handler, finalizer
+    }
+}
+export function createCatchClause(param: AST.CatchClause['param'], body: AST.CatchClause['body']): AST.CatchClause {
+    return {
+        kind: SyntaxKinds.CatchClause,
+        param, body,
+    }
+}
+export function createThrowStatement(argu:AST.ThrowStatement['argu']): AST.ThrowStatement {
+    return {
+        kind: SyntaxKinds.ThrowKeyword,
+        argu
+    }
+}
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,

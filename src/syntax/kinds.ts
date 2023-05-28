@@ -139,6 +139,9 @@ export enum SyntaxKinds {
     ReturnStatement,
     WhileStatement,
     DoWhileStatement,
+    TryStatement,
+    CatchClause,
+    ThrowStatement,
     // =========== Declaration ===========
     VariableDeclaration,
     VariableDeclarator,

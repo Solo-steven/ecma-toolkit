@@ -282,10 +282,26 @@ export interface DoWhileStatement extends ModuleItem {
     test: Expression;
     body: Statement;
 }
+export interface TryStatement extends ModuleItem {
+    kind: SyntaxKinds.TryStatement;
+    block: BlockStatement;
+    handler?: CatchClause,
+    finalizer?: BlockStatement;
+}
+export interface CatchClause extends ModuleItem {
+    kind: SyntaxKinds.CatchClause;
+    param: Pattern | null;
+    body: BlockStatement;
+}
+export interface ThrowStatement extends ModuleItem {
+    kind: SyntaxKinds.ThrowKeyword;
+    argu: Expression;
+}
 export type Statement = 
     IfStatement | BlockStatement | SwitchStatement |
     BreakStatement | ContinueStatement | ReturnStatement | LabeledStatement |
     WhileStatement | DoWhileStatement |
+    TryStatement | ThrowStatement |
     ExpressionStatement | VariableDeclaration /** when is `var` */;
 
 /** ================================
