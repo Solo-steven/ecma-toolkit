@@ -291,6 +291,19 @@ export function transFormClassToClassExpression(classNode: AST.Class ): AST.Clas
 //         ...func,
 //     }
 // }
+export function createVariableDeclaration(declarations: AST.VariableDeclaration['declarations'], variant: AST.VariableDeclaration['variant'] ): AST.VariableDeclaration{
+    return {
+        kind: SyntaxKinds.VariableDeclaration,
+        variant,
+        declarations,
+    }
+}
+export function createVariableDeclarator(id: AST.VariableDeclarator['id'], init: AST.VariableDeclarator['init']): AST.VariableDeclarator  {
+    return {
+        kind: SyntaxKinds.VariableDeclarator,
+        id, init,
+    } 
+}
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,

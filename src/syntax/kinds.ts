@@ -162,6 +162,8 @@ export enum SyntaxKinds {
     ArrayPattern,
     RestElement,
     // =========== Declaration ===========
+    VariableDeclaration,
+    VariableDeclarator,
     Function,
     FunctionDeclaration,
     FunctionBody,

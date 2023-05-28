@@ -39,7 +39,6 @@ export interface MethodDefinition extends NodeBase {
  *      Expression
  * ======================================
  */
-
 export interface Super extends NodeBase {
     kind: SyntaxKinds.Super;
     name: "super"
@@ -234,6 +233,16 @@ export type Pattern = RestElement | AssignmentPattern | ObjectPattern | ArrayPat
  *  Declaration
  * =================================
  */
+export interface VariableDeclaration extends NodeBase {
+    kind: SyntaxKinds.VariableDeclaration;
+    declarations: Array<VariableDeclarator>;
+    variant: "let" | "const" | "var";
+}
+export interface VariableDeclarator extends NodeBase {
+    kind: SyntaxKinds.VariableDeclarator;
+    id: Pattern;
+    init?: Expression;
+}
 export interface Function extends NodeBase {
     name: Identifier | null;
     params: Array<Pattern>;
@@ -265,7 +274,8 @@ export interface ClassMethodDefinition extends MethodDefinition {
     kind: SyntaxKinds.ClassMethodDefinition;
 }
 export type ClassElement = ClassProperty | ClassMethodDefinition;
-export type Declaration = FunctionDeclaration;
+
+export type Declaration = FunctionDeclaration | VariableDeclaration ;
 
 /** ==========================================
  * Import Declaration

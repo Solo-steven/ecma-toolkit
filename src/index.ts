@@ -40,9 +40,7 @@ const code_2 =
 `;
 
 const code_3 = `
-     function test({a: {m, ...lll},k}, b, c, ...p) {
-
-     }
+     let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = code_3
 const lexer = createLexer(code)

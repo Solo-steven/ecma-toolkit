@@ -16,6 +16,8 @@ import {
     ClassElement,
     ClassBody,
     Class,
+    VariableDeclaration,
+    VariableDeclarator,
     ImportDeclaration,
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
@@ -182,7 +184,11 @@ export function createParser(code: string) {
     }
     function parseStatementListItem() {
         const token = getToken();
-        switch(token) {          
+        switch(token) {
+            case SyntaxKinds.ConstKeyword:
+            case SyntaxKinds.VarKeyword:
+            case SyntaxKinds.LetKeyword:
+                return parseVariableDeclaration();
             case SyntaxKinds.FunctionKeyword: 
                 return parseFunctionDeclaration();
             case SyntaxKinds.ImportKeyword: {
@@ -219,6 +225,39 @@ export function createParser(code: string) {
  * entry point reference: https://tc39.es/ecma262/#prod-Declaration
  * ==================================================================
  */
+    /**
+     * 
+     * @returns {VariableDeclaration}
+     */
+    function parseVariableDeclaration():VariableDeclaration {
+        if(!matchSet([SyntaxKinds.VarKeyword, SyntaxKinds.ConstKeyword,SyntaxKinds.LetKeyword])) {
+            throw createRecuriveDecentError("parseVariableDeclaration", [SyntaxKinds.VarKeyword, SyntaxKinds.ConstKeyword,SyntaxKinds.LetKeyword]);
+        }
+        const variant = getValue() as VariableDeclaration['variant'];
+        nextToken();
+        let shouldStop = false, isStart = true;
+        const declarations: Array<VariableDeclarator> = [];
+        while(!shouldStop) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                if(!match(SyntaxKinds.CommaToken)) {
+                    shouldStop = true;
+                    continue;
+                }
+                nextToken();
+            }
+            const id = parseBindingElement();
+            if(match(SyntaxKinds.AssginOperator)) {
+                nextToken();
+                const init = parseAssigmentExpression();
+                declarations.push(factory.createVariableDeclarator(id, init));
+                continue;
+            }
+            declarations.push(factory.createVariableDeclarator(id, undefined));
+        }
+        return factory.createVariableDeclaration(declarations, variant);
+    }
     function parseFunctionDeclaration() {
         const func = parseFunction();
         if(func.name === null) {
