@@ -46,6 +46,10 @@ const code = `
     try {
         await fetch("url")
         throw new Error("")
+        debugger
+        with (a) {
+            a ++
+        }
     }finally {
         cc
     }

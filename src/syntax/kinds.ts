@@ -142,6 +142,8 @@ export enum SyntaxKinds {
     TryStatement,
     CatchClause,
     ThrowStatement,
+    DebuggerStatement,
+    WithStatement,
     // =========== Declaration ===========
     VariableDeclaration,
     VariableDeclarator,

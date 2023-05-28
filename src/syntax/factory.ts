@@ -379,10 +379,21 @@ export function createCatchClause(param: AST.CatchClause['param'], body: AST.Cat
         param, body,
     }
 }
-export function createThrowStatement(argu:AST.ThrowStatement['argu']): AST.ThrowStatement {
+export function createThrowStatement(argu: AST.ThrowStatement['argu']): AST.ThrowStatement {
     return {
         kind: SyntaxKinds.ThrowKeyword,
         argu
+    }
+}
+export function createWithStatement(object: AST.WithStatement['object'], body: AST.WithStatement['body']): AST.WithStatement {
+    return {
+        kind: SyntaxKinds.WithStatement,
+        body, object,
+    }
+}
+export function createDebuggerStatement(): AST.DebuggerStatement {
+    return {
+        kind: SyntaxKinds.DebuggerStatement
     }
 }
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {

@@ -297,11 +297,20 @@ export interface ThrowStatement extends ModuleItem {
     kind: SyntaxKinds.ThrowKeyword;
     argu: Expression;
 }
+export interface WithStatement extends ModuleItem {
+    kind: SyntaxKinds.WithStatement;
+    object: Expression;
+    body: Statement;
+}
+export interface DebuggerStatement extends ModuleItem {
+    kind: SyntaxKinds.DebuggerStatement;
+}
 export type Statement = 
     IfStatement | BlockStatement | SwitchStatement |
     BreakStatement | ContinueStatement | ReturnStatement | LabeledStatement |
     WhileStatement | DoWhileStatement |
     TryStatement | ThrowStatement |
+    WithStatement | DebuggerStatement |
     ExpressionStatement | VariableDeclaration /** when is `var` */;
 
 /** ================================

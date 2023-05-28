@@ -39,6 +39,8 @@ import {
     TryStatement,
     CatchClause,
     BlockStatement,
+    WithStatement,
+    DebuggerStatement,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -296,6 +298,10 @@ export function createParser(code: string) {
                 return parseTryStatement();
             case SyntaxKinds.ThrowKeyword:
                 return parseThrowStatement();
+            case SyntaxKinds.WithKeyword:
+                return parseWithStatement();
+            case SyntaxKinds.DebuggerKeyword:
+                return parseDebuggerStatement();
             case SyntaxKinds.IfKeyword:
                 return parseIfStatement();
             case SyntaxKinds.WhileKeyword:
@@ -541,6 +547,30 @@ export function createParser(code: string) {
      }
      nextToken();
      return factory.createThrowStatement(parseExpression());
+   }
+   function parseWithStatement(): WithStatement {
+        if(!match(SyntaxKinds.WithKeyword)) {
+            // TODO
+        }
+        nextToken();
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+          }
+        nextToken();
+        const object = parseExpression();
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+        }
+        nextToken();
+        const body = parseStatement();
+        return factory.createWithStatement(object, body);
+   }
+   function parseDebuggerStatement(): DebuggerStatement {
+       if(!match(SyntaxKinds.DebuggerKeyword)) {
+            // TODO
+       }
+       nextToken();
+       return factory.createDebuggerStatement();
    }
 /** =================================================================
  * Parse Delcarations
