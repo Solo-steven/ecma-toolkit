@@ -43,10 +43,7 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-     if(cc)  {
-        const b = 10
-        let c = b + 19
-     } else var a = 10
+     good: c = A + B
 `
 const lexer = createLexer(code)
 

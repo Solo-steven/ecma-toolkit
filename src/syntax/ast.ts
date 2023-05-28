@@ -245,8 +245,37 @@ export interface BlockStatement extends ModuleItem  {
     kind: SyntaxKinds.BlockStatement;
     body: Array<StatementListItem>;
 }
+export interface SwitchStatement extends ModuleItem {
+    kind: SyntaxKinds.SwitchStatement;
+    discriminant: Expression;
+    cases: Array<SwitchCase>;
+}
+export interface SwitchCase extends ModuleItem {
+    kind: SyntaxKinds.SwitchCase;
+    test: Expression | null;
+    consequence: Array<StatementListItem>;
+}
+export interface ContinueStatement extends ModuleItem {
+    kind: SyntaxKinds.ContinueStatement;
+    label?: Identifier;
+}
+export interface BreakStatement extends ModuleItem {
+    kind: SyntaxKinds.BreakStatement;
+    label?: Identifier;
+}
+export interface ReturnStatement extends ModuleItem {
+    kind: SyntaxKinds.ReturnStatement;
+    argu?: Expression;
+}
+export interface LabeledStatement extends ModuleItem {
+    kind: SyntaxKinds.LabeledStatement;
+    label: Identifier;
+    body: Statement | FunctionDeclaration;
+}
 export type Statement = 
-    IfStatement | BlockStatement | 
+    IfStatement | BlockStatement | SwitchStatement |
+    BreakStatement | ContinueStatement |
+    ReturnStatement | LabeledStatement |
     ExpressionStatement | VariableDeclaration /** when is `var` */;
 
 /** ================================

@@ -29,6 +29,11 @@ import {
     Declaration,
     Statement,
     IfStatement,
+    SwitchCase,
+    LabeledStatement,
+    BreakStatement,
+    ContinueStatement,
+    ReturnStatement,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -164,7 +169,7 @@ export function createParser(code: string) {
      * @return  
      */
     function createEOFError(message: string) {
-
+        return new Error(message);
     }
     /**
      * There maybe some simpke sematic check in this parser,
@@ -202,10 +207,15 @@ export function createParser(code: string) {
     function parseStatementListItem(): StatementListItem {
         const token = getToken();
         switch(token) {
-            // TODO 'aync' maybe is
+            // 'aync' maybe is
             // 1. aync function  -> declaration
             // 2. aync arrow function -> statement(expressionStatement)
             // 3. identifer -> statement (expressionStatement)
+            case SyntaxKinds.Identifier:
+                if(getValue() === "async" && lookahead() === SyntaxKinds.FunctionKeyword) {
+                    return parseDeclaration();
+                }
+                return parseStatement();
             case SyntaxKinds.ConstKeyword:
             case SyntaxKinds.LetKeyword:
             case SyntaxKinds.FunctionKeyword: 
@@ -216,6 +226,21 @@ export function createParser(code: string) {
         }
     }
     /**
+     * Parse Declaration
+     * 
+     * ```
+     *  Declaration := ('let' | 'const') BindingLst
+     *              := FunctionDeclaration
+     *              := FunctionGeneratorDeclaration
+     *              := 'async' FunctionDeclaration
+     *              := 'async' FunctionGeneratorDeclaration
+     *              := ClassDeclaration
+     * ```
+     * when call parseDeclaration, please make sure currentToken is
+     * - `let` or `const` keyword
+     * - `function` keyword
+     * - `class` keyword
+     * - `async` with `function` keyword 
      * 
      * ref: https://tc39.es/ecma262/#prod-Declaration
      * @returns 
@@ -223,14 +248,27 @@ export function createParser(code: string) {
     function parseDeclaration(): Declaration {
         const token = getToken();
         switch(token) {
+            // async function declaration
+            case SyntaxKinds.Identifier:
+                if(match(SyntaxKinds.Identifier) && getValue() === "async") {
+                    nextToken();
+                    context.inAsync = true;
+                    const funDeclar = parseFunctionDeclaration();
+                    context.inAsync = false;
+                    return funDeclar;
+                } else {
+                   // Unreach
+                }
+            // function delcaration
+            case SyntaxKinds.FunctionKeyword: 
+                return parseFunctionDeclaration();
             case SyntaxKinds.ConstKeyword:
             case SyntaxKinds.LetKeyword:
                 return parseVariableDeclaration();
-            // TODO: 'async', '*', 
-            case SyntaxKinds.FunctionKeyword: 
-                return parseFunctionDeclaration();
             case SyntaxKinds.ClassKeyword:
-                // TODO
+                // TODO: implement
+            default:
+                // TODO: unreach
         }
     }
     /**
@@ -239,6 +277,14 @@ export function createParser(code: string) {
     function parseStatement(): Statement {
         const token = getToken();
         switch(token) {
+            case SyntaxKinds.SwitchKeyword:
+                return parseSwitchStatement();
+            case SyntaxKinds.ContinueKeyword:
+                return parseContinueStatement();
+            case SyntaxKinds.BreakKeyword:
+                return parseBreakStatement();
+            case SyntaxKinds.ReturnKeyword:
+                return parseReturnStatement();
             case SyntaxKinds.BracesLeftPunctuator:
                 return parseBlockStatement();
             case SyntaxKinds.IfKeyword:
@@ -256,10 +302,13 @@ export function createParser(code: string) {
                         context.maybeArrow = false;
                         statement = factory.createExpressionStatement(arrowExpr);
                     }else {
-                        return  factory.createExpressionStatement(factory.createIdentifier("async"));
+                        statement = factory.createExpressionStatement(factory.createIdentifier("async"));
                     }
                     context.inAsync = false;
                     return statement;
+                }
+                if(match(SyntaxKinds.Identifier)  && lookahead() === SyntaxKinds.ColonPunctuator ) {
+                    return parseLabeledStatement();
                 }
                 return parseExpressionStatement();
         }
@@ -305,6 +354,107 @@ export function createParser(code: string) {
         }
         nextToken();
         return factory.createBlockStatement(body);
+   }
+   function parseSwitchStatement() {
+        if(!match(SyntaxKinds.SwitchKeyword)) {
+            throw createRecuriveDecentError("parseSwitchStatement", [SyntaxKinds.SwitchKeyword])
+        }
+        nextToken();
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "switch statement' test condition should wrap in Parentheses");
+        }
+        nextToken();
+        const discriminant = parseExpression();
+        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "switch statement' test condition should wrap in Parentheses");
+        }
+        nextToken();
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createUnexpectError(SyntaxKinds.BracesLeftPunctuator, "switch statement should has cases body");
+        }
+        const cases = parseSwitchCases();
+        return factory.createSwitchStatement(discriminant, cases);
+    
+   }
+   function parseSwitchCases(): Array<SwitchCase>  {
+        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
+            throw createRecuriveDecentError("parseSwitchCase", [SyntaxKinds.BracesLeftPunctuator])
+        }
+        nextToken();
+        const cases: Array<SwitchCase> = [];
+        while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            let test: Expression | null = null;
+            if(match(SyntaxKinds.CaseKeyword)) {
+                nextToken();
+                test = parseExpression();
+            } else if(match(SyntaxKinds.DefaultKeyword)) {
+                nextToken();
+            }
+            if(!match(SyntaxKinds.ColonPunctuator)) {
+                throw createUnexpectError(SyntaxKinds.ColonPunctuator, "switch case should has colon to sepreate case keyword");
+            }
+            nextToken();
+            const consequence: Array<StatementListItem> = []
+            while(!matchSet([SyntaxKinds.BracesRightPunctuator, SyntaxKinds.EOFToken, SyntaxKinds.CaseKeyword, SyntaxKinds.DefaultKeyword])) {
+                consequence.push(parseStatementListItem());
+            }
+            if(match(SyntaxKinds.EOFToken)) {
+                throw createEOFError("switch case should end up with braces");
+            }
+            cases.push(factory.createSwitchCase(test, consequence));
+        }
+        if(match(SyntaxKinds.EOFToken)) {
+            throw createEOFError("switch case should end up with braces");
+        }
+        // sem
+        nextToken();
+        return cases;
+   }
+   function parseContinueStatement(): ContinueStatement {
+        if(!match(SyntaxKinds.ContinueKeyword)) {
+
+        }
+        nextToken();
+        if(match(SyntaxKinds.Identifier)) {
+            return factory.createContinueStatement(parseIdentifer());
+        }
+        return factory.createContinueStatement();
+   }
+   function parseBreakStatement(): BreakStatement {
+        if(!match(SyntaxKinds.BreakKeyword)) {
+            // TODO: unreach
+        }
+        nextToken();
+        if(match(SyntaxKinds.Identifier)) {
+            return factory.createBreakStatement(parseIdentifer());
+        }
+        return factory.createBreakStatement();
+   }
+   function parseLabeledStatement(): LabeledStatement {
+        if(!match(SyntaxKinds.Identifier) || lookahead() !== SyntaxKinds.ColonPunctuator) {
+            // TODO: unreach
+        }
+        const label = parseIdentifer();
+        if(!match(SyntaxKinds.ColonPunctuator)) {
+
+        }
+        nextToken();
+        if(match(SyntaxKinds.FunctionKeyword)) {
+            return factory.createLabeledStatement(label, parseFunctionDeclaration());
+        }else {
+            return factory.createLabeledStatement(label, parseStatement());
+        }
+   } 
+   function parseReturnStatement(): ReturnStatement {
+       if(!match(SyntaxKinds.ReturnKeyword)) {
+
+       }
+       nextToken();
+       // TODO: make it can predi expression
+       if(match(SyntaxKinds.Identifier)) {
+            return factory.createReturnStatement(parseExpression());
+       }
+       return factory.createReturnStatement();
    }
 /** =================================================================
  * Parse Delcarations
@@ -1243,7 +1393,7 @@ export function createParser(code: string) {
         if(!context.maybeArrow || !match(SyntaxKinds.ArrowOperator)) {
             // transfor to sequence or signal expression
             if(maybeArguments.length === 1) {
-                return maybeArguments[1];
+                return maybeArguments[0];
             }
             return factory.createSequenceExpression(maybeArguments);
         }

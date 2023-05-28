@@ -318,6 +318,43 @@ export function createBlockStatement(body: AST.BlockStatement['body']): AST.Bloc
         body,
     }
 }
+export function createSwitchStatement(discriminant: AST.SwitchStatement['discriminant'], cases: AST.SwitchStatement['cases']): AST.SwitchStatement {
+    return {
+        kind: SyntaxKinds.SwitchStatement,
+        discriminant, cases,
+    }
+}
+export function createSwitchCase(test: AST.SwitchCase['test'], consequence: AST.SwitchCase['consequence'] ):AST.SwitchCase {
+    return {
+        kind: SyntaxKinds.SwitchCase,
+        test, consequence,
+    }
+}
+export function createBreakStatement(label?: AST.BreakStatement['label']): AST.BreakStatement {
+    return {
+        kind: SyntaxKinds.BreakStatement,
+        label,
+    }
+}
+export function createContinueStatement(label?: AST.ContinueStatement['label']): AST.ContinueStatement {
+    return {
+        kind: SyntaxKinds.ContinueStatement,
+        label,
+    }
+}
+export function createLabeledStatement(label: AST.LabeledStatement['label'], body: AST.LabeledStatement['body']): AST.LabeledStatement {
+    return {
+        kind: SyntaxKinds.LabeledStatement,
+        label,
+        body,
+    }
+}
+export function createReturnStatement(argu?: AST.Expression): AST.ReturnStatement {
+    return {
+        kind: SyntaxKinds.ReturnStatement,
+        argu,
+    }
+}
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,

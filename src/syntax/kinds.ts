@@ -178,6 +178,12 @@ export enum SyntaxKinds {
     // =========== Statement ===========
     IfStatement,
     BlockStatement,
+    SwitchStatement,
+    SwitchCase,
+    LabeledStatement,
+    BreakStatement,
+    ContinueStatement,
+    ReturnStatement,
 }
 export const LexicalLiteral = {
     whiteSpaceChars: [" ", "\t"],
