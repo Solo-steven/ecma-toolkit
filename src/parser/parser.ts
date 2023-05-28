@@ -34,6 +34,8 @@ import {
     BreakStatement,
     ContinueStatement,
     ReturnStatement,
+    WhileStatement,
+    DoWhileStatement,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -289,6 +291,10 @@ export function createParser(code: string) {
                 return parseBlockStatement();
             case SyntaxKinds.IfKeyword:
                 return parseIfStatement();
+            case SyntaxKinds.WhileKeyword:
+                return parseWhileStatement();
+            case SyntaxKinds.DoKeyword:
+                return parseDoWhileStatement();
             case SyntaxKinds.VarKeyword:
                 return parseVariableDeclaration();
             default:
@@ -455,6 +461,45 @@ export function createParser(code: string) {
             return factory.createReturnStatement(parseExpression());
        }
        return factory.createReturnStatement();
+   }
+   function parseWhileStatement(): WhileStatement {
+      if(!match(SyntaxKinds.WhileKeyword)) {
+
+      }
+      nextToken();
+      if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+      }
+      nextToken();
+      const test = parseExpression();
+      if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+      }
+      nextToken();
+      const body = parseStatement();
+      return factory.createWhileStatement(test, body);
+
+   }
+   function parseDoWhileStatement(): DoWhileStatement {
+    if(!match(SyntaxKinds.DoKeyword)) {
+
+    }
+    nextToken();
+    const body = parseStatement();
+    if(!match(SyntaxKinds.WhileKeyword)) {
+
+    }
+    nextToken();
+    if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+      throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+    }
+    nextToken();
+    const test = parseExpression();
+    if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
+      throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
+    }
+    nextToken();
+    return factory.createDoWhileStatement(test, body);
    }
 /** =================================================================
  * Parse Delcarations
@@ -774,7 +819,8 @@ export function createParser(code: string) {
     }
     function parseUnaryExpression(): Expression {
         if(matchSet(UnaryOperators)) {
-            const operator = nextToken() as UnaryOperatorKinds;
+            const operator = getToken() as UnaryOperatorKinds;
+            nextToken();
             const argument = parseUnaryExpression();
             return factory.createUnaryExpression(argument, operator)
         }

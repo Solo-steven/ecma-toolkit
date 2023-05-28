@@ -272,10 +272,20 @@ export interface LabeledStatement extends ModuleItem {
     label: Identifier;
     body: Statement | FunctionDeclaration;
 }
+export interface WhileStatement extends ModuleItem {
+    kind: SyntaxKinds.WhileStatement;
+    test: Expression;
+    body: Statement;
+}
+export interface DoWhileStatement extends ModuleItem {
+    kind: SyntaxKinds.DoWhileStatement;
+    test: Expression;
+    body: Statement;
+}
 export type Statement = 
     IfStatement | BlockStatement | SwitchStatement |
-    BreakStatement | ContinueStatement |
-    ReturnStatement | LabeledStatement |
+    BreakStatement | ContinueStatement | ReturnStatement | LabeledStatement |
+    WhileStatement | DoWhileStatement |
     ExpressionStatement | VariableDeclaration /** when is `var` */;
 
 /** ================================

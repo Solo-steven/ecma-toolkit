@@ -355,6 +355,18 @@ export function createReturnStatement(argu?: AST.Expression): AST.ReturnStatemen
         argu,
     }
 }
+export function createWhileStatement(test: AST.WhileStatement['test'], body: AST.WhileStatement['body']): AST.WhileStatement {
+    return {
+        kind: SyntaxKinds.WhileStatement,
+        test, body,
+    }
+}
+export function createDoWhileStatement(test: AST.DoWhileStatement['test'], body: AST.DoWhileStatement['body']): AST.DoWhileStatement {
+    return {
+        kind: SyntaxKinds.DoWhileStatement,
+        test, body,
+    }
+}
 export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,

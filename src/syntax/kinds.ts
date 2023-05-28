@@ -33,6 +33,7 @@ export enum SyntaxKinds {
     TryKeyword,
     VarKeyword,
     WithKeyword,
+    WhileKeyword,
     YieldKeyword,
     DeleteKeyword,
     VoidKeyword,
@@ -125,6 +126,27 @@ export enum SyntaxKinds {
  *          AST Node
  * ======================================
  */
+    // =========== Top Level ===========
+    Program,
+    // =========== Statement ===========
+    IfStatement,
+    BlockStatement,
+    SwitchStatement,
+    SwitchCase,
+    LabeledStatement,
+    BreakStatement,
+    ContinueStatement,
+    ReturnStatement,
+    WhileStatement,
+    DoWhileStatement,
+    // =========== Declaration ===========
+    VariableDeclaration,
+    VariableDeclarator,
+    Function,
+    FunctionDeclaration,
+    FunctionBody,
+    ClassDeclaration,
+    ClassBody,
     // ========== Expression ==========
     MetaProperty,
     Super,
@@ -161,29 +183,12 @@ export enum SyntaxKinds {
     ObjectPatternProperty,
     ArrayPattern,
     RestElement,
-    // =========== Declaration ===========
-    VariableDeclaration,
-    VariableDeclarator,
-    Function,
-    FunctionDeclaration,
-    FunctionBody,
-    ClassDeclaration,
-    ClassBody,
+    // ========= ImportDeclaration ==========
     ImportDeclaration,
     ImportSpecifier,
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
-    // =========== Top Level ===========
-    Program,
-    // =========== Statement ===========
-    IfStatement,
-    BlockStatement,
-    SwitchStatement,
-    SwitchCase,
-    LabeledStatement,
-    BreakStatement,
-    ContinueStatement,
-    ReturnStatement,
+
 }
 export const LexicalLiteral = {
     whiteSpaceChars: [" ", "\t"],
@@ -228,7 +233,7 @@ export const LexicalLiteral = {
         "else", "enum", "export", "extends", "finally",
         "for", "function", "if", "import", "new",
         "return", "super", "switch", "this", "throw",
-        "try", "var", "with", "yield","let",
+        "try", "var", "with", "while", "yield","let",
         // Unary operators
         "delete", "void", "typeof",
         // Relation operators
@@ -266,6 +271,7 @@ export const KeywordLiteralMapSyntaxKind = {
     ["try"]: SyntaxKinds.TryKeyword,
     ["var"]: SyntaxKinds.VarKeyword,
     ["with"]: SyntaxKinds.WithKeyword,
+    ["while"]: SyntaxKinds.WhileKeyword,
     ["yield"]: SyntaxKinds.YieldKeyword,
     ["let"]: SyntaxKinds.LetKeyword,
     ["delete"]: SyntaxKinds.DeleteKeyword,

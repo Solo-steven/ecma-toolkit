@@ -96,6 +96,7 @@ export const UpdateOperators = [
     SyntaxKinds.DecreOperator
 ]
 export type UnaryOperatorKinds = 
+    SyntaxKinds.LogicalNOTOperator |   // !
     SyntaxKinds.BitwiseNOTOperator |     // ~
     SyntaxKinds.BitwiseXOROperator |     // ^
     SyntaxKinds.PlusOperator |       // +
@@ -105,6 +106,7 @@ export type UnaryOperatorKinds =
     SyntaxKinds.TypeofKeyword       // typeof
 ;
 export const UnaryOperators = [
+    SyntaxKinds.LogicalNOTOperator,   // !
     SyntaxKinds.BitwiseNOTOperator,     // ~
     SyntaxKinds.BitwiseXOROperator,     // ^
     SyntaxKinds.PlusOperator,       // +

@@ -43,7 +43,13 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-     good: c = A + B
+     do {
+        const a = 10
+        a + b
+        {
+            var c = a * b
+        }
+     } while(!condition)
 `
 const lexer = createLexer(code)
 
