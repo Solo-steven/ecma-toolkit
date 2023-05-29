@@ -382,7 +382,7 @@ export type ClassElement = ClassProperty | ClassMethodDefinition;
 export interface ClassDeclaration extends Class {
     kind: SyntaxKinds.ClassDeclaration;
 }
-export type Declaration = FunctionDeclaration | VariableDeclaration ;
+export type Declaration = FunctionDeclaration | VariableDeclaration | ClassDeclaration ;
 
 /** ==========================================
  * Import Declaration
@@ -424,7 +424,7 @@ export interface ExportSpecifier extends ModuleItem {
 }
 export interface ExportDefaultDeclaration {
     kind: SyntaxKinds.ExportDefaultDeclaration;
-    declaration: FunctionDeclaration | FunctionExpression | ClassDeclaration | ClassExpression;
+    declaration: FunctionDeclaration | FunctionExpression | ClassDeclaration | ClassExpression | Expression;
 }
 export interface ExportAllDeclaration {
     kind: SyntaxKinds.ExportAllDeclaration;

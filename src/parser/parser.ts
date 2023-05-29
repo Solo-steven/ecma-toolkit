@@ -147,6 +147,32 @@ export function createParser(code: string) {
         return lexer.lookahead();
     }
     /**
+     * expect a token kind, if it is, return token,
+     * and move to next token
+     * @return {SyntaxKinds}
+     */
+    function expect(kind: SyntaxKinds, message = ""): SyntaxKinds {
+        if(match(kind)) {
+            const kind = getToken();
+            nextToken();
+            return kind;
+        }
+        throw createUnexpectError(kind, message);
+    }
+    /**
+     * Given that this parser is recurive decent parser, some
+     * function must call with some start token, if function call
+     * with unexecpt start token, it should throw this error.
+     * @param {Array<SyntaxKinds>} startTokens
+     * @returns {void}
+     */
+    function expectGuard(startTokens: Array<SyntaxKinds>): void {
+        if(!matchSet(startTokens)) {
+            throw createUnreachError(startTokens);
+        }
+        nextToken();
+    }
+    /**
      * Create a Message error from parser's error map.
      * @param {string} messsage 
      */
@@ -160,43 +186,22 @@ export function createParser(code: string) {
      * @param {string?} messsage 
      * @returns {Error}
      */
-    function createUnexpectError(expectToken: SyntaxKinds, messsage: string = ""): Error {
-        return new Error(`[Syntax Error]: Expect ${expectToken}, But got ${getToken()}(${getValue()}). ${messsage}`);
+    function createUnexpectError(expectToken: SyntaxKinds | null, messsage: string = ""): Error {
+        return new Error(`[Syntax Error]: Unexpect token, ${expectToken ? `expect ${expectToken}, But got ${getToken()}(${getValue()})` : ""}. ${messsage}`);
     }
     /**
      * Given that this parser is recurive decent parser, some
      * function must call with some start token, if function call
      * with unexecpt start token, it should throw this error.
-     * @param {string} functionName
      * @param {Array<SyntaxKinds>} startTokens
      * @returns {Error}
      */
-    function createRecuriveDecentError(functionName: string, startTokens: Array<SyntaxKinds>): Error {
-        let message = `[Syntax Error When Recurive Parse]: in function ${functionName} call with unexpect token ${getToken()} (${getValue()}), it should call with start token[`;
+    function createUnreachError(startTokens: Array<SyntaxKinds>): Error {
+        let message = `[Unreach Zone]: this piece of code should not be reach, have a unexpect token ${getToken()} (${getValue()}), it should call with start token[`;
         for(const token of startTokens) {
             message += `${token}, `;
         }
-        message += "]";
-        return new Error(message);
-    }
-    /**
-     * When using while loop and match conditional to eat token,
-     * always need to consider maybe next token is EOF token, if 
-     * next token is EOF token, needs to exit loop, otherwise it 
-     * would case infinite loop error.
-     * @param {string} message
-     * @return  
-     */
-    function createEOFError(message: string) {
-        return new Error(message);
-    }
-    /**
-     * There maybe some simpke sematic check in this parser,
-     * while find any semantics error, it should create this error
-     * @param {string} message
-     * @return {Error}
-     */
-    function createSemanticsError(message: string): Error {
+        message += "], please report to developer.";
         return new Error(message);
     }
 /** ==================================================
@@ -285,9 +290,9 @@ export function createParser(code: string) {
             case SyntaxKinds.LetKeyword:
                 return parseVariableDeclaration();
             case SyntaxKinds.ClassKeyword:
-                // TODO: implement
+                return parseClassDeclaration();
             default:
-                // TODO: unreach
+                throw createUnreachError([SyntaxKinds.ClassKeyword, SyntaxKinds.FunctionKeyword, SyntaxKinds.LetKeyword, SyntaxKinds.ConstKeyword]);
         }
     }
     /**
@@ -355,18 +360,13 @@ export function createParser(code: string) {
      * 
      */
    function parseForStatement(): ForStatement | ForInStatement | ForOfStatement {
-        if(!match(SyntaxKinds.ForKeyword)) {
-            // TODO
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ForKeyword]);
         let isAwait = false, leftOrInit: VariableDeclaration | Expression | null = null;
         if(match(SyntaxKinds.AwaitKeyword)) {
             nextToken();
             isAwait = true;
         }
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            // TODO
-        }
+        expect(SyntaxKinds.ParenthesesLeftPunctuator);
         nextToken();
         if(matchSet([SyntaxKinds.LetKeyword, SyntaxKinds.ConstKeyword, SyntaxKinds.VarKeyword])) {
             leftOrInit = parseVariableDeclaration();
@@ -390,10 +390,7 @@ export function createParser(code: string) {
             if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
                 update = parseExpression();
             }
-            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-                throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "for statement updatet expression must concat ParenthesesRigh");
-            }
-            nextToken();
+            expect(SyntaxKinds.ParenthesesRightPunctuator)
             const body = parseStatement();
             console.log(body);
             return factory.createForStatement(body,leftOrInit, test, update);
@@ -401,38 +398,23 @@ export function createParser(code: string) {
             // ForInStatement
             nextToken();
             const right = parseAssigmentExpression();
-            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-                // TODO
-            }
-            nextToken();
+            expect(SyntaxKinds.ParenthesesRightPunctuator);
             const body = parseStatement();
             return factory.createForInStatement(leftOrInit, right, body);
         }else if(getValue() === "of") {
             // ForOfStatement
             nextToken();
             const right = parseAssigmentExpression();
-            if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-                // TODO
-            }
-            nextToken();
+            expect(SyntaxKinds.ParenthesesRightPunctuator);
             const body = parseStatement();
             return factory.createForOfStatement(isAwait,leftOrInit, right, body);
         }
    }
    function parseIfStatement(): IfStatement {
-      if(!match(SyntaxKinds.IfKeyword)) {
-        throw createRecuriveDecentError("parseIfStatement", [SyntaxKinds.IfKeyword]);
-      }
-      nextToken();
-      if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "if statement' test condition should wrap in Parentheses");
-      }
-      nextToken();
+      expectGuard([SyntaxKinds.IfKeyword]);
+      expect(SyntaxKinds.ParenthesesLeftPunctuator);
       const test = parseExpression();
-      if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "if statement' test condition should wrap in Parentheses");
-      }
-      nextToken();
+      expect(SyntaxKinds.ParenthesesRightPunctuator);
       const consequnce = parseStatement();
       if(match(SyntaxKinds.ElseKeyword)) {
         nextToken();
@@ -442,72 +424,37 @@ export function createParser(code: string) {
       return factory.createIfStatement(test, consequnce);
    }
    function parseWhileStatement(): WhileStatement {
-        if(!match(SyntaxKinds.WhileKeyword)) {
-            // TODO
-        }
-        nextToken();
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.WhileKeyword]);
+        expect(SyntaxKinds.ParenthesesLeftPunctuator);
         const test = parseExpression();
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expect(SyntaxKinds.ParenthesesRightPunctuator);
         const body = parseStatement();
         return factory.createWhileStatement(test, body);
     }
     function parseDoWhileStatement(): DoWhileStatement {
-        if(!match(SyntaxKinds.DoKeyword)) {
-
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.DoKeyword]);
         const body = parseStatement();
-        if(!match(SyntaxKinds.WhileKeyword)) {
-
-        }
-        nextToken();
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expect(SyntaxKinds.WhileKeyword, "do while statement should has while condition");
+        expect(SyntaxKinds.ParenthesesLeftPunctuator);
         const test = parseExpression();
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expect(SyntaxKinds.ParenthesesRightPunctuator);
         return factory.createDoWhileStatement(test, body);
     }
    function parseBlockStatement() {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseBlockStatement", [SyntaxKinds.BracesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracketLeftPunctuator]);
         const body: Array<StatementListItem> = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) &&  !match(SyntaxKinds.EOFToken) ) {
             body.push(parseStatementListItem());
         }
-        if(match(SyntaxKinds.EOFToken)) {
-            throw createEOFError("body statement should end with Braces");
-        }
-        nextToken();
+        expect(SyntaxKinds.BracketRightPunctuator, "block statement must wrapped by bracket");
         return factory.createBlockStatement(body);
    }
    function parseSwitchStatement() {
-        if(!match(SyntaxKinds.SwitchKeyword)) {
-            throw createRecuriveDecentError("parseSwitchStatement", [SyntaxKinds.SwitchKeyword])
-        }
+        expectGuard([SyntaxKinds.SwitchKeyword]);
         nextToken();
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "switch statement' test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expect(SyntaxKinds.ParenthesesLeftPunctuator);
         const discriminant = parseExpression();
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "switch statement' test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expect(SyntaxKinds.ParenthesesRightPunctuator);
         if(!match(SyntaxKinds.BracesLeftPunctuator)) {
             throw createUnexpectError(SyntaxKinds.BracesLeftPunctuator, "switch statement should has cases body");
         }
@@ -516,10 +463,7 @@ export function createParser(code: string) {
     
    }
    function parseSwitchCases(): Array<SwitchCase>  {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseSwitchCase", [SyntaxKinds.BracesLeftPunctuator])
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracketLeftPunctuator]);
         const cases: Array<SwitchCase> = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             let test: Expression | null = null;
@@ -529,41 +473,32 @@ export function createParser(code: string) {
             } else if(match(SyntaxKinds.DefaultKeyword)) {
                 nextToken();
             }
-            if(!match(SyntaxKinds.ColonPunctuator)) {
-                throw createUnexpectError(SyntaxKinds.ColonPunctuator, "switch case should has colon to sepreate case keyword");
-            }
-            nextToken();
+            expect(SyntaxKinds.ColonPunctuator, "switch case should has colon")
             const consequence: Array<StatementListItem> = []
             while(!matchSet([SyntaxKinds.BracesRightPunctuator, SyntaxKinds.EOFToken, SyntaxKinds.CaseKeyword, SyntaxKinds.DefaultKeyword])) {
                 consequence.push(parseStatementListItem());
             }
             if(match(SyntaxKinds.EOFToken)) {
-                throw createEOFError("switch case should end up with braces");
+                throw createMessageError("switch case should wrapped by braces");
             }
             cases.push(factory.createSwitchCase(test, consequence));
         }
         if(match(SyntaxKinds.EOFToken)) {
-            throw createEOFError("switch case should end up with braces");
+            throw createMessageError("switch statement should wrapped by braces");
         }
-        // sem
+        // TODO: multi default
         nextToken();
         return cases;
    }
    function parseContinueStatement(): ContinueStatement {
-        if(!match(SyntaxKinds.ContinueKeyword)) {
-
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ContinueKeyword]);
         if(match(SyntaxKinds.Identifier)) {
             return factory.createContinueStatement(parseIdentifer());
         }
         return factory.createContinueStatement();
    }
    function parseBreakStatement(): BreakStatement {
-        if(!match(SyntaxKinds.BreakKeyword)) {
-            // TODO: unreach
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BreakKeyword]);
         if(match(SyntaxKinds.Identifier)) {
             return factory.createBreakStatement(parseIdentifer());
         }
@@ -574,10 +509,7 @@ export function createParser(code: string) {
             // TODO: unreach
         }
         const label = parseIdentifer();
-        if(!match(SyntaxKinds.ColonPunctuator)) {
-
-        }
-        nextToken();
+        expect(SyntaxKinds.ColonPunctuator);
         if(match(SyntaxKinds.FunctionKeyword)) {
             return factory.createLabeledStatement(label, parseFunctionDeclaration());
         }else {
@@ -585,10 +517,7 @@ export function createParser(code: string) {
         }
    } 
    function parseReturnStatement(): ReturnStatement {
-       if(!match(SyntaxKinds.ReturnKeyword)) {
-
-       }
-       nextToken();
+       expectGuard([SyntaxKinds.ReturnKeyword]);
        // TODO: make it can predi expression
        if(match(SyntaxKinds.Identifier)) {
             return factory.createReturnStatement(parseExpression());
@@ -596,10 +525,7 @@ export function createParser(code: string) {
        return factory.createReturnStatement();
    }
    function parseTryStatement(): TryStatement {
-        if(!match(SyntaxKinds.TryKeyword)) {
-            // TODO
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.TryKeyword]);
         const body = parseBlockStatement();
         let handler: CatchClause | null = null, finalizer: BlockStatement | null = null;
         if(match(SyntaxKinds.CatchKeyword)) {
@@ -607,10 +533,7 @@ export function createParser(code: string) {
             if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
                 nextToken();
                 const param = parseBindingElement();
-                if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-                    // TODO: unexpect
-                }
-                nextToken();
+                expect(SyntaxKinds.ParenthesesRightPunctuator);
                 handler = factory.createCatchClause( param , parseBlockStatement());
             }else {
                 handler = factory.createCatchClause(null, parseBlockStatement());
@@ -623,34 +546,19 @@ export function createParser(code: string) {
         return factory.createTryStatement(body, handler, finalizer);
    }
    function parseThrowStatement() {
-     if(!match(SyntaxKinds.ThrowKeyword)) {
-        // TODO
-     }
-     nextToken();
-     return factory.createThrowStatement(parseExpression());
+      expectGuard([SyntaxKinds.ThrowKeyword]);
+      return factory.createThrowStatement(parseExpression());
    }
    function parseWithStatement(): WithStatement {
-        if(!match(SyntaxKinds.WithKeyword)) {
-            // TODO
-        }
-        nextToken();
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-          }
-        nextToken();
+        expectGuard([SyntaxKinds.WithKeyword]);
+        expect(SyntaxKinds.ParenthesesLeftPunctuator);
         const object = parseExpression();
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-        throw createUnexpectError(SyntaxKinds.ParenthesesLeftPunctuator, "while statement's test condition should wrap in Parentheses");
-        }
-        nextToken();
+        expect(SyntaxKinds.ParenthesesRightPunctuator);
         const body = parseStatement();
         return factory.createWithStatement(object, body);
    }
    function parseDebuggerStatement(): DebuggerStatement {
-       if(!match(SyntaxKinds.DebuggerKeyword)) {
-            // TODO
-       }
-       nextToken();
+       expectGuard([SyntaxKinds.DebuggerKeyword]);
        return factory.createDebuggerStatement();
    }
 /** =================================================================
@@ -664,7 +572,7 @@ export function createParser(code: string) {
      */
     function parseVariableDeclaration():VariableDeclaration {
         if(!matchSet([SyntaxKinds.VarKeyword, SyntaxKinds.ConstKeyword,SyntaxKinds.LetKeyword])) {
-            throw createRecuriveDecentError("parseVariableDeclaration", [SyntaxKinds.VarKeyword, SyntaxKinds.ConstKeyword,SyntaxKinds.LetKeyword]);
+            throw createUnreachError([SyntaxKinds.VarKeyword, SyntaxKinds.ConstKeyword,SyntaxKinds.LetKeyword]);
         }
         const variant = getValue() as VariableDeclaration['variant'];
         nextToken();
@@ -703,11 +611,8 @@ export function createParser(code: string) {
      * @returns 
      */
     function parseFunction() {
+        expectGuard([SyntaxKinds.FunctionKeyword]);
         let generator = false;
-        if(!match(SyntaxKinds.FunctionKeyword)) {
-            throw createRecuriveDecentError("parseFunctionExpression", [SyntaxKinds.FunctionKeyword]);
-        }
-        nextToken();
         if(match(SyntaxKinds.MultiplyOperator)) {
             generator = true;
             nextToken();
@@ -731,16 +636,13 @@ export function createParser(code: string) {
      * @return {FunctionBody}
      */
     function parseFunctionBody(): FunctionBody {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseFunctionBody", [SyntaxKinds.BracesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         const body : Array<StatementListItem>= [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             body.push(parseStatementListItem());
         }
         if(match(SyntaxKinds.EOFToken)) {
-            // TODO: add eof error
+            throw createUnexpectError(SyntaxKinds.BracesLeftPunctuator);
         }
         nextToken();
         return factory.createFunctionBody(body);
@@ -758,10 +660,7 @@ export function createParser(code: string) {
      * ```
      */
     function parseFunctionParam(): Array<Pattern> {
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseFunctionParams", [SyntaxKinds.ParenthesesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
         let isStart = true;
         let isEndWithRest = false;
         const params: Array<Pattern> = [];
@@ -769,10 +668,7 @@ export function createParser(code: string) {
             if(isStart) {
                 isStart = false;
             }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "params list must seprated by comma");
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken)
             }
             if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
                 continue;
@@ -787,12 +683,23 @@ export function createParser(code: string) {
         }
         if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
             if(isEndWithRest && match(SyntaxKinds.CommaToken)) {
-                throw createSemanticsError(ErrorMessageMap.rest_element_can_not_end_with_comma);
+                throw createMessageError(ErrorMessageMap.rest_element_can_not_end_with_comma);
             }
             throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
         }   
         nextToken();
         return params;
+    }
+    /**
+     * 
+     */
+    function parseClassDeclaration(): ClassDeclaration {
+        expectGuard([SyntaxKinds.ClassKeyword]);
+        const classDelcar = parseClass();
+        if(classDelcar.id === null) {
+            throw createMessageError("class declaration must have class id");
+        }
+        return factory.transFormClassToClassDeclaration(classDelcar);
     }
     /**
      * Parse Class
@@ -802,10 +709,7 @@ export function createParser(code: string) {
      * @returns {Class}
      */
     function parseClass(): Class {
-        if(!match(SyntaxKinds.ClassKeyword)) {
-            throw createRecuriveDecentError("parseClass", [SyntaxKinds.ClassKeyword]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ClassKeyword]);
         let name: Identifier | null = null;
         if(match(SyntaxKinds.Identifier)) {
             name = parseIdentifer();
@@ -821,18 +725,12 @@ export function createParser(code: string) {
      * @return {ClassBody}
      */
     function parseClassBody(): ClassBody {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseClassBody", [SyntaxKinds.BracesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         const classbody: ClassBody['body'] = []
         while(!match(SyntaxKinds.BracesRightPunctuator) && ! match(SyntaxKinds.EOFToken)) {
             classbody.push(parseClassElement());
         }
-        if(!match(SyntaxKinds.BracesRightPunctuator)) {
-            // TODO: add eof error
-        }
-        nextToken();
+        expect(SyntaxKinds.BracesRightPunctuator);
         return factory.createClassBody(classbody);
     }
     /**
@@ -900,10 +798,7 @@ export function createParser(code: string) {
         if(exprs.length === 1) {
             return exprs[0];
         }
-        return {
-            kind: SyntaxKinds.SequenceExpression,
-            exprs,
-        }
+        return factory.createSequenceExpression(exprs);
     }
     function parseAssigmentExpression(): Expression {
         if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
@@ -915,31 +810,21 @@ export function createParser(code: string) {
         }
         const operator = nextToken();
         const right = parseAssigmentExpression();
-        return  {
-            kind: SyntaxKinds.AssigmentExpression,
-            left,
-            right,
-            operator: operator as AssigmentOperatorKinds,
-        }
+        return factory.createAssignmentExpression(left, right, operator as AssigmentOperatorKinds);
     }
     function parseConditionalExpression(): Expression {
-        const condition = parseBinaryExpression();
+        const test = parseBinaryExpression();
         if(!match(SyntaxKinds.QustionOperator)) {
-            return condition;
+            return test;
         }
         nextToken();
         const conseq = parseBinaryExpression();
         if(!match(SyntaxKinds.ColonPunctuator)) {
-            throw new Error();
+            throw createUnexpectError(SyntaxKinds.ColonPunctuator, "conditional operator must and conseq and alter case");
         }
         nextToken();
         const alter = parseBinaryExpression();
-        return {
-            kind: SyntaxKinds.ConditionalExpression,
-            test: condition,
-            consequnce: conseq,
-            alter,
-        }
+        return factory.createConditionalExpression(test, conseq, alter);
     }
     function parseBinaryExpression(): Expression {
         const atom = parseUnaryExpression();
@@ -960,12 +845,7 @@ export function createParser(code: string) {
             if(isBinaryOps(nextOp) && (getBinaryPrecedence(nextOp) > getBinaryPrecedence(currentOp))) {
                 right =  parseBinaryOps(right, getBinaryPrecedence(nextOp));
             }
-            left = {
-                kind: SyntaxKinds.BinaryExpression,
-                left,
-                right,
-                operator: currentOp as BinaryOperatorKinds
-            }
+            left = factory.createBinaryExpression(left, right, currentOp as BinaryOperatorKinds);
         }
         return left;
     }
@@ -980,7 +860,6 @@ export function createParser(code: string) {
             nextToken();
             const argu = parseUnaryExpression();
             return factory.createAwaitExpression(argu);
-
         }
         return parseUpdateExpression();
     }
@@ -988,22 +867,12 @@ export function createParser(code: string) {
         if(matchSet(UpdateOperators)) {
             const operator = nextToken() as UpdateOperatorKinds;
             const argument = parseLeftHandSideExpression();
-            return {
-                kind: SyntaxKinds.UpdateExpression,
-                prefix: true,
-                operator,
-                argument,
-            }
+            return factory.createUpdateExpression(argument, operator, true);
         }
         const argument = parseLeftHandSideExpression();
         if(matchSet(UpdateOperators)) {
             const operator = nextToken() as UpdateOperatorKinds;
-            return {
-                kind: SyntaxKinds.UpdateExpression,
-                prefix: false,
-                operator,
-                argument,
-            }
+            factory.createUpdateExpression(argument, operator, false);
         }
         return argument;
     }
@@ -1041,7 +910,7 @@ export function createParser(code: string) {
             else if (match(SyntaxKinds.TemplateHead) || match(SyntaxKinds.TemplateNoSubstitution)) {
                 // tag template expressuin
                 if(optional) {
-                    throw createSemanticsError(ErrorMessageMap.tag_template_expression_can_not_use_option_chain);
+                    throw createMessageError(ErrorMessageMap.tag_template_expression_can_not_use_option_chain);
                 }
                 base = parseTagTemplateExpression(base);
             }
@@ -1064,9 +933,7 @@ export function createParser(code: string) {
      * @returns {Expression}
      */
     function parseCallExpression(callee: Expression, optional: boolean): Expression {
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw new Error(`Unreach`);
-        }
+        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
         const callerArguments = parseArguments();
         return {
             kind: SyntaxKinds.CallExpression,
@@ -1086,21 +953,16 @@ export function createParser(code: string) {
      * @returns {Array<Expression>}
      */
     function parseArguments(): Array<Expression> {
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw new Error(`Unreach ${getToken()}`);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
         let isStart = true;
         let shouldStop = false;
+        // TODO: refactor logic to remove shoulStop
         const callerArguments: Array<Expression> = [];
-        while(!shouldStop && !match(SyntaxKinds.ParenthesesRightPunctuator)) {
+        while(!shouldStop && !match(SyntaxKinds.ParenthesesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
                 isStart = false
             } else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw new Error();
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken);
             }
             // case 1: ',' following by ')'
             if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
@@ -1123,9 +985,7 @@ export function createParser(code: string) {
             // case 3 : ',' AssigmentExpression
             callerArguments.push(parseAssigmentExpression());
         }
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-            throw new Error();
-        }
+        expect(SyntaxKinds.ParenthesesRightPunctuator);
         nextToken();
         return callerArguments;
     }
@@ -1143,7 +1003,7 @@ export function createParser(code: string) {
      */
     function parseMemberExpression(base: Expression, optional: boolean): Expression {
         if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator) && !optional) {
-            throw createRecuriveDecentError("parseMemberExpression", [SyntaxKinds.DotOperator, SyntaxKinds.BracesLeftPunctuator]);
+            throw createUnreachError([SyntaxKinds.DotOperator, SyntaxKinds.BracesLeftPunctuator]);
         }
         if(match(SyntaxKinds.DotOperator)) {
             nextToken();
@@ -1212,12 +1072,12 @@ export function createParser(code: string) {
                 return parseIdentifer();
             }
             default:
-                throw createRecuriveDecentError("parsePrimaryExpression", []);
+                throw createUnexpectError(null);
         }
     }
     function parseIdentifer(): Identifier {
         if(getToken() !== SyntaxKinds.Identifier) {
-            throw createRecuriveDecentError("parseIdentifer", [SyntaxKinds.Identifier]);
+            throw createUnreachError([SyntaxKinds.Identifier]);
         }
         const name = getValue();
         nextToken();
@@ -1225,7 +1085,7 @@ export function createParser(code: string) {
     }
     function parseIdentiferWithKeyword() {
         if(!matchSet([SyntaxKinds.Identifier,...Keywords])) {
-            throw createRecuriveDecentError("parseIdentifierWith", [SyntaxKinds.Identifier,...Keywords]);
+            throw createUnreachError( [SyntaxKinds.Identifier,...Keywords]);
         }
         const name = getValue();
         nextToken();
@@ -1233,7 +1093,7 @@ export function createParser(code: string) {
     }
     function parsePrivateName() {
         if(!match(SyntaxKinds.PrivateName)) {
-            throw createRecuriveDecentError("parsePrivateName", [SyntaxKinds.PrivateName]);
+            throw createUnreachError([SyntaxKinds.PrivateName]);
         }
         const name = getValue();
         nextToken();
@@ -1241,7 +1101,7 @@ export function createParser(code: string) {
     }
     function parseNumberLiteral() {
         if(!match(SyntaxKinds.NumberLiteral)) {
-            throw createRecuriveDecentError("parseNumberLiteral", [SyntaxKinds.NumberLiteral]);
+            throw createUnreachError([SyntaxKinds.NumberLiteral]);
         }
         const value = getValue();
         nextToken();
@@ -1249,7 +1109,7 @@ export function createParser(code: string) {
     }
     function parseStringLiteral() {
         if(!match(SyntaxKinds.StringLiteral)) {
-            throw createRecuriveDecentError("parseStringLiteral", [SyntaxKinds.StringLiteral]);
+            throw createUnreachError([SyntaxKinds.StringLiteral]);
         }
         const value = getValue();
         nextToken();
@@ -1257,7 +1117,7 @@ export function createParser(code: string) {
     }
     function parseTemplateLiteral() {
         if(!matchSet([SyntaxKinds.TemplateHead, SyntaxKinds.TemplateNoSubstitution])) {
-            throw createRecuriveDecentError("parseTemplateLiteral", [SyntaxKinds.TemplateHead, SyntaxKinds.TemplateNoSubstitution]);
+            throw createUnreachError([SyntaxKinds.TemplateHead, SyntaxKinds.TemplateNoSubstitution]);
         }
         if(match(SyntaxKinds.TemplateNoSubstitution)) {
             const value = getValue();
@@ -1273,7 +1133,7 @@ export function createParser(code: string) {
             expressions.push(parseExpression());
         }
         if(match(SyntaxKinds.EOFToken)) {
-            throw createEOFError("");
+            throw createUnexpectError(SyntaxKinds.BracesLeftPunctuator);
         }
         quasis.push(factory.createTemplateElement(getValue(), true));
         nextToken();
@@ -1281,26 +1141,14 @@ export function createParser(code: string) {
 
     }
     function parseImportMeta() {
-        if(!match(SyntaxKinds.ImportKeyword)) {
-            throw new Error();
-        }
-        nextToken();
-        if(!match(SyntaxKinds.DoKeyword)) {
-
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ImportKeyword]);
+        expect(SyntaxKinds.DotOperator);
         const property = parseIdentifer();
         return factory.createMetaProperty(factory.createIdentifier("import"), property);
     }
     function parseNewTarget() {
-        if(!match(SyntaxKinds.NewKeyword)) {
-            throw createRecuriveDecentError("parseNewTarget", [SyntaxKinds.NewKeyword]);
-        } 
-        nextToken();
-        if(!match(SyntaxKinds.DotOperator)) {
-            throw createUnexpectError(SyntaxKinds.DotOperator, "new target meta property should has dot");
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.NewKeyword]);
+        expect(SyntaxKinds.DotOperator);
         if(getValue() !== "target") {
             throw createUnexpectError(SyntaxKinds.Identifier, "new concat with dot should only be used in meta property");
         }
@@ -1320,10 +1168,7 @@ export function createParser(code: string) {
      * @returns {Expression}
      */
     function parseNewExpression():Expression {
-        if(!match(SyntaxKinds.NewKeyword)) {
-            throw createRecuriveDecentError("parseNewExpression", [SyntaxKinds.NewExpression]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.NewKeyword])
         if(match(SyntaxKinds.NewKeyword)) {
             return parseNewExpression();
         }
@@ -1339,10 +1184,7 @@ export function createParser(code: string) {
 
     }
     function parseSuper() {
-        if(!match(SyntaxKinds.SuperKeyword)) {
-            throw createRecuriveDecentError("parseSuper", [SyntaxKinds.SuperKeyword]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.SuperKeyword]);
         return factory.createCallExpression(factory.createSuper(), [], false);
     }
     function parseThisExpression() {
@@ -1359,10 +1201,7 @@ export function createParser(code: string) {
      * @returns {Expression} actually is `ObjectExpression`
      */
     function parseObjectExpression(): Expression {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseObjectExpression", [SyntaxKinds.BracesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracketLeftPunctuator]);
         let isStart = true;
         const propertyDefinitionList = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
@@ -1406,7 +1245,7 @@ export function createParser(code: string) {
     function parsePropertyDefinition(): PropertyDefinition {
         // semantics check for private 
         if(match(SyntaxKinds.PrivateName)) {
-            throw createSemanticsError(ErrorMessageMap.private_field_can_not_use_in_object);
+            throw createMessageError(ErrorMessageMap.private_field_can_not_use_in_object);
         }
         // spreadElement
         if(match(SyntaxKinds.SpreadOperator)) {
@@ -1443,7 +1282,7 @@ export function createParser(code: string) {
      */
     function parsePropertyName(isComputedRef: { isComputed: boolean }): PropertyName {
         if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral])) {
-            throw createRecuriveDecentError("parsePropertyName", [SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral]);
+            throw createUnreachError([SyntaxKinds.Identifier, SyntaxKinds.BracketLeftPunctuator, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral]);
         }
         if(match(SyntaxKinds.StringLiteral)) {
             return parseStringLiteral();
@@ -1492,7 +1331,7 @@ export function createParser(code: string) {
             !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
             && !withPropertyName
         ) {
-            throw createRecuriveDecentError("parseMethodDefintion", [SyntaxKinds.MultiplyAssignOperator, SyntaxKinds.Identifier]);
+            throw createUnreachError([SyntaxKinds.MultiplyAssignOperator, SyntaxKinds.Identifier]);
         }
         let type: MethodDefinition['type'] = "method";
         let isAsync: MethodDefinition['async'] = false;
@@ -1539,7 +1378,7 @@ export function createParser(code: string) {
         const body = parseFunctionBody();
         // semantics check and operation
         if(type === "get" && parmas.length > 0) {
-            throw createSemanticsError(ErrorMessageMap.getter_should_never_has_params);
+            throw createMessageError(ErrorMessageMap.getter_should_never_has_params);
         }
         // object literal can has method which name is constructor, but in which case ,
         // is not a constructor method, it just a method name as constructor.
@@ -1554,10 +1393,7 @@ export function createParser(code: string) {
         return factory.createObjectMethodDefintion(withPropertyName, body, parmas, isAsync, type as ObjectMethodDefinition['type'], generator, computed);
     }
     function parseArrayExpression() {
-        if(!match(SyntaxKinds.BracketLeftPunctuator)) {
-            throw createRecuriveDecentError("parseArrayExpression", [SyntaxKinds.BracketLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracketLeftPunctuator]);
         const elements: Array<Expression | null> = [];
         while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(match(SyntaxKinds.CommaToken)) {
@@ -1571,10 +1407,7 @@ export function createParser(code: string) {
                 nextToken();
             }
         }
-        if(match(SyntaxKinds.EOFToken)) {
-            throw new Error();
-        }
-        nextToken();
+        expect(SyntaxKinds.BracketRightPunctuator);
         return factory.createArrayExpression(elements);
     }
     function parseFunctionExpression() {
@@ -1584,9 +1417,7 @@ export function createParser(code: string) {
         return factory.transFormClassToClassExpression(parseClass());
     }
     function parseCoverExpressionORArrowFunction() {
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createRecuriveDecentError("parserCoverExpressionORArrowFunction", [SyntaxKinds.ParenthesesLeftPunctuator]);
-        }
+        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
         const maybeArguments = parseArguments();
         if(!context.maybeArrow || !match(SyntaxKinds.ArrowOperator)) {
             // transfor to sequence or signal expression
@@ -1621,20 +1452,14 @@ export function createParser(code: string) {
      *  parse `'(' BindingElement? [',' BindingElement?]  ')'`
      */
     function parseBindingElmentList() {
-        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseBindingElementList", [SyntaxKinds.ParenthesesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
         let isStart = true;
         const params: Array<Pattern> = [];
         while(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
             if(isStart) {
                 isStart = false;
             }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "params list must seprated by comma");
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken)
             }
             if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
                 continue;
@@ -1666,10 +1491,7 @@ export function createParser(code: string) {
             }
             params.push(left);
         }
-        if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.ParenthesesRightPunctuator, "params list must end up with ParenthesesRight");
-        }   
-        nextToken();
+        expect(SyntaxKinds.ParenthesesRightPunctuator);
         return params;
     }
     /**
@@ -1682,7 +1504,7 @@ export function createParser(code: string) {
      */
     function parseBindingElement(): Pattern {
         if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])) {
-            throw createRecuriveDecentError("parseBindingElement", [SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
+            throw createUnreachError([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
         }
         let left: Pattern | undefined ;
         if(match(SyntaxKinds.Identifier)) {
@@ -1692,16 +1514,13 @@ export function createParser(code: string) {
         }
         if(match(SyntaxKinds.AssginOperator)) {
             nextToken();
-          const right = parseAssigmentExpression();
-          return factory.createAssignmentPattern(left, right);
+            const right = parseAssigmentExpression();
+            return factory.createAssignmentPattern(left, right);
         }
         return left;
     }
     function parseRestElement(): RestElement {
-        if(!matchSet([SyntaxKinds.SpreadOperator])) {
-            throw createRecuriveDecentError("parseRestElement", [SyntaxKinds.SpreadOperator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.SpreadOperator]);
         if(match(SyntaxKinds.Identifier)) {
             return factory.createRestElement(parseIdentifer());
         }
@@ -1714,9 +1533,7 @@ export function createParser(code: string) {
      * ```
      */
     function parseBindingPattern(): ObjectPattern | ArrayPattern {
-        if(!matchSet([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])) {
-            throw createRecuriveDecentError("parseBindingPattern", [SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator]);
-        }
+        expectGuard([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])
         if(match(SyntaxKinds.BracesLeftPunctuator)) {
             return parseObjectPattern();
         }
@@ -1735,10 +1552,7 @@ export function createParser(code: string) {
      * @return {ObjectPattern}
      */
     function parseObjectPattern(): ObjectPattern {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseObjectPattern", [SyntaxKinds.BracesLeftPunctuator]);   
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         let isStart = false;
         const properties = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
@@ -1746,10 +1560,7 @@ export function createParser(code: string) {
             if(!isStart) {
                 isStart = true;
             }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "Object Pattern properties must separet by comma");
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken);
             }
             if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
                continue;
@@ -1769,7 +1580,7 @@ export function createParser(code: string) {
                         match(SyntaxKinds.CommaToken) && lookahead() === SyntaxKinds.BracesRightPunctuator
                     )
                 ) {
-                    throw createSemanticsError(ErrorMessageMap.rest_element_should_be_last_property);
+                    throw createMessageError(ErrorMessageMap.rest_element_should_be_last_property);
                 }
                 continue;
             }
@@ -1789,16 +1600,11 @@ export function createParser(code: string) {
             }
             properties.push(factory.createObjectPatternProperty(propertyName, undefined, isComputedRef.isComputed, false));
         }
-        if(match(SyntaxKinds.EOFToken)) {
-            throw createEOFError("");
-        }
-        nextToken();
+        expect(SyntaxKinds.BracesRightPunctuator);
         return factory.createObjectPattern(properties);
     }
     function parseArrayPattern(): ArrayPattern {
-        if(!match(SyntaxKinds.BracketLeftPunctuator)) {
-            throw createRecuriveDecentError("parseArrayPattern", [SyntaxKinds.BracesLeftPunctuator]);
-        }
+        expectGuard([SyntaxKinds.BracketLeftPunctuator])
         nextToken();
         let isStart = true;
         const elements: Array<Pattern | null> = [];
@@ -1806,10 +1612,7 @@ export function createParser(code: string) {
             if(isStart) {
                 isStart = false;
             }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "array pattern's element must seprate by comma");
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken)
             }
             if(match(SyntaxKinds.BracketLeftPunctuator) || match(SyntaxKinds.EOFToken)) {
                 continue;
@@ -1820,26 +1623,23 @@ export function createParser(code: string) {
             }
             elements.push(parseBindingElement());
         }
-        if(match(SyntaxKinds.EOFToken)) {
-            throw createEOFError("array pattern is not close with bracket right token");
-        }
-        nextToken();
+        expect(SyntaxKinds.BracesRightPunctuator);
         return {
             kind: SyntaxKinds.ArrayPattern,
             elements,
         }
     }
-function expectFormKeyword() {
-    if(getValue() !== "from") {
-        throw createUnexpectError(SyntaxKinds.Identifier, "expect from keyword");
-    }
-    nextToken();
-}
 /** ================================================================================
  *  Parse Import Declaration
  *  entry point: https://tc39.es/ecma262/#sec-imports
  * ==================================================================================
  */
+    function expectFormKeyword() {
+        if(getValue() !== "from") {
+            throw createUnexpectError(SyntaxKinds.Identifier, "expect from keyword");
+        }
+        nextToken();
+    }
     /**
      * Parse Import Declaration
      * ```
@@ -1861,10 +1661,7 @@ function expectFormKeyword() {
      * @returns {ImportDeclaration}
      */
     function parseImportDeclaration(): ImportDeclaration {
-        if(!match(SyntaxKinds.ImportKeyword)) {
-            throw createRecuriveDecentError("parseImportDeclaration", [SyntaxKinds.ImportKeyword]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ImportKeyword])
         const specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier> = [];
         if(match(SyntaxKinds.StringLiteral)) {
             const source = parseStringLiteral();
@@ -1906,9 +1703,6 @@ function expectFormKeyword() {
      * @returns {ImportDefaultSpecifier}
      */
     function parseImportDefaultSpecifier(): ImportDefaultSpecifier {
-        if(!match(SyntaxKinds.Identifier)) {
-            throw createRecuriveDecentError("parseImportDefaultSpecifier", [SyntaxKinds.ImportDefaultSpecifier]);
-        }
         const name = parseIdentifer();
         return factory.createImportDefaultSpecifier(name);
     }
@@ -1920,10 +1714,7 @@ function expectFormKeyword() {
      * @returns {ImportNamespaceSpecifier}
      */
     function parseImportNamespaceSpecifier(): ImportNamespaceSpecifier {
-        if(!match(SyntaxKinds.MultiplyOperator)) {
-            throw createRecuriveDecentError("parseImportNamespaceSpecifie", [SyntaxKinds.MultiplyOperator])
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.MultiplyOperator]);
         if(getValue()!== "as") {
             throw createMessageError("import namespace specifier must has 'as'");
         }
@@ -1942,19 +1733,14 @@ function expectFormKeyword() {
      * @return {void}
      */
     function parseImportSpecifiers(specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier>): void {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseImportSpecifiers", [SyntaxKinds.BracesLeftPunctuator]);
-        }
+        expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         nextToken();
         let isStart = true;
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
                 isStart = false;
             }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "import specifier should spread by comma");
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken);
             }
             if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
                 break;
@@ -1979,10 +1765,7 @@ function expectFormKeyword() {
                 createUnexpectError(SyntaxKinds.Identifier, "import specifier must start with strinhLiteral or identifer")
             }
         }
-        if(!match(SyntaxKinds.BracesRightPunctuator)) {
-            throw createEOFError("import specifiers should end with BracesRight");
-        }
-        nextToken();
+        expect(SyntaxKinds.BracesRightPunctuator);
     } 
 /** ================================================================================
  *  Parse Export Declaration
@@ -2004,10 +1787,7 @@ function expectFormKeyword() {
      * @returns {ExportDeclaration}
      */
     function parseExportDeclaration(): ExportDeclaration {
-        if(!match(SyntaxKinds.ExportKeyword)) {
-            throw createRecuriveDecentError("parseExportDeclaration", [SyntaxKinds.ExportKeyword]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.ExportKeyword]);
         if(match(SyntaxKinds.DefaultKeyword)) {
             return parseExportDefaultDeclaration();
         }
@@ -2021,10 +1801,7 @@ function expectFormKeyword() {
         return factory.createExportNamedDeclaration([], declaration, null);
     }
     function parseExportDefaultDeclaration(): ExportDefaultDeclaration{
-        if(!match(SyntaxKinds.DefaultKeyword)) {
-            throw createRecuriveDecentError("parseExportDefaultDeclaration", [SyntaxKinds.DefaultKeyword]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.DefaultKeyword]);
         if(match(SyntaxKinds.ClassKeyword)) {
             let classDeclar = parseClass();
             if(classDeclar.id === null) {
@@ -2051,27 +1828,22 @@ function expectFormKeyword() {
             return factory.createExportDefaultDeclaration(funDeclar);
         }
         const expr = parseAssigmentExpression();
+        return factory.createExportDefaultDeclaration(expr);
     }
     function parseExportNamedDeclaration(): ExportNamedDeclarations {
-        if(!match(SyntaxKinds.BracesLeftPunctuator)) {
-            throw createRecuriveDecentError("parseExportNamedDeclaration", [SyntaxKinds.BracesLeftPunctuator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         const specifier: Array<ExportSpecifier> = []; 
         let isStart = true;
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
                 isStart = false;
             }else {
-                if(!match(SyntaxKinds.CommaToken)) {
-                    throw createUnexpectError(SyntaxKinds.CommaToken, "export list must spread by comma");
-                }
-                nextToken();
+                expect(SyntaxKinds.CommaToken);
             }
             if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
                 break;
             }
-            // TODO: parseModuleName ?
+            // TODO: reafacor into parseModuleName ?
             const exported = match(SyntaxKinds.Identifier) ? parseIdentifer() : parseStringLiteral();
             if(getValue() === "as") {
                 nextToken();
@@ -2081,19 +1853,13 @@ function expectFormKeyword() {
             }
             specifier.push(factory.createExportSpecifier(exported, null));
         }
-        if(match(SyntaxKinds.EOFToken)) {
-            throw createUnexpectError(SyntaxKinds.BracesRightPunctuator, "export list must close with Braces")
-        }
-        nextToken();
+        expect(SyntaxKinds.BracesRightPunctuator);
         expectFormKeyword();
         const source = parseStringLiteral();
         return factory.createExportNamedDeclaration(specifier, null, source);
     }
     function parseExportAllDeclaration(): ExportAllDeclaration {
-        if(!match(SyntaxKinds.MultiplyOperator)) {
-            throw createRecuriveDecentError("parseExportAllDeclaration", [SyntaxKinds.MultiplyOperator]);
-        }
-        nextToken();
+        expectGuard([SyntaxKinds.MultiplyOperator]);
         let exported: Identifier | null = null;
         if(getValue() === "as") {
             nextToken();
