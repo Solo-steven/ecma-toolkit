@@ -43,9 +43,7 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-     export default async function test() {
-
-     }
+import.meta.url.value.testProperty
 `
 const lexer = createLexer(code)
 

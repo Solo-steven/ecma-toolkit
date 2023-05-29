@@ -222,11 +222,12 @@ export function createParser(code: string) {
     function parseModuleItem(): ModuleItem {
         const token = getToken();
         switch(token) {
-            // TODO import.meta or import call need fall
             case SyntaxKinds.ImportKeyword:
+                if(lookahead() === SyntaxKinds.DotOperator || lookahead () === SyntaxKinds.ParenthesesLeftPunctuator) {
+                    return parseStatementListItem();
+                }
                 return parseImportDeclaration();
             case SyntaxKinds.ExportKeyword:
-                // TODO
                 return parseExportDeclaration();
             default:
                 return parseStatementListItem();
@@ -936,7 +937,9 @@ export function createParser(code: string) {
      * @returns {Expression}
      */
     function parseCallExpression(callee: Expression, optional: boolean): Expression {
-        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createUnreachError([SyntaxKinds.ParenthesesLeftPunctuator]);
+        }
         const callerArguments = parseArguments();
         return {
             kind: SyntaxKinds.CallExpression,
@@ -989,7 +992,6 @@ export function createParser(code: string) {
             callerArguments.push(parseAssigmentExpression());
         }
         expect(SyntaxKinds.ParenthesesRightPunctuator);
-        nextToken();
         return callerArguments;
     }
     /**
@@ -1204,7 +1206,7 @@ export function createParser(code: string) {
      * @returns {Expression} actually is `ObjectExpression`
      */
     function parseObjectExpression(): Expression {
-        expectGuard([SyntaxKinds.BracketLeftPunctuator]);
+        expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         let isStart = true;
         const propertyDefinitionList = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
@@ -1213,19 +1215,13 @@ export function createParser(code: string) {
                 isStart = false;
                 continue;
             }
-            if(!match(SyntaxKinds.CommaToken)) {
-                throw createUnexpectError(SyntaxKinds.CommaToken, "object literal's property must seperated by comma");
-            }
-            nextToken();
+            expect(SyntaxKinds.CommaToken);
             if(match(SyntaxKinds.BracesRightPunctuator) || match(SyntaxKinds.EOFToken)) {
                 break;
             }
             propertyDefinitionList.push(parsePropertyDefinition());
         }
-        if(!match(SyntaxKinds.BracesRightPunctuator)) {
-            throw createUnexpectError(SyntaxKinds.BracesRightPunctuator);
-        }
-        nextToken();
+        expect(SyntaxKinds.BracesRightPunctuator);
         return factory.createObjectExpression(propertyDefinitionList);
     }
     /**
@@ -1420,7 +1416,9 @@ export function createParser(code: string) {
         return factory.transFormClassToClassExpression(parseClass());
     }
     function parseCoverExpressionORArrowFunction() {
-        expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            throw createUnreachError([SyntaxKinds.ParenthesesLeftPunctuator]);
+        }
         const maybeArguments = parseArguments();
         if(!context.maybeArrow || !match(SyntaxKinds.ArrowOperator)) {
             // transfor to sequence or signal expression
