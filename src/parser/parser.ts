@@ -196,12 +196,16 @@ export function createParser(code: string) {
      * @param {Array<SyntaxKinds>} startTokens
      * @returns {Error}
      */
-    function createUnreachError(startTokens: Array<SyntaxKinds>): Error {
-        let message = `[Unreach Zone]: this piece of code should not be reach, have a unexpect token ${getToken()} (${getValue()}), it should call with start token[`;
-        for(const token of startTokens) {
-            message += `${token}, `;
+    function createUnreachError(startTokens: Array<SyntaxKinds> = []): Error {
+        let message = `[Unreach Zone]: this piece of code should not be reach, have a unexpect token ${getToken()} (${getValue()}).`;
+        if(startTokens.length !== 0) {
+                message += " it should call with start token["
+                for(const token of startTokens) {
+                    message += `${token}, `;
+                }
+                message += "]"
         }
-        message += "], please report to developer.";
+        message += ", please report to developer.";
         return new Error(message);
     }
 /** ==================================================
@@ -281,7 +285,7 @@ export function createParser(code: string) {
                     context.inAsync = false;
                     return funDeclar;
                 } else {
-                   // Unreach
+                   throw createUnreachError();
                 }
             // function delcaration
             case SyntaxKinds.FunctionKeyword: 
@@ -367,7 +371,6 @@ export function createParser(code: string) {
             isAwait = true;
         }
         expect(SyntaxKinds.ParenthesesLeftPunctuator);
-        nextToken();
         if(matchSet([SyntaxKinds.LetKeyword, SyntaxKinds.ConstKeyword, SyntaxKinds.VarKeyword])) {
             leftOrInit = parseVariableDeclaration();
         }else if (match(SyntaxKinds.SemiPunctuator)) {
