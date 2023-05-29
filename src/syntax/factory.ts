@@ -349,7 +349,7 @@ export function createLabeledStatement(label: AST.LabeledStatement['label'], bod
         body,
     }
 }
-export function createReturnStatement(argu?: AST.Expression): AST.ReturnStatement {
+export function createReturnStatement(argu: AST.ReturnStatement['argu']): AST.ReturnStatement {
     return {
         kind: SyntaxKinds.ReturnStatement,
         argu,
@@ -367,7 +367,7 @@ export function createDoWhileStatement(test: AST.DoWhileStatement['test'], body:
         test, body,
     }
 }
-export function createTryStatement(block: AST.TryStatement['block'], handler?: AST.TryStatement['handler'], finalizer?: AST.TryStatement['finalizer']): AST.TryStatement {
+export function createTryStatement(block: AST.TryStatement['block'], handler: AST.TryStatement['handler'], finalizer: AST.TryStatement['finalizer']): AST.TryStatement {
     return {
         kind: SyntaxKinds.TryStatement,
         block, handler, finalizer

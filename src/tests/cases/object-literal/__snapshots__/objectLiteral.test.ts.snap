@@ -1,0 +1,556 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`case/object literal/object property name complex case of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "numberProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "expressionProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10170,
+                "left": {
+                  "kind": 10114,
+                  "value": "10",
+                },
+                "operator": 10046,
+                "right": {
+                  "kind": 10170,
+                  "left": {
+                    "kind": 10117,
+                    "name": "z",
+                  },
+                  "operator": 10049,
+                  "right": {
+                    "kind": 10114,
+                    "value": "7",
+                  },
+                },
+              },
+            },
+            {
+              "argument": {
+                "kind": 10117,
+                "name": "someOtherObject",
+              },
+              "kind": 10149,
+            },
+            {
+              "computed": true,
+              "key": {
+                "kind": 10170,
+                "left": {
+                  "kind": 10114,
+                  "value": "9",
+                },
+                "operator": 10046,
+                "right": {
+                  "kind": 10114,
+                  "value": "8",
+                },
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10114,
+                "value": "1",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10113,
+                "value": "string",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10113,
+                "value": "key",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10113,
+                "value": "value",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "otherShorted",
+              },
+              "kind": 10152,
+              "shorted": true,
+              "value": undefined,
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "arrowProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "arguments": [
+                  {
+                    "kind": 10117,
+                    "name": "a",
+                  },
+                  {
+                    "kind": 10117,
+                    "name": "b",
+                  },
+                  {
+                    "kind": 10117,
+                    "name": "c",
+                  },
+                ],
+                "async": false,
+                "body": {
+                  "body": [],
+                  "kind": 10143,
+                },
+                "expressionBody": false,
+                "kind": 10160,
+              },
+            },
+            {
+              "async": false,
+              "body": {
+                "body": [],
+                "kind": 10143,
+              },
+              "computed": false,
+              "generator": false,
+              "key": {
+                "kind": 10117,
+                "name": "method",
+              },
+              "kind": 10153,
+              "params": [
+                {
+                  "kind": 10117,
+                  "name": "a",
+                },
+                {
+                  "kind": 10117,
+                  "name": "v",
+                },
+              ],
+              "type": "method",
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;
+
+exports[`case/object literal/object property name computed property of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "numberProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": true,
+              "key": {
+                "kind": 10170,
+                "left": {
+                  "kind": 10114,
+                  "value": "9",
+                },
+                "operator": 10046,
+                "right": {
+                  "kind": 10114,
+                  "value": "8",
+                },
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;
+
+exports[`case/object literal/object property name expression value of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "numberProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "expressionProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10170,
+                "left": {
+                  "kind": 10114,
+                  "value": "10",
+                },
+                "operator": 10046,
+                "right": {
+                  "kind": 10170,
+                  "left": {
+                    "kind": 10117,
+                    "name": "z",
+                  },
+                  "operator": 10049,
+                  "right": {
+                    "kind": 10114,
+                    "value": "7",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;
+
+exports[`case/object literal/object property name number literal property of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "numberProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10114,
+                "value": "1",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10113,
+                "value": "string",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10114,
+                "value": "100",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "30",
+              },
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;
+
+exports[`case/object literal/object property name setter and getter of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "async": false,
+              "body": {
+                "body": [],
+                "kind": 10143,
+              },
+              "computed": false,
+              "generator": false,
+              "key": {
+                "kind": 10117,
+                "name": "n",
+              },
+              "kind": 10153,
+              "params": [],
+              "type": "get",
+            },
+            {
+              "async": false,
+              "body": {
+                "body": [],
+                "kind": 10143,
+              },
+              "computed": false,
+              "generator": false,
+              "key": {
+                "kind": 10117,
+                "name": "n",
+              },
+              "kind": 10153,
+              "params": [
+                {
+                  "kind": 10117,
+                  "name": "value",
+                },
+              ],
+              "type": "set",
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;
+
+exports[`case/object literal/object property name spread of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "numberProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "argument": {
+                "kind": 10117,
+                "name": "someOtherObject",
+              },
+              "kind": 10149,
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;
+
+exports[`case/object literal/object property name string literal property of object literal 1`] = `
+{
+  "body": [
+    {
+      "expr": {
+        "kind": 10171,
+        "left": {
+          "kind": 10117,
+          "name": "variable",
+        },
+        "operator": 10094,
+        "right": {
+          "kind": 10151,
+          "properties": [
+            {
+              "computed": false,
+              "key": {
+                "kind": 10117,
+                "name": "numberProperty",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10113,
+                "value": "key",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10117,
+                "name": "value",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10113,
+                "value": "num",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10114,
+                "value": "10",
+              },
+            },
+            {
+              "computed": false,
+              "key": {
+                "kind": 10113,
+                "value": "value",
+              },
+              "kind": 10152,
+              "shorted": false,
+              "value": {
+                "kind": 10113,
+                "value": "string",
+              },
+            },
+          ],
+        },
+      },
+      "kind": 10174,
+    },
+  ],
+  "kind": 10120,
+}
+`;

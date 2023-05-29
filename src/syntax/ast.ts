@@ -265,7 +265,7 @@ export interface BreakStatement extends ModuleItem {
 }
 export interface ReturnStatement extends ModuleItem {
     kind: SyntaxKinds.ReturnStatement;
-    argu?: Expression;
+    argu: Expression | null;
 }
 export interface LabeledStatement extends ModuleItem {
     kind: SyntaxKinds.LabeledStatement;
@@ -285,8 +285,8 @@ export interface DoWhileStatement extends ModuleItem {
 export interface TryStatement extends ModuleItem {
     kind: SyntaxKinds.TryStatement;
     block: BlockStatement;
-    handler?: CatchClause,
-    finalizer?: BlockStatement;
+    handler: CatchClause | null,
+    finalizer: BlockStatement | null;
 }
 export interface CatchClause extends ModuleItem {
     kind: SyntaxKinds.CatchClause;
@@ -346,7 +346,7 @@ export interface VariableDeclaration extends ModuleItem {
 export interface VariableDeclarator extends ModuleItem {
     kind: SyntaxKinds.VariableDeclarator;
     id: Pattern;
-    init?: Expression;
+    init: Expression | null;
 }
 export interface Function extends ModuleItem {
     name: Identifier | null;
@@ -400,7 +400,7 @@ export interface ImportDefaultSpecifier {
 export interface ImportSpecifier {
     kind: SyntaxKinds.ImportSpecifier;
     imported: Identifier | StringLiteral;
-    local?: Identifier;
+    local: Identifier | null;
 }
 export interface ImportNamespaceSpecifier {
     kind: SyntaxKinds.ImportNamespaceSpecifier;

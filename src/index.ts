@@ -43,7 +43,7 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-import.meta.url.value.testProperty
+(await readFile(path.join(__dirname, "complexProperty.js"))).toString()
 `
 const lexer = createLexer(code)
 

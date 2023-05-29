@@ -187,7 +187,7 @@ export function createParser(code: string) {
      * @returns {Error}
      */
     function createUnexpectError(expectToken: SyntaxKinds | null, messsage: string = ""): Error {
-        return new Error(`[Syntax Error]: Unexpect token, ${expectToken ? `expect ${expectToken}, But got ${getToken()}(${getValue()})` : ""}. ${messsage}`);
+        return new Error(`[Syntax Error]: Unexpect token${expectToken ? `, expect ${expectToken}` : ""}, got ${getToken()}(${getValue()}).${messsage}`);
     }
     /**
      * Given that this parser is recurive decent parser, some
@@ -526,7 +526,7 @@ export function createParser(code: string) {
        if(match(SyntaxKinds.Identifier)) {
             return factory.createReturnStatement(parseExpression());
        }
-       return factory.createReturnStatement();
+       return factory.createReturnStatement(null);
    }
    function parseTryStatement(): TryStatement {
         expectGuard([SyntaxKinds.TryKeyword]);
@@ -599,7 +599,7 @@ export function createParser(code: string) {
                 declarations.push(factory.createVariableDeclarator(id, init));
                 continue;
             }
-            declarations.push(factory.createVariableDeclarator(id, undefined));
+            declarations.push(factory.createVariableDeclarator(id, null));
         }
         return factory.createVariableDeclaration(declarations, variant);
     }
@@ -1736,7 +1736,6 @@ export function createParser(code: string) {
      */
     function parseImportSpecifiers(specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier>): void {
         expectGuard([SyntaxKinds.BracesLeftPunctuator]);
-        nextToken();
         let isStart = true;
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
@@ -1749,7 +1748,7 @@ export function createParser(code: string) {
             }
             if(match(SyntaxKinds.Identifier)) {
                 const imported = parseIdentifer();
-                let local: Identifier | undefined;
+                let local: Identifier | null = null ;
                 if(getValue() == "as") {
                     nextToken();
                     local = parseIdentifer();
