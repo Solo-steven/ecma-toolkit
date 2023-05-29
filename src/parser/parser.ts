@@ -1450,6 +1450,7 @@ export function createParser(code: string) {
  */
     /**
      *  parse `'(' BindingElement? [',' BindingElement?]  ')'`
+     *  TODO: deprecated
      */
     function parseBindingElmentList() {
         expectGuard([SyntaxKinds.ParenthesesLeftPunctuator]);
