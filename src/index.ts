@@ -43,7 +43,7 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-(await readFile(path.join(__dirname, "complexProperty.js"))).toString()
+const [ {key, value, data: { users, counters }, names: [userName1, userName2]} ] = useState()
 `
 const lexer = createLexer(code)
 

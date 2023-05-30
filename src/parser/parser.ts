@@ -166,11 +166,13 @@ export function createParser(code: string) {
      * @param {Array<SyntaxKinds>} startTokens
      * @returns {void}
      */
-    function expectGuard(startTokens: Array<SyntaxKinds>): void {
+    function expectGuard(startTokens: Array<SyntaxKinds>, shouldEat: boolean = true): void {
         if(!matchSet(startTokens)) {
             throw createUnreachError(startTokens);
         }
-        nextToken();
+        if(shouldEat) {
+            nextToken();
+        }
     }
     /**
      * Create a Message error from parser's error map.
@@ -592,7 +594,13 @@ export function createParser(code: string) {
                 }
                 nextToken();
             }
-            const id = parseBindingElement();
+            // parseBindingElement is not equal to parseBindingPattern or identifier
+            let id: Pattern ;
+            if(match(SyntaxKinds.Identifier)) {
+                id = parseIdentifer();
+            }else {
+                id = parseBindingPattern();
+            }
             if(match(SyntaxKinds.AssginOperator)) {
                 nextToken();
                 const init = parseAssigmentExpression();
@@ -1535,7 +1543,7 @@ export function createParser(code: string) {
      * ```
      */
     function parseBindingPattern(): ObjectPattern | ArrayPattern {
-        expectGuard([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])
+        expectGuard([SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator], false);
         if(match(SyntaxKinds.BracesLeftPunctuator)) {
             return parseObjectPattern();
         }
@@ -1599,15 +1607,15 @@ export function createParser(code: string) {
                 nextToken();
                 const pattern = parseBindingElement();
                 properties.push(factory.createObjectPatternProperty(propertyName, pattern, isComputedRef.isComputed, false));
+                continue;
             }
-            properties.push(factory.createObjectPatternProperty(propertyName, undefined, isComputedRef.isComputed, false));
+            properties.push(factory.createObjectPatternProperty(propertyName, undefined, isComputedRef.isComputed, true));
         }
         expect(SyntaxKinds.BracesRightPunctuator);
         return factory.createObjectPattern(properties);
     }
     function parseArrayPattern(): ArrayPattern {
         expectGuard([SyntaxKinds.BracketLeftPunctuator])
-        nextToken();
         let isStart = true;
         const elements: Array<Pattern | null> = [];
         while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
@@ -1625,7 +1633,7 @@ export function createParser(code: string) {
             }
             elements.push(parseBindingElement());
         }
-        expect(SyntaxKinds.BracesRightPunctuator);
+        expect(SyntaxKinds.BracketRightPunctuator);
         return {
             kind: SyntaxKinds.ArrayPattern,
             elements,
