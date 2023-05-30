@@ -3,7 +3,7 @@ import { readFileAsString, toAST } from "../../helper";
 
 describe("cases/ destructure pattern", () => {
     test("nested object pattern used in declaration", async () => {
-        const code = await readFileAsString(path.join(__dirname, "nestObjectPatternDeclaration.js"));
+        const code = await readFileAsString(path.join(__dirname, "nestedObjectPatternInDeclaration.js"));
         expect(toAST(code)).toMatchSnapshot();
     });
     test("array pattern in declaration", async () => {

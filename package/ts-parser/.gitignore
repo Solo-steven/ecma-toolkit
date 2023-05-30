@@ -1,0 +1,13 @@
+# NPM Packages
+node_modules
+# MacOS Env File
+.DS_Store
+# Yarn 
+.pnp.*
+.yarn/*
+.yarn/cache/*.zip
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

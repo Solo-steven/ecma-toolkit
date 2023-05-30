@@ -1,4 +1,3 @@
-import * as AST from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 
 export function getBinaryPrecedence(kind: SyntaxKinds) {
