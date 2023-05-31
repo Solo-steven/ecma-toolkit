@@ -5,7 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 const navigation = [
   { name: 'Github', href: 'https://github.com/Solo-steven/ecma-parser', outlink: false },
   { name: 'Playground', href: '#playground' },
-  { name: 'About Me', href: '#' },
+  { name: 'About Me', href: '#aboutMe' },
 ]
 
 export function HeroSlider() {
@@ -39,14 +39,6 @@ export function HeroSlider() {
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
-              </a>
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -96,7 +88,7 @@ export function HeroSlider() {
             }}
           />
         </div>
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div className="mx-auto max-w-2xl py-32 sm:py-52 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-6xl">
               ECMA-Parser
