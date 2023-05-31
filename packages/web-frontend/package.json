@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.1.8",
+    "@codemirror/lang-json": "^6.0.1",
+    "@uiw/react-codemirror": "^4.20.2",
     "next": "13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -17,8 +20,12 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
+    "@uiw/codemirror-theme-androidstudio": "^4.20.2",
+    "autoprefixer": "^10.4.14",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2",
     "typescript": "5.0.4"
   }
 }

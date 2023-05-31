@@ -78,15 +78,18 @@ export interface ObjectExpression extends ModuleItem {
     kind: SyntaxKinds.ObjectExpression;
     properties: Array<PropertyDefinition>;
 }
-export type PropertyDefinition = ObjectProperty |  ObjectMethodDefinition | SpreadElement;
+export type PropertyDefinition = ObjectProperty |  ObjectMethodDefinition | SpreadElement | ObjectAccessor;
 export interface ObjectProperty extends Omit<Property, "static"> {
     kind: SyntaxKinds.ObjectProperty;
     key: PropertyName;
 }
-export interface ObjectMethodDefinition extends Omit<MethodDefinition, "static"> {
+export interface ObjectMethodDefinition extends Omit<MethodDefinition, "static" | "type"> {
     kind: SyntaxKinds.ObjectMethodDefintion;
     key: PropertyName;
-    type: "method" | "get" | "set";
+}
+export interface ObjectAccessor extends Omit<MethodDefinition, "static" | "generator" | "async"> {
+    kind: SyntaxKinds.ObjectAccessor;
+    type: "get" | "set"
 }
 export interface SpreadElement extends ModuleItem {
     kind: SyntaxKinds.SpreadElement,
@@ -377,8 +380,13 @@ export interface ClassProperty extends Property {
 };
 export interface ClassMethodDefinition extends MethodDefinition {
     kind: SyntaxKinds.ClassMethodDefinition;
+    type: "constructor" | "method";
 }
-export type ClassElement = ClassProperty | ClassMethodDefinition;
+export interface ClassAccessor extends Omit<MethodDefinition, "generator" | "async" | "static"> {
+    kind: SyntaxKinds.ClassAccessor;
+    type: "get" | "set";
+}
+export type ClassElement = ClassProperty | ClassMethodDefinition | ClassAccessor;
 export interface ClassDeclaration extends Class {
     kind: SyntaxKinds.ClassDeclaration;
 }

@@ -2,7 +2,7 @@
     "name": "ecma-parser",
     "private": true,
     "workspaces": [
-        "package/ts-parser",
-        "package/web-frontend"
+        "packages/js-parser",
+        "packages/web-frontend"
     ]
 }

@@ -53,6 +53,8 @@ import {
     FunctionExpression,
     ClassDeclaration,
     ClassExpression,
+    ObjectAccessor,
+    ClassAccessor,
 } from "@/src/syntax/ast";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { 
@@ -1333,34 +1335,36 @@ export function createParser(code: string) {
         inClass: boolean = false, 
         withPropertyName: PropertyName | PrivateName | undefined = undefined, 
         isStatic: boolean = false
-    ): ObjectMethodDefinition | ClassMethodDefinition {
+    ): ObjectMethodDefinition | ClassMethodDefinition | ObjectAccessor | ClassAccessor {
         if(
             !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
             && !withPropertyName
         ) {
             throw createUnreachError([SyntaxKinds.MultiplyAssignOperator, SyntaxKinds.Identifier]);
         }
+        /**
+         * Step 1 : if not with propertyName , parse modifier frist, otherwise, if with propertyName, it shouldn't do anything.
+         * structure would be like : ('set' | 'get')? 'async' '*' PropertyName  ...., this strcuture isn't match the spec.
+         * but in this structure, we can detect some syntax error more concies, like set and get can not use with async
+         * or generator.
+         */
         let type: MethodDefinition['type'] = "method";
         let isAsync: MethodDefinition['async'] = false;
         let generator: MethodDefinition['generator'] = false;
         let computed: MethodDefinition['computed'] = false;
-        // if not with propertyName , parse modifier frist
-        // otherwise, if with propertyName, it shouldn't do anything.
         if(!withPropertyName) {
+            // frist, is setter or getter
             if(getValue() === "set") {
-                // setter
                 type = "set";
                 nextToken();
             }
             else if(getValue() === "get") {
-                // getter
                 type = "get"
                 nextToken();
             }
-            else if(getValue() === "async") {
-                // aync or aync generator
+            // second, parser async and is generator
+            if(getValue() === "async" && lookahead() !== SyntaxKinds.ParenthesesLeftPunctuator) {
                 isAsync = true;
-                type = "method";
                 nextToken();
                 if(match(SyntaxKinds.MultiplyOperator)) {
                     nextToken();
@@ -1368,8 +1372,6 @@ export function createParser(code: string) {
                 }
             }
             else if(match(SyntaxKinds.MultiplyOperator)) {
-                // generator
-                type = "method";
                 generator = true;
                 nextToken();
             }
@@ -1381,23 +1383,45 @@ export function createParser(code: string) {
                 computed = isComputedRef.isComputed
             }
         }
-        const parmas = parseBindingElmentList();
+        const parmas = parseFunctionParam();
         const body = parseFunctionBody();
-        // semantics check and operation
+        /**
+         * Step 2: semantic and more concise syntax check instead just throw a unexpect
+         * token error.
+         */
         if(type === "get" && parmas.length > 0) {
             throw createMessageError(ErrorMessageMap.getter_should_never_has_params);
         }
-        // object literal can has method which name is constructor, but in which case ,
-        // is not a constructor method, it just a method name as constructor.
+        if(type === "set" && parmas.length === 0) {
+            throw createMessageError(ErrorMessageMap.setter_should_has_at_last_one_params);
+        }
+        if(type === "get" && (isAsync || generator)) {
+            throw createMessageError(ErrorMessageMap.getter_can_not_be_async_or_generator);
+        }
+        if(type === "set" && (isAsync || generator)) {
+            throw createMessageError(ErrorMessageMap.setter_can_not_be_async_or_generator);
+        }
         if(withPropertyName.kind === SyntaxKinds.Identifier) {
             if(withPropertyName.name === "constructor" && context.inClass) {
+                if(isAsync || generator) {
+                    throw createMessageError(ErrorMessageMap.constructor_can_not_be_async_or_generator);
+                }
                 type = "constructor";
             }
         }
+        /**
+         * Step 3 return based on type, if accessor or methodDefintion
+         */
         if(inClass) {
+            if(type === "set" || type === "get") {
+                return factory.createClassAccessor(withPropertyName, body, parmas, type, computed);
+            }
             return factory.createClassMethodDefintion(withPropertyName, body, parmas, isAsync, type, generator, computed, isStatic);
         }
-        return factory.createObjectMethodDefintion(withPropertyName, body, parmas, isAsync, type as ObjectMethodDefinition['type'], generator, computed);
+        if(type === "set" || type === "get") {
+            return factory.createObjectAccessor(withPropertyName, body, parmas, type, computed);
+        }
+        return factory.createObjectMethodDefintion(withPropertyName, body, parmas, isAsync, generator, computed);
     }
     function parseArrayExpression() {
         expectGuard([SyntaxKinds.BracketLeftPunctuator]);

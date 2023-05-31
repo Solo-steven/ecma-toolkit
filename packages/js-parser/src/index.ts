@@ -1,6 +1,7 @@
 import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
+export { createParser } from "@/src/parser";
 const code_1 = `
      a = {
         b: 10 + 10,
@@ -43,7 +44,16 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-const [ {key, value, data: { users, counters }, names: [userName1, userName2]} ] = useState()
+const y = {
+  async set () {
+  },
+  set async  x(x) {
+  
+  },
+  get x() {
+  
+  }
+}
 `
 const lexer = createLexer(code)
 

@@ -66,14 +66,26 @@ export function createObjectMethodDefintion(
     body: AST.ObjectMethodDefinition['body'],
     params: AST.ObjectMethodDefinition['params'],
     async: AST.ObjectMethodDefinition['async'],
-    type: AST.ObjectMethodDefinition['type'],
     generator: AST.ObjectMethodDefinition['generator'],
     computed: AST.ObjectMethodDefinition['computed']
 ): AST.ObjectMethodDefinition {
     return {
         kind: SyntaxKinds.ObjectMethodDefintion,
-        async, type, generator, computed,
+        async, generator, computed,
         key, params, body,
+    }
+}
+export function createObjectAccessor(
+    key: AST.ObjectAccessor['key'],
+    body: AST.ObjectAccessor['body'],
+    params: AST.ObjectAccessor['params'],
+    type: AST.ObjectAccessor['type'],
+    computed: AST.ObjectAccessor['computed']
+): AST.ObjectAccessor {
+    return {
+        kind: SyntaxKinds.ObjectAccessor,
+        key,params, body, 
+        type, computed
     }
 }
 export function createSpreadElement(argument: AST.Expression): AST.SpreadElement {
@@ -277,6 +289,18 @@ export function createClassMethodDefintion(
         kind: SyntaxKinds.ClassMethodDefinition,
         async, type, generator, computed, static: isStatic,
         key, params, body,
+    }
+}
+export function createClassAccessor(
+    key: AST.ClassAccessor['key'],
+    body: AST.ClassAccessor['body'],
+    params: AST.ClassAccessor['params'],
+    type: AST.ClassAccessor['type'],
+    computed: AST.ClassAccessor['computed'],
+): AST.ClassAccessor {
+    return {
+        kind: SyntaxKinds.ClassAccessor,
+        key, params, body, type, computed
     }
 }
 export function transFormClassToClassExpression(classNode: AST.Class ): AST.ClassExpression {
