@@ -14,14 +14,16 @@ export const AboutMe = () => {
             }}
           />
         </div>
-        <div className="mx-auto lg:max-w-5xl md:max-w-4xl py-32 sm:py-48 lg:py-44  sm:flex-row flex">
-            <div className="flex-1">
-                pic
+        <div className="mx-auto lg:max-w-5xl md:max-w-4xl py-24 sm:py-48 lg:py-44 flex-col sm:flex-row flex">
+            <div className="p-2 lg:p-0 flex-1 text-left mb-6 sm:mb-0">
+                <h3 className="text-2xl lg:text-4xl text-slate-100 font-mono mb-5 ">Hi, There</h3>
+                <h2 className="text-2xl lg:text-4xl text-slate-100 font-mono mb-5">I am <span className="text-4xl lg:text-6xl text-indigo-800  font-semibold" >Steven</span></h2>
+                <h3 className="text-2xl lg:text-4xl text-slate-100 font-mono">Nice to meet you</h3>
             </div>
-            <div className="flex-1">
-                <h6 className="text-xl sm:text-2xl lg:text-4xl font-mono text-slate-50 mb-5">Hi, I am Steven, or you can call me Ting-Wei.</h6>
-                <h6 className="text-base sm:text-xl lg:text-2xl font-mono text-slate-50 mb-2">I am a frontend developer, focus on developer-tool, performance and frontend architecture.</h6>
-                <h6 className="text-base sm:text-xl lg:text-2xl font-mono text-slate-50">Also I am a open source contributor focus on TS/JS Tool</h6>
+            <div className="p-2 lg:p-0 flex-1">
+                <h6 className="text-xl sm:text-2xl lg:text-3xl font-mono text-slate-50 mb-5">My Name is Steven, or you can call me Ting-Wei.</h6>
+                <h6 className="text-base sm:text-xl  font-mono text-slate-50 mb-2">I am a frontend developer, focus on developer-tool, performance and frontend architecture.</h6>
+                <h6 className="text-base sm:text-xl  font-mono text-slate-50">Also I am a open source contributor focus on TS/JS Tool</h6>
             </div>
         </div>
         <div
