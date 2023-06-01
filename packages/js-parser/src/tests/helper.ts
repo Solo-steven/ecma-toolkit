@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
-import { createParser } from "@/src/parser";
-import { Program } from "@/src/syntax/ast";
+import { createParser } from "../parser";
+import { Program } from "../syntax/ast";
 
 export function toAST(code: string): Program {
     return createParser(code).parse();

@@ -3,9 +3,9 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
-  { name: 'Github', href: 'https://github.com/Solo-steven/ecma-parser', outlink: false },
-  { name: 'Playground', href: '#playground' },
-  { name: 'About Me', href: '#aboutMe' },
+  { name: 'Github', href: 'https://github.com/Solo-steven/ecma-parser', outlink: true },
+  { name: 'Playground', href: '#playground', outlink: false },
+  { name: 'About Me', href: '#aboutMe', outlink: false, },
 ]
 
 export function HeroSlider() {
@@ -29,7 +29,7 @@ export function HeroSlider() {
           {/** For Bigger screen */}
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-slate-50">
+              <a key={item.name} href={item.href} target={item.outlink ? "__blank" : ""}  className="text-sm font-semibold leading-6 text-slate-50">
                 {item.name}
               </a>
             ))}

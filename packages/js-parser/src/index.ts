@@ -1,7 +1,7 @@
-import { createLexer } from "@/src/lexer";
-import { SyntaxKinds } from "@/src/syntax/kinds";
-import { createParser } from "@/src/parser";
-export { createParser } from "@/src/parser";
+import { createLexer } from "./lexer";
+import { SyntaxKinds } from "./syntax/kinds";
+import { createParser } from "./parser";
+export { createParser } from "./parser";
 const code_1 = `
      a = {
         b: 10 + 10,
@@ -68,14 +68,14 @@ const obj = {
 
 const { a: {b} } = obj;
  
-while(1) {
-    const t = lexer.nextToken();
-    if(t === SyntaxKinds.EOFToken) {
-        break;
-    }
-    console.log(t, lexer.getSourceValue());
-}
+// while(1) {
+//     const t = lexer.nextToken();
+//     if(t === SyntaxKinds.EOFToken) {
+//         break;
+//     }
+//     console.log(t, lexer.getSourceValue());
+// }
 
-const parser = createParser(code);
-const ast = parser.parse();
-console.log(JSON.stringify(ast, null, 2));
+// const parser = createParser(code);
+// const ast = parser.parse();
+// console.log(JSON.stringify(ast, null, 2));

@@ -1,5 +1,5 @@
-import { SyntaxKinds, LexicalLiteral, KeywordLiteralMapSyntaxKind } from "@/src/syntax/kinds";
-import { SourcePosition, cloneSourcePosition, createSourcePosition } from "@/src/utils/position";
+import { SyntaxKinds, LexicalLiteral, KeywordLiteralMapSyntaxKind } from "src/syntax/kinds";
+import { SourcePosition, cloneSourcePosition, createSourcePosition } from "src/utils/position";
 interface Context {
     code: string;
     sourcePosition: SourcePosition;

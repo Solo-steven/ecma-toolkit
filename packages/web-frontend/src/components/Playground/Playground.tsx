@@ -3,13 +3,16 @@ import CodeMirror from "@uiw/react-codemirror";
 import { androidstudio } from '@uiw/codemirror-theme-androidstudio';
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
+import { createParser } from "js-parser";
 
 const codeMirrorJsExtensions = [javascript({ jsx: true })];
 const codeMirrorJSONExtensions = [json()];
 
 export function Playground() {
   const [code, setCode] = useState<string>("");
+  const [astJson, setAstJson]= useState<string>("");
   const onJsCodeMirrorChange = useCallback((code: string) => {
+    console.log("Change Code");
     setCode(code);
   }, []);
   return (
@@ -20,23 +23,39 @@ export function Playground() {
             </h2>
             <div className="mx-auto flex max-w-screen-lg items-center gap-x-14 p-10">
                 <CodeMirror
-                className="flex-1"
-                theme={androidstudio}
-                value="console.log('hello world!');"
-                height="400px"
-                extensions={codeMirrorJsExtensions}
-                onChange={onJsCodeMirrorChange}
+                    className="flex-1"
+                    theme={androidstudio}
+                    value={code}
+                    height="400px"
+                    extensions={codeMirrorJsExtensions}
+                    onChange={onJsCodeMirrorChange}
                 />
                 <CodeMirror
-                className="flex-1"
-                theme={androidstudio}
-                value={'{ "kind:: 123, "body": [] }'}
-                height="400px"
-                extensions={codeMirrorJSONExtensions}
+                    className="flex-1"
+                    theme={androidstudio}
+                    value={astJson}
+                    height="400px"
+                    extensions={codeMirrorJSONExtensions}
                 />
             </div>
             <div className=" p-6 mx-auto flex justify-center">
-                <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <button 
+                    role="button"
+                    className="  z-50 cursor-pointer rounded-md bg-indigo-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    onClick={() => { 
+                        console.log("Click")
+                        try {
+                            if(code) {
+                                console.log("code");
+                              setAstJson(JSON.stringify(createParser(code).parse(), null, 4)) ;
+                            }else {
+                                console.log("No Code")
+                            }
+                        }catch(e){
+                            console.log(e);
+                        }
+                     }}
+                >
                     Transform
                 </button>
             </div>

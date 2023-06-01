@@ -4,5 +4,6 @@
     "workspaces": [
         "packages/js-parser",
         "packages/web-frontend"
-    ]
+    ],
+    "packageManager": "yarn@3.5.1"
 }

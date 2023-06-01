@@ -1,5 +1,5 @@
-import { createLexer } from "@/src/lexer";
-import * as factory from "@/src/syntax/factory";
+import { createLexer } from "../lexer";
+import * as factory from "../syntax/factory";
 import { 
     Expression, 
     FunctionBody, 
@@ -55,8 +55,8 @@ import {
     ClassExpression,
     ObjectAccessor,
     ClassAccessor,
-} from "@/src/syntax/ast";
-import { SyntaxKinds } from "@/src/syntax/kinds";
+} from "../syntax/ast";
+import { SyntaxKinds } from "../syntax/kinds";
 import { 
     UnaryOperators,
     BinaryOperators,
@@ -67,9 +67,9 @@ import {
     UpdateOperators,
     UpdateOperatorKinds,
     Keywords,
- } from "@/src/syntax/operator";
-import { getBinaryPrecedence, isBinaryOps } from "@/src/parser/helper";
-import { ErrorMessageMap } from "@/src/parser/error";
+ } from "../syntax/operator";
+import { getBinaryPrecedence, isBinaryOps } from "../parser/helper";
+import { ErrorMessageMap } from "../parser/error";
 
 /** ========================
  *  Context for parser

@@ -2,6 +2,8 @@
 node_modules
 # MacOS Env File
 .DS_Store
+# Building file
+dist
 # Yarn 
 .pnp.*
 .yarn/*

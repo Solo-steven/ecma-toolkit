@@ -4629,7 +4629,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-parser@workspace:packages/js-parser":
+"js-parser@0.0.1, js-parser@workspace:packages/js-parser":
   version: 0.0.0-use.local
   resolution: "js-parser@workspace:packages/js-parser"
   dependencies:
@@ -6830,6 +6830,7 @@ __metadata:
     autoprefixer: ^10.4.14
     eslint: 8.41.0
     eslint-config-next: 13.4.4
+    js-parser: 0.0.1
     next: 13.4.4
     postcss: ^8.4.24
     react: 18.2.0

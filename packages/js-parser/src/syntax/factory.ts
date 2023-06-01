@@ -1,5 +1,5 @@
 import * as AST from './ast';
-import { SyntaxKinds } from "@/src/syntax/kinds";
+import { SyntaxKinds } from "./kinds";
 import { AssigmentOperatorKinds, BinaryOperatorKinds, UnaryOperatorKinds, UpdateOperatorKinds } from './operator';
 
 export function createIdentifier(name: string): AST.Identifier {

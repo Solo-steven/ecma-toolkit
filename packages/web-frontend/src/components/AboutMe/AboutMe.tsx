@@ -15,7 +15,7 @@ export const AboutMe = () => {
           />
         </div>
         <div className="mx-auto lg:max-w-5xl md:max-w-4xl py-24 sm:py-48 lg:py-44 flex-col sm:flex-row flex">
-            <div className="p-2 lg:p-0 flex-1 text-left mb-6 sm:mb-0">
+            <div className="p-2 lg:p-0 flex-1 text-left mb-12 sm:mb-0">
                 <h3 className="text-2xl lg:text-4xl text-slate-100 font-mono mb-5 ">Hi, There</h3>
                 <h2 className="text-2xl lg:text-4xl text-slate-100 font-mono mb-5">I am <span className="text-4xl lg:text-6xl text-indigo-800  font-semibold" >Steven</span></h2>
                 <h3 className="text-2xl lg:text-4xl text-slate-100 font-mono">Nice to meet you</h3>

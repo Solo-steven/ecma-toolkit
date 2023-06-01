@@ -6,10 +6,12 @@
         "module": "commonjs",    
         "lib": ["ESNext", "DOM"],
         "baseUrl": ".",
-        "paths": {
-            "@/src/*": ["src/*"]
-        }
+        "outDir": "dist"
     },
+    "exclude": [
+        "node_modules/**",
+        "src/tests/**"
+    ],
     "ts-node": {
         "require": ["tsconfig-paths/register"]
     }

@@ -1,4 +1,4 @@
-import { SyntaxKinds } from "@/src/syntax/kinds";
+import { SyntaxKinds } from "../syntax/kinds";
 
 export function getBinaryPrecedence(kind: SyntaxKinds) {
     switch(kind) {
