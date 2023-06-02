@@ -1,554 +1,1709 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`case/object literal/object property name complex case of object literal 1`] = `
+exports[`case/object-literal complex case of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 235,
+        "row": 14,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 235,
+          "row": 14,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 235,
+            "row": 14,
+          },
           "kind": 10151,
           "properties": [
             {
               "computed": false,
+              "end": {
+                "col": 22,
+                "index": 35,
+                "row": 1,
+              },
               "key": {
+                "end": {
+                  "col": 18,
+                  "index": 31,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "numberProperty",
+                "start": {
+                  "col": 4,
+                  "index": 17,
+                  "row": 1,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "value": {
+                "end": {
+                  "col": 22,
+                  "index": 35,
+                  "row": 1,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 20,
+                  "index": 33,
+                  "row": 1,
+                },
                 "value": "10",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 34,
+                "index": 71,
+                "row": 2,
+              },
               "key": {
+                "end": {
+                  "col": 22,
+                  "index": 59,
+                  "row": 2,
+                },
                 "kind": 10117,
                 "name": "expressionProperty",
+                "start": {
+                  "col": 4,
+                  "index": 41,
+                  "row": 2,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 41,
+                "row": 2,
+              },
               "value": {
-                "kind": 10170,
+                "end": {
+                  "col": 34,
+                  "index": 71,
+                  "row": 2,
+                },
+                "kind": 10172,
                 "left": {
+                  "end": {
+                    "col": 26,
+                    "index": 63,
+                    "row": 2,
+                  },
                   "kind": 10114,
+                  "start": {
+                    "col": 24,
+                    "index": 61,
+                    "row": 2,
+                  },
                   "value": "10",
                 },
                 "operator": 10046,
                 "right": {
-                  "kind": 10170,
+                  "end": {
+                    "col": 34,
+                    "index": 71,
+                    "row": 2,
+                  },
+                  "kind": 10172,
                   "left": {
+                    "end": {
+                      "col": 30,
+                      "index": 67,
+                      "row": 2,
+                    },
                     "kind": 10117,
                     "name": "z",
+                    "start": {
+                      "col": 29,
+                      "index": 66,
+                      "row": 2,
+                    },
                   },
                   "operator": 10049,
                   "right": {
+                    "end": {
+                      "col": 34,
+                      "index": 71,
+                      "row": 2,
+                    },
                     "kind": 10114,
+                    "start": {
+                      "col": 33,
+                      "index": 70,
+                      "row": 2,
+                    },
                     "value": "7",
                   },
+                  "start": {
+                    "col": 29,
+                    "index": 66,
+                    "row": 2,
+                  },
+                },
+                "start": {
+                  "col": 24,
+                  "index": 61,
+                  "row": 2,
                 },
               },
             },
             {
               "argument": {
+                "end": {
+                  "col": 22,
+                  "index": 95,
+                  "row": 3,
+                },
                 "kind": 10117,
                 "name": "someOtherObject",
+                "start": {
+                  "col": 7,
+                  "index": 80,
+                  "row": 3,
+                },
+              },
+              "end": {
+                "col": 22,
+                "index": 95,
+                "row": 3,
               },
               "kind": 10149,
+              "start": {
+                "col": 4,
+                "index": 77,
+                "row": 3,
+              },
             },
             {
               "computed": true,
+              "end": {
+                "col": 13,
+                "index": 110,
+                "row": 4,
+              },
               "key": {
-                "kind": 10170,
+                "end": {
+                  "col": 8,
+                  "index": 105,
+                  "row": 4,
+                },
+                "kind": 10172,
                 "left": {
+                  "end": {
+                    "col": 6,
+                    "index": 103,
+                    "row": 4,
+                  },
                   "kind": 10114,
+                  "start": {
+                    "col": 5,
+                    "index": 102,
+                    "row": 4,
+                  },
                   "value": "9",
                 },
                 "operator": 10046,
                 "right": {
+                  "end": {
+                    "col": 8,
+                    "index": 105,
+                    "row": 4,
+                  },
                   "kind": 10114,
+                  "start": {
+                    "col": 7,
+                    "index": 104,
+                    "row": 4,
+                  },
                   "value": "8",
+                },
+                "start": {
+                  "col": 5,
+                  "index": 102,
+                  "row": 4,
                 },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 5,
+                "index": 102,
+                "row": 4,
+              },
               "value": {
+                "end": {
+                  "col": 13,
+                  "index": 110,
+                  "row": 4,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 11,
+                  "index": 108,
+                  "row": 4,
+                },
                 "value": "10",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 15,
+                "index": 127,
+                "row": 5,
+              },
               "key": {
+                "end": {
+                  "col": 5,
+                  "index": 117,
+                  "row": 5,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 4,
+                  "index": 116,
+                  "row": 5,
+                },
                 "value": "1",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 116,
+                "row": 5,
+              },
               "value": {
+                "end": {
+                  "col": 15,
+                  "index": 127,
+                  "row": 5,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 7,
+                  "index": 119,
+                  "row": 5,
+                },
                 "value": "string",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 18,
+                "index": 147,
+                "row": 6,
+              },
               "key": {
+                "end": {
+                  "col": 9,
+                  "index": 138,
+                  "row": 6,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 4,
+                  "index": 133,
+                  "row": 6,
+                },
                 "value": "key",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 133,
+                "row": 6,
+              },
               "value": {
+                "end": {
+                  "col": 18,
+                  "index": 147,
+                  "row": 6,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 11,
+                  "index": 140,
+                  "row": 6,
+                },
                 "value": "value",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 16,
+                "index": 165,
+                "row": 7,
+              },
               "key": {
+                "end": {
+                  "col": 16,
+                  "index": 165,
+                  "row": 7,
+                },
                 "kind": 10117,
                 "name": "otherShorted",
+                "start": {
+                  "col": 4,
+                  "index": 153,
+                  "row": 7,
+                },
               },
               "kind": 10152,
               "shorted": true,
+              "start": {
+                "col": 4,
+                "index": 153,
+                "row": 7,
+              },
               "value": undefined,
             },
             {
               "computed": false,
+              "end": {
+                "col": 5,
+                "index": 205,
+                "row": 10,
+              },
               "key": {
+                "end": {
+                  "col": 17,
+                  "index": 184,
+                  "row": 8,
+                },
                 "kind": 10117,
                 "name": "arrowProperty",
+                "start": {
+                  "col": 4,
+                  "index": 171,
+                  "row": 8,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 171,
+                "row": 8,
+              },
               "value": {
                 "arguments": [
                   {
+                    "end": {
+                      "col": 21,
+                      "index": 188,
+                      "row": 8,
+                    },
                     "kind": 10117,
                     "name": "a",
+                    "start": {
+                      "col": 20,
+                      "index": 187,
+                      "row": 8,
+                    },
                   },
                   {
+                    "end": {
+                      "col": 23,
+                      "index": 190,
+                      "row": 8,
+                    },
                     "kind": 10117,
                     "name": "b",
+                    "start": {
+                      "col": 22,
+                      "index": 189,
+                      "row": 8,
+                    },
                   },
                   {
+                    "end": {
+                      "col": 25,
+                      "index": 192,
+                      "row": 8,
+                    },
                     "kind": 10117,
                     "name": "c",
+                    "start": {
+                      "col": 24,
+                      "index": 191,
+                      "row": 8,
+                    },
                   },
                 ],
                 "async": false,
                 "body": {
                   "body": [],
+                  "end": {
+                    "col": 5,
+                    "index": 205,
+                    "row": 10,
+                  },
                   "kind": 10143,
+                  "start": {
+                    "col": 30,
+                    "index": 197,
+                    "row": 8,
+                  },
+                },
+                "end": {
+                  "col": 5,
+                  "index": 205,
+                  "row": 10,
                 },
                 "expressionBody": false,
-                "kind": 10160,
+                "kind": 10162,
+                "start": {
+                  "col": 20,
+                  "index": 187,
+                  "row": 8,
+                },
               },
             },
             {
               "async": false,
               "body": {
                 "body": [],
+                "end": {
+                  "col": 5,
+                  "index": 233,
+                  "row": 13,
+                },
                 "kind": 10143,
+                "start": {
+                  "col": 18,
+                  "index": 225,
+                  "row": 11,
+                },
               },
               "computed": false,
+              "end": {
+                "col": 5,
+                "index": 233,
+                "row": 13,
+              },
               "generator": false,
               "key": {
+                "end": {
+                  "col": 10,
+                  "index": 217,
+                  "row": 11,
+                },
                 "kind": 10117,
                 "name": "method",
+                "start": {
+                  "col": 4,
+                  "index": 211,
+                  "row": 11,
+                },
               },
-              "kind": 10153,
+              "kind": 10154,
               "params": [
                 {
+                  "end": {
+                    "col": 13,
+                    "index": 220,
+                    "row": 11,
+                  },
                   "kind": 10117,
                   "name": "a",
+                  "start": {
+                    "col": 12,
+                    "index": 219,
+                    "row": 11,
+                  },
                 },
                 {
+                  "end": {
+                    "col": 16,
+                    "index": 223,
+                    "row": 11,
+                  },
                   "kind": 10117,
                   "name": "v",
+                  "start": {
+                    "col": 15,
+                    "index": 222,
+                    "row": 11,
+                  },
                 },
               ],
-              "type": "method",
+              "start": {
+                "col": 4,
+                "index": 211,
+                "row": 11,
+              },
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,
 }
 `;
 
-exports[`case/object literal/object property name computed property of object literal 1`] = `
+exports[`case/object-literal computed property of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 53,
+        "row": 3,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 53,
+          "row": 3,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 53,
+            "row": 3,
+          },
           "kind": 10151,
           "properties": [
             {
               "computed": false,
+              "end": {
+                "col": 22,
+                "index": 35,
+                "row": 1,
+              },
               "key": {
+                "end": {
+                  "col": 18,
+                  "index": 31,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "numberProperty",
+                "start": {
+                  "col": 4,
+                  "index": 17,
+                  "row": 1,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "value": {
+                "end": {
+                  "col": 22,
+                  "index": 35,
+                  "row": 1,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 20,
+                  "index": 33,
+                  "row": 1,
+                },
                 "value": "10",
               },
             },
             {
               "computed": true,
+              "end": {
+                "col": 13,
+                "index": 50,
+                "row": 2,
+              },
               "key": {
-                "kind": 10170,
+                "end": {
+                  "col": 8,
+                  "index": 45,
+                  "row": 2,
+                },
+                "kind": 10172,
                 "left": {
+                  "end": {
+                    "col": 6,
+                    "index": 43,
+                    "row": 2,
+                  },
                   "kind": 10114,
+                  "start": {
+                    "col": 5,
+                    "index": 42,
+                    "row": 2,
+                  },
                   "value": "9",
                 },
                 "operator": 10046,
                 "right": {
+                  "end": {
+                    "col": 8,
+                    "index": 45,
+                    "row": 2,
+                  },
                   "kind": 10114,
+                  "start": {
+                    "col": 7,
+                    "index": 44,
+                    "row": 2,
+                  },
                   "value": "8",
+                },
+                "start": {
+                  "col": 5,
+                  "index": 42,
+                  "row": 2,
                 },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 5,
+                "index": 42,
+                "row": 2,
+              },
               "value": {
+                "end": {
+                  "col": 13,
+                  "index": 50,
+                  "row": 2,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 11,
+                  "index": 48,
+                  "row": 2,
+                },
                 "value": "10",
               },
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,
 }
 `;
 
-exports[`case/object literal/object property name expression value of object literal 1`] = `
+exports[`case/object-literal expression value of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 74,
+        "row": 3,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 74,
+          "row": 3,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 74,
+            "row": 3,
+          },
           "kind": 10151,
           "properties": [
             {
               "computed": false,
+              "end": {
+                "col": 22,
+                "index": 35,
+                "row": 1,
+              },
               "key": {
+                "end": {
+                  "col": 18,
+                  "index": 31,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "numberProperty",
+                "start": {
+                  "col": 4,
+                  "index": 17,
+                  "row": 1,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "value": {
+                "end": {
+                  "col": 22,
+                  "index": 35,
+                  "row": 1,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 20,
+                  "index": 33,
+                  "row": 1,
+                },
                 "value": "10",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 34,
+                "index": 71,
+                "row": 2,
+              },
               "key": {
+                "end": {
+                  "col": 22,
+                  "index": 59,
+                  "row": 2,
+                },
                 "kind": 10117,
                 "name": "expressionProperty",
+                "start": {
+                  "col": 4,
+                  "index": 41,
+                  "row": 2,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 41,
+                "row": 2,
+              },
               "value": {
-                "kind": 10170,
+                "end": {
+                  "col": 34,
+                  "index": 71,
+                  "row": 2,
+                },
+                "kind": 10172,
                 "left": {
+                  "end": {
+                    "col": 26,
+                    "index": 63,
+                    "row": 2,
+                  },
                   "kind": 10114,
+                  "start": {
+                    "col": 24,
+                    "index": 61,
+                    "row": 2,
+                  },
                   "value": "10",
                 },
                 "operator": 10046,
                 "right": {
-                  "kind": 10170,
+                  "end": {
+                    "col": 34,
+                    "index": 71,
+                    "row": 2,
+                  },
+                  "kind": 10172,
                   "left": {
+                    "end": {
+                      "col": 30,
+                      "index": 67,
+                      "row": 2,
+                    },
                     "kind": 10117,
                     "name": "z",
+                    "start": {
+                      "col": 29,
+                      "index": 66,
+                      "row": 2,
+                    },
                   },
                   "operator": 10049,
                   "right": {
+                    "end": {
+                      "col": 34,
+                      "index": 71,
+                      "row": 2,
+                    },
                     "kind": 10114,
+                    "start": {
+                      "col": 33,
+                      "index": 70,
+                      "row": 2,
+                    },
                     "value": "7",
                   },
+                  "start": {
+                    "col": 29,
+                    "index": 66,
+                    "row": 2,
+                  },
+                },
+                "start": {
+                  "col": 24,
+                  "index": 61,
+                  "row": 2,
                 },
               },
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,
 }
 `;
 
-exports[`case/object literal/object property name number literal property of object literal 1`] = `
+exports[`case/object-literal number literal property of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 68,
+        "row": 4,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 68,
+          "row": 4,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 68,
+            "row": 4,
+          },
           "kind": 10151,
           "properties": [
             {
               "computed": false,
+              "end": {
+                "col": 22,
+                "index": 35,
+                "row": 1,
+              },
               "key": {
+                "end": {
+                  "col": 18,
+                  "index": 31,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "numberProperty",
+                "start": {
+                  "col": 4,
+                  "index": 17,
+                  "row": 1,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "value": {
+                "end": {
+                  "col": 22,
+                  "index": 35,
+                  "row": 1,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 20,
+                  "index": 33,
+                  "row": 1,
+                },
                 "value": "10",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 15,
+                "index": 52,
+                "row": 2,
+              },
               "key": {
+                "end": {
+                  "col": 5,
+                  "index": 42,
+                  "row": 2,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 4,
+                  "index": 41,
+                  "row": 2,
+                },
                 "value": "1",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 41,
+                "row": 2,
+              },
               "value": {
+                "end": {
+                  "col": 15,
+                  "index": 52,
+                  "row": 2,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 7,
+                  "index": 44,
+                  "row": 2,
+                },
                 "value": "string",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 11,
+                "index": 65,
+                "row": 3,
+              },
               "key": {
+                "end": {
+                  "col": 7,
+                  "index": 61,
+                  "row": 3,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 4,
+                  "index": 58,
+                  "row": 3,
+                },
                 "value": "100",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 58,
+                "row": 3,
+              },
               "value": {
+                "end": {
+                  "col": 11,
+                  "index": 65,
+                  "row": 3,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 9,
+                  "index": 63,
+                  "row": 3,
+                },
                 "value": "30",
               },
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,
 }
 `;
 
-exports[`case/object literal/object property name setter and getter of object literal 1`] = `
+exports[`case/object-literal setter and getter of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 63,
+        "row": 7,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 63,
+          "row": 7,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 63,
+            "row": 7,
+          },
           "kind": 10151,
           "properties": [
             {
-              "async": false,
               "body": {
                 "body": [],
+                "end": {
+                  "col": 5,
+                  "index": 33,
+                  "row": 3,
+                },
                 "kind": 10143,
+                "start": {
+                  "col": 12,
+                  "index": 25,
+                  "row": 1,
+                },
               },
               "computed": false,
-              "generator": false,
+              "end": {
+                "col": 5,
+                "index": 33,
+                "row": 3,
+              },
               "key": {
+                "end": {
+                  "col": 9,
+                  "index": 22,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "n",
+                "start": {
+                  "col": 8,
+                  "index": 21,
+                  "row": 1,
+                },
               },
               "kind": 10153,
               "params": [],
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "type": "get",
             },
             {
-              "async": false,
               "body": {
                 "body": [],
+                "end": {
+                  "col": 5,
+                  "index": 61,
+                  "row": 6,
+                },
                 "kind": 10143,
+                "start": {
+                  "col": 18,
+                  "index": 53,
+                  "row": 4,
+                },
               },
               "computed": false,
-              "generator": false,
+              "end": {
+                "col": 5,
+                "index": 61,
+                "row": 6,
+              },
               "key": {
+                "end": {
+                  "col": 9,
+                  "index": 44,
+                  "row": 4,
+                },
                 "kind": 10117,
                 "name": "n",
+                "start": {
+                  "col": 8,
+                  "index": 43,
+                  "row": 4,
+                },
               },
               "kind": 10153,
               "params": [
                 {
+                  "end": {
+                    "col": 16,
+                    "index": 51,
+                    "row": 4,
+                  },
                   "kind": 10117,
                   "name": "value",
+                  "start": {
+                    "col": 11,
+                    "index": 46,
+                    "row": 4,
+                  },
                 },
               ],
+              "start": {
+                "col": 4,
+                "index": 39,
+                "row": 4,
+              },
               "type": "set",
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,
 }
 `;
 
-exports[`case/object literal/object property name spread of object literal 1`] = `
+exports[`case/object-literal spread of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 62,
+        "row": 3,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 62,
+          "row": 3,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 62,
+            "row": 3,
+          },
           "kind": 10151,
           "properties": [
             {
               "computed": false,
+              "end": {
+                "col": 22,
+                "index": 35,
+                "row": 1,
+              },
               "key": {
+                "end": {
+                  "col": 18,
+                  "index": 31,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "numberProperty",
+                "start": {
+                  "col": 4,
+                  "index": 17,
+                  "row": 1,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "value": {
+                "end": {
+                  "col": 22,
+                  "index": 35,
+                  "row": 1,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 20,
+                  "index": 33,
+                  "row": 1,
+                },
                 "value": "10",
               },
             },
             {
               "argument": {
+                "end": {
+                  "col": 22,
+                  "index": 59,
+                  "row": 2,
+                },
                 "kind": 10117,
                 "name": "someOtherObject",
+                "start": {
+                  "col": 7,
+                  "index": 44,
+                  "row": 2,
+                },
+              },
+              "end": {
+                "col": 22,
+                "index": 59,
+                "row": 2,
               },
               "kind": 10149,
+              "start": {
+                "col": 4,
+                "index": 41,
+                "row": 2,
+              },
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,
 }
 `;
 
-exports[`case/object literal/object property name string literal property of object literal 1`] = `
+exports[`case/object-literal string literal property of object literal 1`] = `
 {
   "body": [
     {
+      "end": {
+        "col": 1,
+        "index": 95,
+        "row": 5,
+      },
       "expr": {
-        "kind": 10171,
+        "end": {
+          "col": 1,
+          "index": 95,
+          "row": 5,
+        },
+        "kind": 10173,
         "left": {
+          "end": {
+            "col": 8,
+            "index": 8,
+            "row": 0,
+          },
           "kind": 10117,
           "name": "variable",
+          "start": {
+            "col": 0,
+            "index": 0,
+            "row": 0,
+          },
         },
         "operator": 10094,
         "right": {
+          "end": {
+            "col": 1,
+            "index": 95,
+            "row": 5,
+          },
           "kind": 10151,
           "properties": [
             {
               "computed": false,
+              "end": {
+                "col": 22,
+                "index": 35,
+                "row": 1,
+              },
               "key": {
+                "end": {
+                  "col": 18,
+                  "index": 31,
+                  "row": 1,
+                },
                 "kind": 10117,
                 "name": "numberProperty",
+                "start": {
+                  "col": 4,
+                  "index": 17,
+                  "row": 1,
+                },
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 17,
+                "row": 1,
+              },
               "value": {
+                "end": {
+                  "col": 22,
+                  "index": 35,
+                  "row": 1,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 20,
+                  "index": 33,
+                  "row": 1,
+                },
                 "value": "10",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 16,
+                "index": 53,
+                "row": 2,
+              },
               "key": {
+                "end": {
+                  "col": 9,
+                  "index": 46,
+                  "row": 2,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 4,
+                  "index": 41,
+                  "row": 2,
+                },
                 "value": "key",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 41,
+                "row": 2,
+              },
               "value": {
+                "end": {
+                  "col": 16,
+                  "index": 53,
+                  "row": 2,
+                },
                 "kind": 10117,
                 "name": "value",
+                "start": {
+                  "col": 11,
+                  "index": 48,
+                  "row": 2,
+                },
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 14,
+                "index": 69,
+                "row": 3,
+              },
               "key": {
+                "end": {
+                  "col": 9,
+                  "index": 64,
+                  "row": 3,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 4,
+                  "index": 59,
+                  "row": 3,
+                },
                 "value": "num",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 59,
+                "row": 3,
+              },
               "value": {
+                "end": {
+                  "col": 14,
+                  "index": 69,
+                  "row": 3,
+                },
                 "kind": 10114,
+                "start": {
+                  "col": 12,
+                  "index": 67,
+                  "row": 3,
+                },
                 "value": "10",
               },
             },
             {
               "computed": false,
+              "end": {
+                "col": 21,
+                "index": 92,
+                "row": 4,
+              },
               "key": {
+                "end": {
+                  "col": 11,
+                  "index": 82,
+                  "row": 4,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 4,
+                  "index": 75,
+                  "row": 4,
+                },
                 "value": "value",
               },
               "kind": 10152,
               "shorted": false,
+              "start": {
+                "col": 4,
+                "index": 75,
+                "row": 4,
+              },
               "value": {
+                "end": {
+                  "col": 21,
+                  "index": 92,
+                  "row": 4,
+                },
                 "kind": 10113,
+                "start": {
+                  "col": 13,
+                  "index": 84,
+                  "row": 4,
+                },
                 "value": "string",
               },
             },
           ],
+          "start": {
+            "col": 11,
+            "index": 11,
+            "row": 0,
+          },
+        },
+        "start": {
+          "col": 0,
+          "index": 0,
+          "row": 0,
         },
       },
-      "kind": 10174,
+      "kind": 10176,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
     },
   ],
   "kind": 10120,

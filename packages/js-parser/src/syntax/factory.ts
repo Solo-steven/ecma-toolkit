@@ -1,64 +1,68 @@
+import { SourcePosition, cloneSourcePosition} from '../utils/position';
 import * as AST from './ast';
 import { SyntaxKinds } from "./kinds";
 import { AssigmentOperatorKinds, BinaryOperatorKinds, UnaryOperatorKinds, UpdateOperatorKinds } from './operator';
 
-export function createIdentifier(name: string): AST.Identifier {
+export function createIdentifier(name: string, start: SourcePosition, end: SourcePosition): AST.Identifier {
     return {
         kind: SyntaxKinds.Identifier,
         name,
+        start, end,
     };
 }
-export function createPrivateName(name: string): AST.PrivateName {
+export function createPrivateName(name: string, start: SourcePosition, end: SourcePosition): AST.PrivateName {
     return {
         kind: SyntaxKinds.PrivateName,
-        name,
+        name, start, end
     }
 }
-export function createNumberLiteral(value: string | number): AST.NumberLiteral {
+export function createNumberLiteral(value: string | number, start: SourcePosition, end: SourcePosition): AST.NumberLiteral {
     return {
         kind: SyntaxKinds.NumberLiteral,
-        value,
+        value, start, end
     }
 }
-export function createStringLiteral(value: string): AST.StringLiteral {
+export function createStringLiteral(value: string, start: SourcePosition, end: SourcePosition): AST.StringLiteral {
     return {
         kind: SyntaxKinds.StringLiteral,
-        value,
+        value, start, end
     }
 }
-export function createTemplateLiteral(quasis: Array<AST.TemplateElement>, expressions: Array<AST.Expression>): AST.TemplateLiteral {
+export function createTemplateLiteral(quasis: Array<AST.TemplateElement>, expressions: Array<AST.Expression>, start: SourcePosition, end: SourcePosition): AST.TemplateLiteral {
     return {
         kind: SyntaxKinds.TemplateLiteral,
-        quasis, expressions,
+        quasis, expressions, start , end
     }
 }
-export function createTemplateElement(value: string, tail: boolean): AST.TemplateElement {
+export function createTemplateElement(value: string, tail: boolean, start: SourcePosition, end: SourcePosition): AST.TemplateElement {
     return {
         kind: SyntaxKinds.TemplateElement,
-        value, tail
+        value, tail, start , end
     }
 }
-export function createArrayExpression(elements: Array<AST.Expression | null>): AST.ArrayExpression {
+export function createArrayExpression(elements: Array<AST.Expression | null>, start: SourcePosition, end: SourcePosition): AST.ArrayExpression {
     return {
         kind: SyntaxKinds.ArrayExpression,
-        elements
+        elements,start, end
     };
 }
-export function createObjectExpression(properties: Array<AST.PropertyDefinition>): AST.ObjectExpression {
+export function createObjectExpression(properties: Array<AST.PropertyDefinition>, start: SourcePosition, end: SourcePosition): AST.ObjectExpression {
     return { 
         kind: SyntaxKinds.ObjectExpression, 
-        properties 
+        properties, start, end
     };
 }
 export function createObjectProperty(
     key: AST.ObjectProperty['key'],
     value: AST.ObjectProperty['value'],
     computed: AST.ObjectProperty['computed'],
-    shorted: AST.ObjectProperty['shorted']
+    shorted: AST.ObjectProperty['shorted'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ObjectProperty {
     return {
         kind: SyntaxKinds.ObjectProperty,
-        computed, shorted, key, value
+        computed, shorted, key, value,
+        start, end
     }
 }
 export function createObjectMethodDefintion(
@@ -67,12 +71,14 @@ export function createObjectMethodDefintion(
     params: AST.ObjectMethodDefinition['params'],
     async: AST.ObjectMethodDefinition['async'],
     generator: AST.ObjectMethodDefinition['generator'],
-    computed: AST.ObjectMethodDefinition['computed']
+    computed: AST.ObjectMethodDefinition['computed'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ObjectMethodDefinition {
     return {
         kind: SyntaxKinds.ObjectMethodDefintion,
         async, generator, computed,
         key, params, body,
+        start, end
     }
 }
 export function createObjectAccessor(
@@ -80,93 +86,144 @@ export function createObjectAccessor(
     body: AST.ObjectAccessor['body'],
     params: AST.ObjectAccessor['params'],
     type: AST.ObjectAccessor['type'],
-    computed: AST.ObjectAccessor['computed']
+    computed: AST.ObjectAccessor['computed'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ObjectAccessor {
     return {
         kind: SyntaxKinds.ObjectAccessor,
         key,params, body, 
-        type, computed
+        type, computed,
+        start, end
     }
 }
-export function createSpreadElement(argument: AST.Expression): AST.SpreadElement {
+export function createSpreadElement(
+    argument: AST.Expression, 
+    start: SourcePosition, end: SourcePosition,
+): AST.SpreadElement {
     return {
         kind: SyntaxKinds.SpreadElement,
-        argument,
+        argument, 
+        start, end
     }
 }
- export function createMetaProperty(meta: AST.MetaProperty['meta'], property: AST.MetaProperty['property']): AST.MetaProperty {
+ export function createMetaProperty(
+    meta: AST.MetaProperty['meta'], 
+    property: AST.MetaProperty['property'],
+    start: SourcePosition, end: SourcePosition,
+): AST.MetaProperty {
     return {
         kind: SyntaxKinds.MetaProperty,
-        meta, property
+        meta, property,
+        start,
+        end,
     }
 }
-export function createSuper(): AST.Super {
+export function createSuper(
+    start: SourcePosition, end: SourcePosition
+): AST.Super {
     return { 
         kind: SyntaxKinds.Super, 
-        name: "super" 
+        name: "super",
+        start, end
     }
 }
-export function createThisExpression(): AST.ThisExpression {
+export function createThisExpression(
+    start: SourcePosition, end: SourcePosition
+): AST.ThisExpression {
     return {
         kind: SyntaxKinds.ThisExpression,
         name: "this",
+        start, end
     }
 }
-export function createChainExpression(expr: AST.Expression): AST.ChainExpression {
+export function createChainExpression(
+    expr: AST.Expression,
+    start: SourcePosition, end: SourcePosition,
+): AST.ChainExpression {
     return { 
         kind: SyntaxKinds.ChainExpression, 
-        expression: expr 
+        expression: expr,
+        start, end
     };
 }
-export function createCallExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>, optional: boolean): AST.CallExpression {
+export function createCallExpression(
+    callee: AST.Expression, 
+    calleeArguments: Array<AST.Expression>, 
+    optional: boolean,
+    start: SourcePosition, end: SourcePosition,
+): AST.CallExpression {
     return {
         kind: SyntaxKinds.CallExpression,
         optional,
         callee, 
         arguments: calleeArguments,
+        start,
+        end,
     }
 }
-export function createNewExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>): AST.NewExpression {
+export function createNewExpression(callee: AST.Expression, calleeArguments: Array<AST.Expression>, start: SourcePosition, end: SourcePosition): AST.NewExpression {
     return {
         kind: SyntaxKinds.NewExpression,
         callee, 
-        arguments: calleeArguments
+        arguments: calleeArguments,
+        start, end,
     }
 }
-export function createMemberExpression(computed: boolean, object: AST.Expression, property: AST.Expression, optional: boolean): AST.MemberExpression {
+export function createMemberExpression(computed: boolean, object: AST.Expression, property: AST.Expression, optional: boolean, start: SourcePosition, end: SourcePosition): AST.MemberExpression {
     return {
         kind: SyntaxKinds.MemberExpression,
         computed,optional,
         object, property,
+        start, end
     }
 }
-export function createTagTemplateExpression(base: AST.Expression, quasi: AST.TemplateLiteral): AST.TaggedTemplateExpression {
+export function createTagTemplateExpression(
+    base: AST.Expression, 
+    quasi: AST.TemplateLiteral,
+    start: SourcePosition, end: SourcePosition,
+): AST.TaggedTemplateExpression {
     return { 
         kind: SyntaxKinds.TaggedTemplateExpression,
         tag: base,
         quasi,
-
+        start, end
     }
 }
-export function createUpdateExpression(argument: AST.Expression, operator: UpdateOperatorKinds, prefix: boolean): AST.UpdateExpression {
+export function createUpdateExpression(
+    argument: AST.Expression,
+    operator: UpdateOperatorKinds,
+    prefix: boolean,
+    start: SourcePosition,
+    end: SourcePosition
+): AST.UpdateExpression {
     return {
         kind: SyntaxKinds.UpdateExpression,
         operator,
         prefix,
         argument,
+        start, end
     };
 }
-export function createAwaitExpression(argument: AST.Expression): AST.AwaitExpression {
+export function createAwaitExpression(
+    argument: AST.Expression, 
+    start: SourcePosition, end: SourcePosition,
+): AST.AwaitExpression {
     return { 
         kind: SyntaxKinds.AwaitExpression, 
-        argument
+        argument,
+        start, end,
     };
 }
-export function createUnaryExpression(argument: AST.Expression, operator: UnaryOperatorKinds, ): AST.UnaryExpression {
+export function createUnaryExpression(
+    argument: AST.Expression, 
+    operator: UnaryOperatorKinds,
+    start: SourcePosition, end: SourcePosition,
+): AST.UnaryExpression {
     return {
         kind: SyntaxKinds.UnaryExpression,
         operator,
-        argument
+        argument,
+        start, end
     }
 }
 export function createArrowExpression(
@@ -174,6 +231,7 @@ export function createArrowExpression(
     body: AST.Expression | AST.FunctionBody, 
     calleeArguments: Array<AST.Expression>,
     async: boolean,
+    start: SourcePosition, end: SourcePosition,
 ): AST.ArrorFunctionExpression {
     return {
         kind: SyntaxKinds.ArrowFunctionExpression,
@@ -181,46 +239,72 @@ export function createArrowExpression(
         async,
         arguments: calleeArguments,
         body,
+        start, end
     }
 }
-export function createBinaryExpression(left: AST.Expression, right: AST.Expression, operator: BinaryOperatorKinds): AST.BinaryExpression {
+export function createBinaryExpression(
+    left: AST.Expression, 
+    right: AST.Expression,
+    operator: BinaryOperatorKinds,
+    start: SourcePosition, end: SourcePosition,
+): AST.BinaryExpression {
     return {
         kind: SyntaxKinds.BinaryExpression,
         operator,
-        left, right,
+        left, right, start, end
     };
 }
-export function createConditionalExpression(test: AST.Expression, consequnce: AST.Expression, alter: AST.Expression): AST.ConditionalExpression {
+export function createConditionalExpression(
+    test: AST.Expression,
+    consequnce: AST.Expression,
+    alter: AST.Expression,
+    start: SourcePosition, end: SourcePosition,
+): AST.ConditionalExpression {
     return {
         kind: SyntaxKinds.ConditionalExpression,
         test,
         consequnce,
-        alter,
+        alter,start, end
     };
 }
-export function createAssignmentExpression(left: AST.Expression, right: AST.Expression, operator: AssigmentOperatorKinds): AST.AssigmentExpression {
+export function createAssignmentExpression(
+    left: AST.Expression, 
+    right: AST.Expression, 
+    operator: AssigmentOperatorKinds,
+    start: SourcePosition, end: SourcePosition,
+): AST.AssigmentExpression {
     return {
         kind: SyntaxKinds.AssigmentExpression,
         operator,
         left, right,
+        start, end
     }
 }
-export function createSequenceExpression(exprs: Array<AST.Expression>): AST.SequenceExpression {
+export function createSequenceExpression(
+    exprs: Array<AST.Expression>,
+    start: SourcePosition, end: SourcePosition,
+): AST.SequenceExpression {
     return {
         kind: SyntaxKinds.SequenceExpression,
-        exprs,
+        exprs, start, end
     }
 }
-export function createExpressionStatement(expr: AST.Expression): AST.ExpressionStatement {
+export function createExpressionStatement(
+    expr: AST.Expression,
+    start: SourcePosition, end: SourcePosition,
+): AST.ExpressionStatement {
     return { 
         kind: SyntaxKinds.ExpressionStatement, 
-        expr
+        expr,start, end
     };
 }
-export function createFunctionBody(body: Array<AST.StatementListItem>): AST.FunctionBody {
+export function createFunctionBody(
+    body: Array<AST.StatementListItem>,
+    start: SourcePosition, end: SourcePosition,
+): AST.FunctionBody {
     return { 
         kind: SyntaxKinds.FunctionBody, 
-        body
+        body, start, end
     };
 }
 export function createFunction(
@@ -229,6 +313,7 @@ export function createFunction(
     params: AST.Function['params'], 
     generator: AST.Function['generator'],
     async: AST.Function['async'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.Function {
     return {
         name,
@@ -236,6 +321,7 @@ export function createFunction(
         async,
         body,
         params,
+        start, end
     };
 }
 export function transFormFunctionToFunctionExpression(func: AST.Function ): AST.FunctionExpression {
@@ -250,17 +336,25 @@ export function transFormFunctionToFunctionDeclaration(func: AST.Function): AST.
         ...func,
     }
 }
-export function createClass(name: AST.Class['id'], superClass: AST.Class['superClass'], body: AST.Class['body']): AST.Class {
+export function createClass(
+    name: AST.Class['id'], 
+    superClass: AST.Class['superClass'], 
+    body: AST.Class['body'],
+    start: SourcePosition, end: SourcePosition,
+): AST.Class {
     return {
         id: name,
         superClass, 
-        body,
+        body, start, end
     }
 }
-export function createClassBody(body: AST.ClassBody['body']): AST.ClassBody {
+export function createClassBody(
+    body: AST.ClassBody['body'],
+    start: SourcePosition, end: SourcePosition,
+): AST.ClassBody {
     return {
         kind: SyntaxKinds.ClassBody,
-        body
+        body, start, end
     };
 }
 export function createClassProperty(
@@ -268,11 +362,13 @@ export function createClassProperty(
     value: AST.ClassProperty['value'],
     computed: AST.ClassProperty['computed'],
     isStatic: AST.ClassProperty['static'],
-    shorted: AST.ClassProperty['shorted']
+    shorted: AST.ClassProperty['shorted'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ClassProperty {
     return {
         kind: SyntaxKinds.ClassProperty,
-        computed, static: isStatic, shorted, key, value
+        computed, static: isStatic, shorted, key, value,
+        start, end
     }
 }
 export function createClassMethodDefintion(
@@ -283,12 +379,13 @@ export function createClassMethodDefintion(
     type: AST.ClassMethodDefinition['type'],
     generator: AST.ClassMethodDefinition['generator'],
     computed: AST.ClassMethodDefinition['computed'],
-    isStatic: AST.ClassMethodDefinition['static']
+    isStatic: AST.ClassMethodDefinition['static'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ClassMethodDefinition {
     return {
         kind: SyntaxKinds.ClassMethodDefinition,
         async, type, generator, computed, static: isStatic,
-        key, params, body,
+        key, params, body, start, end
     }
 }
 export function createClassAccessor(
@@ -297,10 +394,12 @@ export function createClassAccessor(
     params: AST.ClassAccessor['params'],
     type: AST.ClassAccessor['type'],
     computed: AST.ClassAccessor['computed'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ClassAccessor {
     return {
         kind: SyntaxKinds.ClassAccessor,
-        key, params, body, type, computed
+        key, params, body, type, computed,
+        start, end
     }
 }
 export function transFormClassToClassExpression(classNode: AST.Class ): AST.ClassExpression {
@@ -315,162 +414,251 @@ export function transFormClassToClassDeclaration(classNode: AST.Class): AST.Clas
         ...classNode,
     }
 }
-export function createVariableDeclaration(declarations: AST.VariableDeclaration['declarations'], variant: AST.VariableDeclaration['variant'] ): AST.VariableDeclaration{
+export function createVariableDeclaration(
+    declarations: AST.VariableDeclaration['declarations'], 
+    variant: AST.VariableDeclaration['variant'],
+    start: SourcePosition, end: SourcePosition,
+): AST.VariableDeclaration{
     return {
         kind: SyntaxKinds.VariableDeclaration,
         variant,
         declarations,
+        start,
+        end
     }
 }
-export function createVariableDeclarator(id: AST.VariableDeclarator['id'], init: AST.VariableDeclarator['init']): AST.VariableDeclarator  {
+export function createVariableDeclarator(
+    id: AST.VariableDeclarator['id'], 
+    init: AST.VariableDeclarator['init'],
+    start: SourcePosition, end: SourcePosition,
+): AST.VariableDeclarator  {
     return {
         kind: SyntaxKinds.VariableDeclarator,
         id, init,
+        start, end
     } 
 }
-export function createIfStatement(test: AST.IfStatement['test'], conseqence: AST.IfStatement['conseqence'], alter?: AST.IfStatement['alternative']): AST.IfStatement {
+export function createIfStatement(
+    test: AST.IfStatement['test'], 
+    conseqence: AST.IfStatement['conseqence'], 
+    alter: AST.IfStatement['alternative'],
+    start: SourcePosition, end: SourcePosition,
+): AST.IfStatement {
     return {
         kind: SyntaxKinds.IfStatement,
         test,
         conseqence,
-        alternative: alter
+        alternative: alter,
+        start, end
     }
 }
-export function createBlockStatement(body: AST.BlockStatement['body']): AST.BlockStatement {
+export function createBlockStatement(
+    body: AST.BlockStatement['body'],
+    start: SourcePosition, end: SourcePosition,
+): AST.BlockStatement {
     return {
         kind: SyntaxKinds.BlockStatement,
-        body,
+        body, start, end
     }
 }
-export function createSwitchStatement(discriminant: AST.SwitchStatement['discriminant'], cases: AST.SwitchStatement['cases']): AST.SwitchStatement {
+export function createSwitchStatement(
+    discriminant: AST.SwitchStatement['discriminant'], 
+    cases: AST.SwitchStatement['cases'],
+    start: SourcePosition, end: SourcePosition,
+): AST.SwitchStatement {
     return {
         kind: SyntaxKinds.SwitchStatement,
-        discriminant, cases,
+        discriminant, cases, start, end
     }
 }
-export function createSwitchCase(test: AST.SwitchCase['test'], consequence: AST.SwitchCase['consequence'] ):AST.SwitchCase {
+export function createSwitchCase(
+    test: AST.SwitchCase['test'], 
+    consequence: AST.SwitchCase['consequence'],
+    start: SourcePosition, end: SourcePosition,
+):AST.SwitchCase {
     return {
         kind: SyntaxKinds.SwitchCase,
-        test, consequence,
+        test, consequence, start, end
     }
 }
-export function createBreakStatement(label?: AST.BreakStatement['label']): AST.BreakStatement {
+export function createBreakStatement(
+    label: AST.BreakStatement['label'],
+    start: SourcePosition, end: SourcePosition,
+): AST.BreakStatement {
     return {
         kind: SyntaxKinds.BreakStatement,
-        label,
+        label, start, end
     }
 }
-export function createContinueStatement(label?: AST.ContinueStatement['label']): AST.ContinueStatement {
+export function createContinueStatement(
+    label: AST.ContinueStatement['label'],
+    start: SourcePosition, end: SourcePosition,
+): AST.ContinueStatement {
     return {
         kind: SyntaxKinds.ContinueStatement,
-        label,
+        label, start, end
     }
 }
-export function createLabeledStatement(label: AST.LabeledStatement['label'], body: AST.LabeledStatement['body']): AST.LabeledStatement {
+export function createLabeledStatement(
+    label: AST.LabeledStatement['label'], 
+    body: AST.LabeledStatement['body'],
+    start: SourcePosition, end: SourcePosition,
+): AST.LabeledStatement {
     return {
         kind: SyntaxKinds.LabeledStatement,
         label,
         body,
+        start, end
     }
 }
-export function createReturnStatement(argu: AST.ReturnStatement['argu']): AST.ReturnStatement {
+export function createReturnStatement(
+    argu: AST.ReturnStatement['argu'],
+    start: SourcePosition, end: SourcePosition,
+): AST.ReturnStatement {
     return {
         kind: SyntaxKinds.ReturnStatement,
-        argu,
+        argu, start, end
     }
 }
-export function createWhileStatement(test: AST.WhileStatement['test'], body: AST.WhileStatement['body']): AST.WhileStatement {
+export function createWhileStatement(
+    test: AST.WhileStatement['test'], 
+    body: AST.WhileStatement['body'],
+    start: SourcePosition, end: SourcePosition,
+): AST.WhileStatement {
     return {
         kind: SyntaxKinds.WhileStatement,
-        test, body,
+        test, body, start, end
     }
 }
-export function createDoWhileStatement(test: AST.DoWhileStatement['test'], body: AST.DoWhileStatement['body']): AST.DoWhileStatement {
+export function createDoWhileStatement(
+    test: AST.DoWhileStatement['test'], 
+    body: AST.DoWhileStatement['body'],
+    start: SourcePosition, end: SourcePosition,
+): AST.DoWhileStatement {
     return {
         kind: SyntaxKinds.DoWhileStatement,
-        test, body,
+        test, body, start, end
     }
 }
-export function createTryStatement(block: AST.TryStatement['block'], handler: AST.TryStatement['handler'], finalizer: AST.TryStatement['finalizer']): AST.TryStatement {
+export function createTryStatement(
+    block: AST.TryStatement['block'], 
+    handler: AST.TryStatement['handler'], 
+    finalizer: AST.TryStatement['finalizer'],
+    start: SourcePosition, end: SourcePosition
+): AST.TryStatement {
     return {
         kind: SyntaxKinds.TryStatement,
-        block, handler, finalizer
+        block, handler, finalizer,
+        start, end
     }
 }
-export function createCatchClause(param: AST.CatchClause['param'], body: AST.CatchClause['body']): AST.CatchClause {
+export function createCatchClause(
+    param: AST.CatchClause['param'],
+    body: AST.CatchClause['body'],
+    start: SourcePosition, end: SourcePosition
+): AST.CatchClause {
     return {
         kind: SyntaxKinds.CatchClause,
-        param, body,
+        param, body, start, end
     }
 }
-export function createThrowStatement(argu: AST.ThrowStatement['argu']): AST.ThrowStatement {
+export function createThrowStatement(
+    argu: AST.ThrowStatement['argu'],
+    start: SourcePosition, 
+    end: SourcePosition
+): AST.ThrowStatement {
     return {
         kind: SyntaxKinds.ThrowKeyword,
-        argu
+        argu, start, end
     }
 }
-export function createWithStatement(object: AST.WithStatement['object'], body: AST.WithStatement['body']): AST.WithStatement {
+export function createWithStatement(
+    object: AST.WithStatement['object'], 
+    body: AST.WithStatement['body'],
+    start: SourcePosition, end: SourcePosition
+): AST.WithStatement {
     return {
         kind: SyntaxKinds.WithStatement,
-        body, object,
+        body, object, start, end
     }
 }
-export function createDebuggerStatement(): AST.DebuggerStatement {
+export function createDebuggerStatement(
+    start: SourcePosition, 
+    end: SourcePosition
+): AST.DebuggerStatement {
     return {
-        kind: SyntaxKinds.DebuggerStatement
+        kind: SyntaxKinds.DebuggerStatement, start, end
     }
 }
 export function createForStatement(
     body: AST.ForStatement['body'],
-    init?: AST.ForStatement['init'],
-    test?: AST.ForStatement['test'],
-    update?: AST.ForStatement['update'],
+    init: AST.ForStatement['init'],
+    test: AST.ForStatement['test'],
+    update: AST.ForStatement['update'],
+    start: SourcePosition, end: SourcePosition,
 ): AST.ForStatement {
     return {
         kind: SyntaxKinds.ForStatement,
-        init, test, update, body
-
+        init, test, update, body,
+        start, end
     }
 }
 export function createForInStatement(
     left: AST.ForInStatement['left'],
     right: AST.ForInStatement['right'],
-    body: AST.ForInStatement['body']
+    body: AST.ForInStatement['body'],
+    start: SourcePosition, end: SourcePosition
 ): AST.ForInStatement {
     return {
         kind: SyntaxKinds.ForInStatement,
-        left, right, body
+        left, right, body,
+        start, end
     }
 }
 export function createForOfStatement(
     isAwait: boolean, 
     left: AST.ForOfStatement['left'],
     right: AST.ForOfStatement['right'],
-    body: AST.ForOfStatement['body']
+    body: AST.ForOfStatement['body'],
+    start: SourcePosition, end: SourcePosition
 ): AST.ForOfStatement {
     return {
         kind: SyntaxKinds.ForOfStatement,
         await: isAwait,
-        left, right, body
+        left, right, body,
+        start, end
     }
 }
-export function createAssignmentPattern(left: AST.AssignmentPattern['left'], right: AST.AssignmentPattern['right'] ): AST.AssignmentPattern {
+export function createAssignmentPattern(
+    left: AST.AssignmentPattern['left'], 
+    right: AST.AssignmentPattern['right'],
+    start: SourcePosition, end: SourcePosition
+): AST.AssignmentPattern {
     return {
         kind: SyntaxKinds.AssignmentPattern,
         left, 
-        right
+        right,
+        start, end
     }
 }
-export function createArrayPattern(elements: AST.ArrayPattern['elements']): AST.ArrayPattern {
+export function createArrayPattern(
+    elements: AST.ArrayPattern['elements'],
+    start: SourcePosition, end: SourcePosition
+): AST.ArrayPattern {
     return {
         kind: SyntaxKinds.ArrayPattern,
         elements,
+        start, end
     };
 }
-export function createObjectPattern(properties: AST.ObjectPattern['properties']): AST.ObjectPattern {
+export function createObjectPattern(
+    properties: AST.ObjectPattern['properties'],
+    start: SourcePosition, end: SourcePosition
+): AST.ObjectPattern {
     return {
         kind: SyntaxKinds.ObjectPattern,
         properties,
+        start, end
     }
 }
 export function createObjectPatternProperty(
@@ -478,74 +666,105 @@ export function createObjectPatternProperty(
     value: AST.ObjectPatternProperty['value'],
     computed: AST.ObjectPatternProperty['computed'],
     shorted: AST.ObjectPatternProperty['shorted'],
+    start: SourcePosition, end: SourcePosition
 ): AST.ObjectPatternProperty {
     return {
         kind:  SyntaxKinds.ObjectPatternProperty,
         computed, shorted,
-        key, value
+        key, value, start, end
     }
 }
-export function createRestElement(argument: AST.RestElement['argument']): AST.RestElement {
+export function createRestElement(
+    argument: AST.RestElement['argument'],
+    start: SourcePosition, end: SourcePosition
+): AST.RestElement {
     return {
         kind: SyntaxKinds.RestElement,
-        argument,
+        argument, start, end
     }
 }
 export function createProgram( body: Array<AST.ModuleItem>): AST.Program {
     return { kind: SyntaxKinds.Program, body };
 }
-export function createImportDeclaration(specifiers: AST.ImportDeclaration['specifiers'],source: AST.ImportDeclaration['source']): AST.ImportDeclaration {
+export function createImportDeclaration(
+    specifiers: AST.ImportDeclaration['specifiers'],
+    source: AST.ImportDeclaration['source'],
+    start: SourcePosition, end: SourcePosition
+): AST.ImportDeclaration {
     return {
         kind: SyntaxKinds.ImportDeclaration,
         specifiers,
-        source,
+        source,start, end
     }
 }
-export function createImportDefaultSpecifier(imported: AST.ImportDefaultSpecifier['imported']): AST.ImportDefaultSpecifier {
+export function createImportDefaultSpecifier(
+    imported: AST.ImportDefaultSpecifier['imported'],
+    start: SourcePosition, end: SourcePosition
+): AST.ImportDefaultSpecifier {
     return {
         kind: SyntaxKinds.ImportDefaultSpecifier,
-        imported,
+        imported, start, end
     }
 }
-export function createImportNamespaceSpecifier(imported: AST.ImportNamespaceSpecifier['imported']): AST.ImportNamespaceSpecifier {
+export function createImportNamespaceSpecifier(
+    imported: AST.ImportNamespaceSpecifier['imported'],
+    start: SourcePosition, end: SourcePosition
+): AST.ImportNamespaceSpecifier {
     return {
         kind: SyntaxKinds.ImportNamespaceSpecifier,
-        imported,
+        imported, start, end
     }
 }
-export function createImportSpecifier(imported: AST.ImportSpecifier['imported'], local?: AST.ImportSpecifier['local']): AST.ImportSpecifier {
+export function createImportSpecifier(
+    imported: AST.ImportSpecifier['imported'], 
+    local: AST.ImportSpecifier['local'],
+    start: SourcePosition, end: SourcePosition
+): AST.ImportSpecifier {
     return {
         kind: SyntaxKinds.ImportSpecifier,
         imported,
-        local,
+        local, start, end
     }
 }
 
-export function createExportAllDeclaration(exported: AST.ExportAllDeclaration['exported'], source: AST.ExportAllDeclaration['source']): AST.ExportAllDeclaration {
+export function createExportAllDeclaration(
+    exported: AST.ExportAllDeclaration['exported'], 
+    source: AST.ExportAllDeclaration['source'],
+    start: SourcePosition, end: SourcePosition
+): AST.ExportAllDeclaration {
     return {
         kind: SyntaxKinds.ExportAllDeclaration,
-        exported, source
+        exported, source,
+        start,end
     }
 }
 export function createExportNamedDeclaration(
     specifiers: AST.ExportNamedDeclarations['specifiers'],
     declaration: AST.ExportNamedDeclarations['declaration'],
     source: AST.ExportNamedDeclarations['source'],
+    start: SourcePosition, end: SourcePosition
 ): AST.ExportNamedDeclarations {
     return {
         kind: SyntaxKinds.ExportNamedDeclaration,
-        specifiers, declaration, source,
+        specifiers, declaration, source, start, end
     }
 }
-export function createExportSpecifier( exported: AST.ExportSpecifier['exported'], local: AST.ExportSpecifier['local']): AST.ExportSpecifier {
+export function createExportSpecifier(
+    exported: AST.ExportSpecifier['exported'], 
+    local: AST.ExportSpecifier['local'],
+    start: SourcePosition, end: SourcePosition
+): AST.ExportSpecifier {
     return {
         kind: SyntaxKinds.ExportSpecifier,
-        exported, local,
+        exported, local,start, end
     }
 }
-export function createExportDefaultDeclaration(declaration: AST.ExportDefaultDeclaration['declaration']): AST.ExportDefaultDeclaration {
+export function createExportDefaultDeclaration(
+    declaration: AST.ExportDefaultDeclaration['declaration'],
+    start: SourcePosition, end: SourcePosition
+): AST.ExportDefaultDeclaration {
     return {
         kind: SyntaxKinds.ExportDefaultDeclaration,
-        declaration,
+        declaration, start, end
     }
 }

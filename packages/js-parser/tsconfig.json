@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
         "esModuleInterop": true,
-        "resolveJsonModule": true,
         "target": "es6",
         "module": "commonjs",    
         "lib": ["ESNext", "DOM"],
         "baseUrl": ".",
-        "outDir": "dist"
+        "paths": {
+            "@/src/*": ["src/*"]
+        },
+        "noEmit": true,
     },
     "exclude": [
         "node_modules/**",

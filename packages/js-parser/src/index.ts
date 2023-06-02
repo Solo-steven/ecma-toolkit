@@ -1,7 +1,7 @@
-import { createLexer } from "./lexer";
+import { createLexer } from "./lexer/index";
 import { SyntaxKinds } from "./syntax/kinds";
-import { createParser } from "./parser";
-export { createParser } from "./parser";
+import { createParser } from "./parser/index";
+export { createParser } from "./parser/index";
 const code_1 = `
      a = {
         b: 10 + 10,
@@ -44,16 +44,16 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-const y = {
-  async set () {
-  },
-  set async  x(x) {
-  
-  },
-  get x() {
-  
-  }
-}
+const {
+    props: {
+        someProperty: {
+            data,
+            value,
+            name,
+        }
+    },
+    otherProps,
+} = someNestedObject
 `
 const lexer = createLexer(code)
 
@@ -68,14 +68,14 @@ const obj = {
 
 const { a: {b} } = obj;
  
-// while(1) {
-//     const t = lexer.nextToken();
-//     if(t === SyntaxKinds.EOFToken) {
-//         break;
-//     }
-//     console.log(t, lexer.getSourceValue());
-// }
+while(1) {
+    const t = lexer.nextToken();
+    if(t === SyntaxKinds.EOFToken) {
+        break;
+    }
+    console.log(t, lexer.getSourceValue(), lexer.getStartPosition(), lexer.getEndPosition());
+}
 
-// const parser = createParser(code);
-// const ast = parser.parse();
-// console.log(JSON.stringify(ast, null, 2));
+const parser = createParser(code);
+const ast = parser.parse();
+console.log(JSON.stringify(ast, null, 2));

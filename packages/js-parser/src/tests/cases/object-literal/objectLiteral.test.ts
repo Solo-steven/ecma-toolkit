@@ -1,7 +1,7 @@
 import path from "path";
 import { readFileAsString, toAST } from "../../helper";
 
-describe("case/object literal/object property name", () => {
+describe("case/object-literal", () => {
     test("complex case of object literal", async () => {
         const code =  await readFileAsString(path.join(__dirname, "complexProperty.js"));
         expect(toAST(code)).toMatchSnapshot();

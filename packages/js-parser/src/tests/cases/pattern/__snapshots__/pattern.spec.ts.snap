@@ -6,32 +6,102 @@ exports[`cases/ destructure pattern array pattern in declaration 1`] = `
     {
       "declarations": [
         {
+          "end": {
+            "col": 36,
+            "index": 36,
+            "row": 0,
+          },
           "id": {
             "elements": [
               {
+                "end": {
+                  "col": 12,
+                  "index": 12,
+                  "row": 0,
+                },
                 "kind": 10117,
                 "name": "state",
+                "start": {
+                  "col": 7,
+                  "index": 7,
+                  "row": 0,
+                },
               },
               {
+                "end": {
+                  "col": 22,
+                  "index": 22,
+                  "row": 0,
+                },
                 "kind": 10117,
                 "name": "setState",
+                "start": {
+                  "col": 14,
+                  "index": 14,
+                  "row": 0,
+                },
               },
             ],
-            "kind": 10178,
+            "end": {
+              "col": 23,
+              "index": 23,
+              "row": 0,
+            },
+            "kind": 10180,
+            "start": {
+              "col": 6,
+              "index": 6,
+              "row": 0,
+            },
           },
           "init": {
             "arguments": [],
             "callee": {
+              "end": {
+                "col": 34,
+                "index": 34,
+                "row": 0,
+              },
               "kind": 10117,
               "name": "useState",
+              "start": {
+                "col": 26,
+                "index": 26,
+                "row": 0,
+              },
             },
-            "kind": 10167,
+            "end": {
+              "col": 36,
+              "index": 36,
+              "row": 0,
+            },
+            "kind": 10169,
             "optional": false,
+            "start": {
+              "col": 34,
+              "index": 34,
+              "row": 0,
+            },
           },
           "kind": 10140,
+          "start": {
+            "col": 6,
+            "index": 6,
+            "row": 0,
+          },
         },
       ],
+      "end": {
+        "col": 36,
+        "index": 36,
+        "row": 0,
+      },
       "kind": 10139,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
       "variant": "const",
     },
   ],
@@ -45,105 +115,325 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
     {
       "declarations": [
         {
+          "end": {
+            "col": 93,
+            "index": 93,
+            "row": 0,
+          },
           "id": {
             "elements": [
               {
-                "kind": 10176,
+                "end": {
+                  "col": 78,
+                  "index": 78,
+                  "row": 0,
+                },
+                "kind": 10178,
                 "properties": [
                   {
                     "computed": false,
+                    "end": {
+                      "col": 12,
+                      "index": 12,
+                      "row": 0,
+                    },
                     "key": {
+                      "end": {
+                        "col": 12,
+                        "index": 12,
+                        "row": 0,
+                      },
                       "kind": 10117,
                       "name": "key",
+                      "start": {
+                        "col": 9,
+                        "index": 9,
+                        "row": 0,
+                      },
                     },
-                    "kind": 10177,
+                    "kind": 10179,
                     "shorted": true,
+                    "start": {
+                      "col": 9,
+                      "index": 9,
+                      "row": 0,
+                    },
                     "value": undefined,
                   },
                   {
                     "computed": false,
+                    "end": {
+                      "col": 19,
+                      "index": 19,
+                      "row": 0,
+                    },
                     "key": {
+                      "end": {
+                        "col": 19,
+                        "index": 19,
+                        "row": 0,
+                      },
                       "kind": 10117,
                       "name": "value",
+                      "start": {
+                        "col": 14,
+                        "index": 14,
+                        "row": 0,
+                      },
                     },
-                    "kind": 10177,
+                    "kind": 10179,
                     "shorted": true,
+                    "start": {
+                      "col": 14,
+                      "index": 14,
+                      "row": 0,
+                    },
                     "value": undefined,
                   },
                   {
                     "computed": false,
+                    "end": {
+                      "col": 46,
+                      "index": 46,
+                      "row": 0,
+                    },
                     "key": {
+                      "end": {
+                        "col": 25,
+                        "index": 25,
+                        "row": 0,
+                      },
                       "kind": 10117,
                       "name": "data",
+                      "start": {
+                        "col": 21,
+                        "index": 21,
+                        "row": 0,
+                      },
                     },
-                    "kind": 10177,
+                    "kind": 10179,
                     "shorted": false,
+                    "start": {
+                      "col": 21,
+                      "index": 21,
+                      "row": 0,
+                    },
                     "value": {
-                      "kind": 10176,
+                      "end": {
+                        "col": 46,
+                        "index": 46,
+                        "row": 0,
+                      },
+                      "kind": 10178,
                       "properties": [
                         {
                           "computed": false,
+                          "end": {
+                            "col": 34,
+                            "index": 34,
+                            "row": 0,
+                          },
                           "key": {
+                            "end": {
+                              "col": 34,
+                              "index": 34,
+                              "row": 0,
+                            },
                             "kind": 10117,
                             "name": "users",
+                            "start": {
+                              "col": 29,
+                              "index": 29,
+                              "row": 0,
+                            },
                           },
-                          "kind": 10177,
+                          "kind": 10179,
                           "shorted": true,
+                          "start": {
+                            "col": 29,
+                            "index": 29,
+                            "row": 0,
+                          },
                           "value": undefined,
                         },
                         {
                           "computed": false,
+                          "end": {
+                            "col": 44,
+                            "index": 44,
+                            "row": 0,
+                          },
                           "key": {
+                            "end": {
+                              "col": 44,
+                              "index": 44,
+                              "row": 0,
+                            },
                             "kind": 10117,
                             "name": "counters",
+                            "start": {
+                              "col": 36,
+                              "index": 36,
+                              "row": 0,
+                            },
                           },
-                          "kind": 10177,
+                          "kind": 10179,
                           "shorted": true,
+                          "start": {
+                            "col": 36,
+                            "index": 36,
+                            "row": 0,
+                          },
                           "value": undefined,
                         },
                       ],
+                      "start": {
+                        "col": 27,
+                        "index": 27,
+                        "row": 0,
+                      },
                     },
                   },
                   {
                     "computed": false,
+                    "end": {
+                      "col": 77,
+                      "index": 77,
+                      "row": 0,
+                    },
                     "key": {
+                      "end": {
+                        "col": 53,
+                        "index": 53,
+                        "row": 0,
+                      },
                       "kind": 10117,
                       "name": "names",
+                      "start": {
+                        "col": 48,
+                        "index": 48,
+                        "row": 0,
+                      },
                     },
-                    "kind": 10177,
+                    "kind": 10179,
                     "shorted": false,
+                    "start": {
+                      "col": 48,
+                      "index": 48,
+                      "row": 0,
+                    },
                     "value": {
                       "elements": [
                         {
+                          "end": {
+                            "col": 65,
+                            "index": 65,
+                            "row": 0,
+                          },
                           "kind": 10117,
                           "name": "userName1",
+                          "start": {
+                            "col": 56,
+                            "index": 56,
+                            "row": 0,
+                          },
                         },
                         {
+                          "end": {
+                            "col": 76,
+                            "index": 76,
+                            "row": 0,
+                          },
                           "kind": 10117,
                           "name": "userName2",
+                          "start": {
+                            "col": 67,
+                            "index": 67,
+                            "row": 0,
+                          },
                         },
                       ],
-                      "kind": 10178,
+                      "end": {
+                        "col": 77,
+                        "index": 77,
+                        "row": 0,
+                      },
+                      "kind": 10180,
+                      "start": {
+                        "col": 55,
+                        "index": 55,
+                        "row": 0,
+                      },
                     },
                   },
                 ],
+                "start": {
+                  "col": 8,
+                  "index": 8,
+                  "row": 0,
+                },
               },
             ],
-            "kind": 10178,
+            "end": {
+              "col": 80,
+              "index": 80,
+              "row": 0,
+            },
+            "kind": 10180,
+            "start": {
+              "col": 6,
+              "index": 6,
+              "row": 0,
+            },
           },
           "init": {
             "arguments": [],
             "callee": {
+              "end": {
+                "col": 91,
+                "index": 91,
+                "row": 0,
+              },
               "kind": 10117,
               "name": "useState",
+              "start": {
+                "col": 83,
+                "index": 83,
+                "row": 0,
+              },
             },
-            "kind": 10167,
+            "end": {
+              "col": 93,
+              "index": 93,
+              "row": 0,
+            },
+            "kind": 10169,
             "optional": false,
+            "start": {
+              "col": 91,
+              "index": 91,
+              "row": 0,
+            },
           },
           "kind": 10140,
+          "start": {
+            "col": 6,
+            "index": 6,
+            "row": 0,
+          },
         },
       ],
+      "end": {
+        "col": 93,
+        "index": 93,
+        "row": 0,
+      },
       "kind": 10139,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
       "variant": "const",
     },
   ],
@@ -157,87 +447,267 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
     {
       "declarations": [
         {
+          "end": {
+            "col": 20,
+            "index": 153,
+            "row": 9,
+          },
           "id": {
-            "kind": 10176,
+            "end": {
+              "col": 1,
+              "index": 134,
+              "row": 9,
+            },
+            "kind": 10178,
             "properties": [
               {
                 "computed": false,
+                "end": {
+                  "col": 5,
+                  "index": 115,
+                  "row": 7,
+                },
                 "key": {
+                  "end": {
+                    "col": 9,
+                    "index": 17,
+                    "row": 1,
+                  },
                   "kind": 10117,
                   "name": "props",
+                  "start": {
+                    "col": 4,
+                    "index": 12,
+                    "row": 1,
+                  },
                 },
-                "kind": 10177,
+                "kind": 10179,
                 "shorted": false,
+                "start": {
+                  "col": 4,
+                  "index": 12,
+                  "row": 1,
+                },
                 "value": {
-                  "kind": 10176,
+                  "end": {
+                    "col": 5,
+                    "index": 115,
+                    "row": 7,
+                  },
+                  "kind": 10178,
                   "properties": [
                     {
                       "computed": false,
+                      "end": {
+                        "col": 9,
+                        "index": 109,
+                        "row": 6,
+                      },
                       "key": {
+                        "end": {
+                          "col": 20,
+                          "index": 41,
+                          "row": 2,
+                        },
                         "kind": 10117,
                         "name": "someProperty",
+                        "start": {
+                          "col": 8,
+                          "index": 29,
+                          "row": 2,
+                        },
                       },
-                      "kind": 10177,
+                      "kind": 10179,
                       "shorted": false,
+                      "start": {
+                        "col": 8,
+                        "index": 29,
+                        "row": 2,
+                      },
                       "value": {
-                        "kind": 10176,
+                        "end": {
+                          "col": 9,
+                          "index": 109,
+                          "row": 6,
+                        },
+                        "kind": 10178,
                         "properties": [
                           {
                             "computed": false,
+                            "end": {
+                              "col": 16,
+                              "index": 61,
+                              "row": 3,
+                            },
                             "key": {
+                              "end": {
+                                "col": 16,
+                                "index": 61,
+                                "row": 3,
+                              },
                               "kind": 10117,
                               "name": "data",
+                              "start": {
+                                "col": 12,
+                                "index": 57,
+                                "row": 3,
+                              },
                             },
-                            "kind": 10177,
+                            "kind": 10179,
                             "shorted": true,
+                            "start": {
+                              "col": 12,
+                              "index": 57,
+                              "row": 3,
+                            },
                             "value": undefined,
                           },
                           {
                             "computed": false,
+                            "end": {
+                              "col": 17,
+                              "index": 80,
+                              "row": 4,
+                            },
                             "key": {
+                              "end": {
+                                "col": 17,
+                                "index": 80,
+                                "row": 4,
+                              },
                               "kind": 10117,
                               "name": "value",
+                              "start": {
+                                "col": 12,
+                                "index": 75,
+                                "row": 4,
+                              },
                             },
-                            "kind": 10177,
+                            "kind": 10179,
                             "shorted": true,
+                            "start": {
+                              "col": 12,
+                              "index": 75,
+                              "row": 4,
+                            },
                             "value": undefined,
                           },
                           {
                             "computed": false,
+                            "end": {
+                              "col": 16,
+                              "index": 98,
+                              "row": 5,
+                            },
                             "key": {
+                              "end": {
+                                "col": 16,
+                                "index": 98,
+                                "row": 5,
+                              },
                               "kind": 10117,
                               "name": "name",
+                              "start": {
+                                "col": 12,
+                                "index": 94,
+                                "row": 5,
+                              },
                             },
-                            "kind": 10177,
+                            "kind": 10179,
                             "shorted": true,
+                            "start": {
+                              "col": 12,
+                              "index": 94,
+                              "row": 5,
+                            },
                             "value": undefined,
                           },
                         ],
+                        "start": {
+                          "col": 22,
+                          "index": 43,
+                          "row": 2,
+                        },
                       },
                     },
                   ],
+                  "start": {
+                    "col": 11,
+                    "index": 19,
+                    "row": 1,
+                  },
                 },
               },
               {
                 "computed": false,
+                "end": {
+                  "col": 14,
+                  "index": 131,
+                  "row": 8,
+                },
                 "key": {
+                  "end": {
+                    "col": 14,
+                    "index": 131,
+                    "row": 8,
+                  },
                   "kind": 10117,
                   "name": "otherProps",
+                  "start": {
+                    "col": 4,
+                    "index": 121,
+                    "row": 8,
+                  },
                 },
-                "kind": 10177,
+                "kind": 10179,
                 "shorted": true,
+                "start": {
+                  "col": 4,
+                  "index": 121,
+                  "row": 8,
+                },
                 "value": undefined,
               },
             ],
+            "start": {
+              "col": 6,
+              "index": 6,
+              "row": 0,
+            },
           },
           "init": {
+            "end": {
+              "col": 20,
+              "index": 153,
+              "row": 9,
+            },
             "kind": 10117,
             "name": "someNestedObject",
+            "start": {
+              "col": 4,
+              "index": 137,
+              "row": 9,
+            },
           },
           "kind": 10140,
+          "start": {
+            "col": 6,
+            "index": 6,
+            "row": 0,
+          },
         },
       ],
+      "end": {
+        "col": 20,
+        "index": 153,
+        "row": 9,
+      },
       "kind": 10139,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
       "variant": "const",
     },
   ],
@@ -251,49 +721,149 @@ exports[`cases/ destructure pattern object pattern in declaration 1`] = `
     {
       "declarations": [
         {
+          "end": {
+            "col": 35,
+            "index": 35,
+            "row": 0,
+          },
           "id": {
-            "kind": 10176,
+            "end": {
+              "col": 27,
+              "index": 27,
+              "row": 0,
+            },
+            "kind": 10178,
             "properties": [
               {
                 "computed": false,
+                "end": {
+                  "col": 12,
+                  "index": 12,
+                  "row": 0,
+                },
                 "key": {
+                  "end": {
+                    "col": 12,
+                    "index": 12,
+                    "row": 0,
+                  },
                   "kind": 10117,
                   "name": "data",
+                  "start": {
+                    "col": 8,
+                    "index": 8,
+                    "row": 0,
+                  },
                 },
-                "kind": 10177,
+                "kind": 10179,
                 "shorted": true,
+                "start": {
+                  "col": 8,
+                  "index": 8,
+                  "row": 0,
+                },
                 "value": undefined,
               },
               {
                 "computed": false,
+                "end": {
+                  "col": 18,
+                  "index": 18,
+                  "row": 0,
+                },
                 "key": {
+                  "end": {
+                    "col": 18,
+                    "index": 18,
+                    "row": 0,
+                  },
                   "kind": 10117,
                   "name": "name",
+                  "start": {
+                    "col": 14,
+                    "index": 14,
+                    "row": 0,
+                  },
                 },
-                "kind": 10177,
+                "kind": 10179,
                 "shorted": true,
+                "start": {
+                  "col": 14,
+                  "index": 14,
+                  "row": 0,
+                },
                 "value": undefined,
               },
               {
                 "computed": false,
+                "end": {
+                  "col": 25,
+                  "index": 25,
+                  "row": 0,
+                },
                 "key": {
+                  "end": {
+                    "col": 25,
+                    "index": 25,
+                    "row": 0,
+                  },
                   "kind": 10117,
                   "name": "value",
+                  "start": {
+                    "col": 20,
+                    "index": 20,
+                    "row": 0,
+                  },
                 },
-                "kind": 10177,
+                "kind": 10179,
                 "shorted": true,
+                "start": {
+                  "col": 20,
+                  "index": 20,
+                  "row": 0,
+                },
                 "value": undefined,
               },
             ],
+            "start": {
+              "col": 6,
+              "index": 6,
+              "row": 0,
+            },
           },
           "init": {
+            "end": {
+              "col": 35,
+              "index": 35,
+              "row": 0,
+            },
             "kind": 10117,
             "name": "state",
+            "start": {
+              "col": 30,
+              "index": 30,
+              "row": 0,
+            },
           },
           "kind": 10140,
+          "start": {
+            "col": 6,
+            "index": 6,
+            "row": 0,
+          },
         },
       ],
+      "end": {
+        "col": 35,
+        "index": 35,
+        "row": 0,
+      },
       "kind": 10139,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
       "variant": "const",
     },
   ],

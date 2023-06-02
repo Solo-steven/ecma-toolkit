@@ -1,0 +1,302 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cases/class-declaration class declaration with private name 1`] = `
+{
+  "body": [
+    {
+      "body": {
+        "body": [
+          {
+            "async": false,
+            "body": {
+              "body": [
+                {
+                  "await": false,
+                  "body": {
+                    "body": [
+                      {
+                        "end": {
+                          "col": 29,
+                          "index": 111,
+                          "row": 3,
+                        },
+                        "expr": {
+                          "arguments": [
+                            {
+                              "end": {
+                                "col": 28,
+                                "index": 110,
+                                "row": 3,
+                              },
+                              "kind": 10117,
+                              "name": "item",
+                              "start": {
+                                "col": 24,
+                                "index": 106,
+                                "row": 3,
+                              },
+                            },
+                          ],
+                          "callee": {
+                            "computed": false,
+                            "end": {
+                              "col": 23,
+                              "index": 105,
+                              "row": 3,
+                            },
+                            "kind": 10166,
+                            "object": {
+                              "end": {
+                                "col": 19,
+                                "index": 101,
+                                "row": 3,
+                              },
+                              "kind": 10117,
+                              "name": "console",
+                              "start": {
+                                "col": 12,
+                                "index": 94,
+                                "row": 3,
+                              },
+                            },
+                            "optional": false,
+                            "property": {
+                              "end": {
+                                "col": 23,
+                                "index": 105,
+                                "row": 3,
+                              },
+                              "kind": 10117,
+                              "name": "log",
+                              "start": {
+                                "col": 20,
+                                "index": 102,
+                                "row": 3,
+                              },
+                            },
+                            "start": {
+                              "col": 19,
+                              "index": 101,
+                              "row": 3,
+                            },
+                          },
+                          "end": {
+                            "col": 29,
+                            "index": 111,
+                            "row": 3,
+                          },
+                          "kind": 10169,
+                          "optional": false,
+                          "start": {
+                            "col": 23,
+                            "index": 105,
+                            "row": 3,
+                          },
+                        },
+                        "kind": 10176,
+                        "start": {
+                          "col": 23,
+                          "index": 105,
+                          "row": 3,
+                        },
+                      },
+                    ],
+                    "end": {
+                      "col": 9,
+                      "index": 121,
+                      "row": 4,
+                    },
+                    "kind": 10122,
+                    "start": {
+                      "col": 42,
+                      "index": 80,
+                      "row": 2,
+                    },
+                  },
+                  "end": {
+                    "col": 9,
+                    "index": 121,
+                    "row": 4,
+                  },
+                  "kind": 10137,
+                  "left": {
+                    "declarations": [
+                      {
+                        "end": {
+                          "col": 22,
+                          "index": 60,
+                          "row": 2,
+                        },
+                        "id": {
+                          "end": {
+                            "col": 22,
+                            "index": 60,
+                            "row": 2,
+                          },
+                          "kind": 10117,
+                          "name": "item",
+                          "start": {
+                            "col": 18,
+                            "index": 56,
+                            "row": 2,
+                          },
+                        },
+                        "init": null,
+                        "kind": 10140,
+                        "start": {
+                          "col": 18,
+                          "index": 56,
+                          "row": 2,
+                        },
+                      },
+                    ],
+                    "end": {
+                      "col": 22,
+                      "index": 60,
+                      "row": 2,
+                    },
+                    "kind": 10139,
+                    "start": {
+                      "col": 12,
+                      "index": 50,
+                      "row": 2,
+                    },
+                    "variant": "const",
+                  },
+                  "right": {
+                    "computed": false,
+                    "end": {
+                      "col": 40,
+                      "index": 78,
+                      "row": 2,
+                    },
+                    "kind": 10166,
+                    "object": {
+                      "end": {
+                        "col": 30,
+                        "index": 68,
+                        "row": 2,
+                      },
+                      "kind": 10148,
+                      "name": "this",
+                      "start": {
+                        "col": 26,
+                        "index": 64,
+                        "row": 2,
+                      },
+                    },
+                    "optional": false,
+                    "property": {
+                      "end": {
+                        "col": 40,
+                        "index": 78,
+                        "row": 2,
+                      },
+                      "kind": 10117,
+                      "name": "someArray",
+                      "start": {
+                        "col": 31,
+                        "index": 69,
+                        "row": 2,
+                      },
+                    },
+                    "start": {
+                      "col": 30,
+                      "index": 68,
+                      "row": 2,
+                    },
+                  },
+                  "start": {
+                    "col": 8,
+                    "index": 46,
+                    "row": 2,
+                  },
+                },
+              ],
+              "end": {
+                "col": 5,
+                "index": 127,
+                "row": 5,
+              },
+              "kind": 10143,
+              "start": {
+                "col": 18,
+                "index": 36,
+                "row": 1,
+              },
+            },
+            "computed": false,
+            "end": {
+              "col": 5,
+              "index": 127,
+              "row": 5,
+            },
+            "generator": false,
+            "key": {
+              "end": {
+                "col": 15,
+                "index": 33,
+                "row": 1,
+              },
+              "kind": 10118,
+              "name": "someMethod",
+              "start": {
+                "col": 4,
+                "index": 22,
+                "row": 1,
+              },
+            },
+            "kind": 10158,
+            "params": [],
+            "start": {
+              "col": 4,
+              "index": 22,
+              "row": 1,
+            },
+            "static": false,
+            "type": "method",
+          },
+        ],
+        "end": {
+          "col": 1,
+          "index": 129,
+          "row": 6,
+        },
+        "kind": 10145,
+        "start": {
+          "col": 16,
+          "index": 16,
+          "row": 0,
+        },
+      },
+      "end": {
+        "col": 1,
+        "index": 129,
+        "row": 6,
+      },
+      "id": {
+        "end": {
+          "col": 15,
+          "index": 15,
+          "row": 0,
+        },
+        "kind": 10117,
+        "name": "Component",
+        "start": {
+          "col": 6,
+          "index": 6,
+          "row": 0,
+        },
+      },
+      "kind": 10144,
+      "start": {
+        "col": 0,
+        "index": 0,
+        "row": 0,
+      },
+      "superClass": null,
+    },
+  ],
+  "kind": 10120,
+}
+`;

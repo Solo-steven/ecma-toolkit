@@ -1,3 +1,4 @@
+import { SourcePosition } from "../utils/position";
 import { SyntaxKinds } from "./kinds";
 import { 
     UpdateOperatorKinds, 
@@ -9,7 +10,10 @@ import {
  *    Shared, Basic, Top Level AST Node
  * ======================================
  */
-export interface ModuleItem {}
+export interface ModuleItem {
+    start: SourcePosition,
+    end: SourcePosition,
+}
 export type StatementListItem = Statement | Declaration;
 export interface Program {
     kind: SyntaxKinds.Program;
@@ -197,7 +201,7 @@ export type Expression =
     UpdateExpression | UnaryExpression | AwaitExpression | BinaryExpression |
     ConditionalExpression | AssigmentExpression | SequenceExpression
 ;
-export interface ExpressionStatement  {
+export interface ExpressionStatement extends ModuleItem {
     kind: SyntaxKinds.ExpressionStatement;
     expr: Expression;
 }
@@ -396,21 +400,21 @@ export type Declaration = FunctionDeclaration | VariableDeclaration | ClassDecla
  * Import Declaration
  * ===========================================
  */
-export interface ImportDeclaration {
+export interface ImportDeclaration extends ModuleItem  {
     kind: SyntaxKinds.ImportDeclaration;
     specifiers: Array<ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier>;
     source: StringLiteral;
 }
-export interface ImportDefaultSpecifier {
+export interface ImportDefaultSpecifier extends ModuleItem {
     kind: SyntaxKinds.ImportDefaultSpecifier;
     imported: Identifier;
 }
-export interface ImportSpecifier {
+export interface ImportSpecifier extends ModuleItem {
     kind: SyntaxKinds.ImportSpecifier;
     imported: Identifier | StringLiteral;
     local: Identifier | null;
 }
-export interface ImportNamespaceSpecifier {
+export interface ImportNamespaceSpecifier extends ModuleItem {
     kind: SyntaxKinds.ImportNamespaceSpecifier;
     imported: Identifier;
 }
@@ -419,7 +423,7 @@ export interface ImportNamespaceSpecifier {
  * ===========================================
  */
 
-export interface ExportNamedDeclarations {
+export interface ExportNamedDeclarations extends ModuleItem {
     kind: SyntaxKinds.ExportNamedDeclaration;
     specifiers: Array<ExportSpecifier>;
     declaration: Declaration | null;
@@ -430,11 +434,11 @@ export interface ExportSpecifier extends ModuleItem {
     exported: Identifier | StringLiteral;
     local: Identifier | StringLiteral | null;
 }
-export interface ExportDefaultDeclaration {
+export interface ExportDefaultDeclaration extends ModuleItem {
     kind: SyntaxKinds.ExportDefaultDeclaration;
     declaration: FunctionDeclaration | FunctionExpression | ClassDeclaration | ClassExpression | Expression;
 }
-export interface ExportAllDeclaration {
+export interface ExportAllDeclaration extends ModuleItem {
     kind: SyntaxKinds.ExportAllDeclaration;
     exported: Identifier | null;
     source: StringLiteral;
