@@ -44,16 +44,9 @@ const code_3 = `
      let  {a , b : { c, j} } = dd, b = 100, c= 1000
 `;
 const code = `
-const {
-    props: {
-        someProperty: {
-            data,
-            value,
-            name,
-        }
-    },
-    otherProps,
-} = someNestedObject
+     function someFunctionCall() {
+        return 10;
+     }
 `
 const lexer = createLexer(code)
 

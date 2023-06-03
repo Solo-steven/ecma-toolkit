@@ -43,6 +43,13 @@ export function createLexer(code: string): Lexer {
         endPosition: createSourcePosition(),
         templateStringStackCounter: [],
     };
+    /**
+     * 
+     * @returns 
+     */
+    function expectLineTermintate() {
+        return startWith("\n");
+    }
     function getSourceValue() {
         return context.sourceValue;
     }
