@@ -5,11 +5,13 @@ import rollupTypeScript from "@rollup/plugin-typescript";
 const Config ={
     input: "./src/index.ts",
     output: {
-        file: "parser.cjs",
+        dir: path.join(__dirname, "dist"),
         format: "cjs",
     },
     plugins:  [
-        rollupTypeScript()
+        rollupTypeScript({
+            tsconfig: path.join(__dirname, "tsconfig.build.json")
+        })
     ]
 }
 
