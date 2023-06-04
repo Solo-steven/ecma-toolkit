@@ -1,11 +1,11 @@
 import { SourcePosition } from "../utils/position";
-import { SyntaxKinds } from "./kinds";
 import { 
+    SyntaxKinds,
     UpdateOperatorKinds, 
     UnaryOperatorKinds, 
     BinaryOperatorKinds, 
     AssigmentOperatorKinds
-} from "./operator";
+} from "./kinds";
 /** ======================================
  *    Shared, Basic, Top Level AST Node
  * ======================================
@@ -212,7 +212,7 @@ export interface ExpressionStatement extends ModuleItem {
  */
 export interface ObjectPattern extends ModuleItem {
     kind: SyntaxKinds.ObjectPattern;
-    properties: Array<any>;
+    properties: Array<ObjectPatternProperty | RestElement>;
 }
 export interface ObjectPatternProperty extends ModuleItem {
     kind: SyntaxKinds.ObjectPatternProperty;
@@ -381,7 +381,7 @@ export interface ClassBody extends ModuleItem {
 }
 export interface ClassProperty extends Property {
     kind: SyntaxKinds.ClassProperty;
-};
+}
 export interface ClassMethodDefinition extends Omit<MethodDefinition, "type"> {
     kind: SyntaxKinds.ClassMethodDefinition;
 }

@@ -1,3 +1,4 @@
+/* eslint-env node  */
 import path from 'path';
 import rollupTypeScript from "@rollup/plugin-typescript";
 

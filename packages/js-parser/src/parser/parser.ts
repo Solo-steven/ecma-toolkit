@@ -57,9 +57,10 @@ import {
     ClassAccessor,
     StringLiteral,
     ClassConstructor,
+    ObjectPatternProperty,
 } from "../syntax/ast";
-import { SyntaxKinds } from "../syntax/kinds";
 import { 
+    SyntaxKinds ,
     UnaryOperators,
     BinaryOperators,
     AssigmentOperators,
@@ -69,7 +70,7 @@ import {
     UpdateOperators,
     UpdateOperatorKinds,
     Keywords,
- } from "../syntax/operator";
+} from "../syntax/kinds";
 import { getBinaryPrecedence, isBinaryOps } from "../parser/helper";
 import { ErrorMessageMap } from "../parser/error";
 import { SourcePosition, cloneSourcePosition } from "@/src/utils/position";
@@ -88,7 +89,7 @@ interface ASTArrayWithMetaData<T> {
     nodes: Array<T>;
     start: SourcePosition;
     end: SourcePosition;
-};
+}
 /**
  * Create context for parser
  * @returns {Context}
@@ -194,7 +195,7 @@ export function createParser(code: string) {
      * @param {Array<SyntaxKinds>} startTokens
      * @returns {void}
      */
-    function expectGuard(startTokens: Array<SyntaxKinds>, shouldEat: boolean = true): { 
+    function expectGuard(startTokens: Array<SyntaxKinds>, shouldEat = true): { 
         value: ReturnType<typeof getValue>,
         start: ReturnType<typeof getStartPosition>
         end: ReturnType<typeof getEndPosition>
@@ -235,7 +236,7 @@ export function createParser(code: string) {
      * @param {string?} messsage 
      * @returns {Error}
      */
-    function createUnexpectError(expectToken: SyntaxKinds | null, messsage: string = ""): Error {
+    function createUnexpectError(expectToken: SyntaxKinds | null, messsage = ""): Error {
         return new Error(`[Syntax Error]: Unexpect token${expectToken ? `, expect ${expectToken}` : ""}, got ${getToken()}(${getValue()}).${messsage}`);
     }
     /**
@@ -262,7 +263,7 @@ export function createParser(code: string) {
  *  ==================================================
  */
     function parseProgram() {
-        const body = [];
+        const body: Array<ModuleItem> = [];
         while(!match(SyntaxKinds.EOFToken)) {
             body.push(parseModuleItem());
         }
@@ -917,6 +918,7 @@ export function createParser(code: string) {
         return atom;
     }
     function parseBinaryOps(left: Expression , lastPre = 0): Expression {
+        // eslint-disable-next-line no-constant-condition
         while(1) {
             const currentOp = getToken();
             if(!isBinaryOps(currentOp) || getBinaryPrecedence(currentOp) < lastPre) {
@@ -1128,12 +1130,13 @@ export function createParser(code: string) {
             // TODO import call
             case SyntaxKinds.ImportKeyword:
                 return parseImportMeta();
-            case SyntaxKinds.NewKeyword:
+            case SyntaxKinds.NewKeyword: {
                 const lookaheadToken = lookahead();
                 if(lookaheadToken === SyntaxKinds.DotOperator) {
                     return parseNewTarget();
                 }
                 return parseNewExpression();
+            }
             case SyntaxKinds.SuperKeyword:
                 return parseSuper();
             case SyntaxKinds.ThisKeyword:
@@ -1282,7 +1285,7 @@ export function createParser(code: string) {
     function parseObjectExpression(): Expression {
         const { start } =  expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         let isStart = true;
-        const propertyDefinitionList = [];
+        const propertyDefinitionList: Array<PropertyDefinition> = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
                 propertyDefinitionList.push(parsePropertyDefinition());
@@ -1399,9 +1402,9 @@ export function createParser(code: string) {
      * @returns {MethodDefinition}
      */
     function parseMethodDefintion(
-        inClass: boolean = false, 
+        inClass = false, 
         withPropertyName: PropertyName | PrivateName | undefined = undefined, 
-        isStatic: boolean = false
+        isStatic = false
     ): ObjectMethodDefinition | ClassMethodDefinition | ObjectAccessor | ClassAccessor  | ClassConstructor{
         if(
             !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
@@ -1478,7 +1481,7 @@ export function createParser(code: string) {
                 if(isAsync || generator || isStatic) {
                     throw createMessageError(ErrorMessageMap.constructor_can_not_be_async_or_generator);
                 }
-                return factory.createClassConstructor(withPropertyName as Identifier, body, parmas, start, cloneSourcePosition(body.end));
+                return factory.createClassConstructor(withPropertyName, body, parmas, start, cloneSourcePosition(body.end));
             }
         }
         /**
@@ -1620,7 +1623,7 @@ export function createParser(code: string) {
     function parseObjectPattern(): ObjectPattern {
         const { start } =  expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         let isStart = false;
-        const properties = [];
+        const properties: Array<ObjectPatternProperty | RestElement> = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             // eat comma.
             if(!isStart) {
