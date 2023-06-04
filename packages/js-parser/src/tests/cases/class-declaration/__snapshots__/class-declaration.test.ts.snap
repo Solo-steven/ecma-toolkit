@@ -44,7 +44,7 @@ exports[`cases/class-declaration class declaration with private name 1`] = `
                               "index": 105,
                               "row": 3,
                             },
-                            "kind": 10166,
+                            "kind": 10167,
                             "object": {
                               "end": {
                                 "col": 19,
@@ -85,7 +85,7 @@ exports[`cases/class-declaration class declaration with private name 1`] = `
                             "index": 111,
                             "row": 3,
                           },
-                          "kind": 10169,
+                          "kind": 10170,
                           "optional": false,
                           "start": {
                             "col": 23,
@@ -93,7 +93,7 @@ exports[`cases/class-declaration class declaration with private name 1`] = `
                             "row": 3,
                           },
                         },
-                        "kind": 10176,
+                        "kind": 10177,
                         "start": {
                           "col": 23,
                           "index": 105,
@@ -170,7 +170,7 @@ exports[`cases/class-declaration class declaration with private name 1`] = `
                       "index": 78,
                       "row": 2,
                     },
-                    "kind": 10166,
+                    "kind": 10167,
                     "object": {
                       "end": {
                         "col": 30,
@@ -246,7 +246,7 @@ exports[`cases/class-declaration class declaration with private name 1`] = `
                 "row": 1,
               },
             },
-            "kind": 10158,
+            "kind": 10159,
             "params": [],
             "start": {
               "col": 4,
@@ -254,7 +254,6 @@ exports[`cases/class-declaration class declaration with private name 1`] = `
               "row": 1,
             },
             "static": false,
-            "type": "method",
           },
         ],
         "end": {

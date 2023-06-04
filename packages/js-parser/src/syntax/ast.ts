@@ -382,15 +382,18 @@ export interface ClassBody extends ModuleItem {
 export interface ClassProperty extends Property {
     kind: SyntaxKinds.ClassProperty;
 };
-export interface ClassMethodDefinition extends MethodDefinition {
+export interface ClassMethodDefinition extends Omit<MethodDefinition, "type"> {
     kind: SyntaxKinds.ClassMethodDefinition;
-    type: "constructor" | "method";
+}
+export interface ClassConstructor extends Omit<MethodDefinition, "generator" | "async" | "static" | "computed" | "type"> {
+    kind: SyntaxKinds.ClassConstructor;
+    key: Identifier;
 }
 export interface ClassAccessor extends Omit<MethodDefinition, "generator" | "async" | "static"> {
     kind: SyntaxKinds.ClassAccessor;
     type: "get" | "set";
 }
-export type ClassElement = ClassProperty | ClassMethodDefinition | ClassAccessor;
+export type ClassElement = ClassProperty | ClassMethodDefinition | ClassAccessor | ClassConstructor;
 export interface ClassDeclaration extends Class {
     kind: SyntaxKinds.ClassDeclaration;
 }

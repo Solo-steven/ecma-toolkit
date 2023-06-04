@@ -15,7 +15,7 @@ exports[`case/object-literal complex case of object literal 1`] = `
           "index": 235,
           "row": 14,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -116,7 +116,7 @@ exports[`case/object-literal complex case of object literal 1`] = `
                   "index": 71,
                   "row": 2,
                 },
-                "kind": 10172,
+                "kind": 10173,
                 "left": {
                   "end": {
                     "col": 26,
@@ -138,7 +138,7 @@ exports[`case/object-literal complex case of object literal 1`] = `
                     "index": 71,
                     "row": 2,
                   },
-                  "kind": 10172,
+                  "kind": 10173,
                   "left": {
                     "end": {
                       "col": 30,
@@ -221,7 +221,7 @@ exports[`case/object-literal complex case of object literal 1`] = `
                   "index": 105,
                   "row": 4,
                 },
-                "kind": 10172,
+                "kind": 10173,
                 "left": {
                   "end": {
                     "col": 6,
@@ -489,7 +489,7 @@ exports[`case/object-literal complex case of object literal 1`] = `
                   "row": 10,
                 },
                 "expressionBody": false,
-                "kind": 10162,
+                "kind": 10163,
                 "start": {
                   "col": 20,
                   "index": 187,
@@ -584,7 +584,7 @@ exports[`case/object-literal complex case of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,
@@ -611,7 +611,7 @@ exports[`case/object-literal computed property of object literal 1`] = `
           "index": 53,
           "row": 3,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -691,7 +691,7 @@ exports[`case/object-literal computed property of object literal 1`] = `
                   "index": 45,
                   "row": 2,
                 },
-                "kind": 10172,
+                "kind": 10173,
                 "left": {
                   "end": {
                     "col": 6,
@@ -762,7 +762,7 @@ exports[`case/object-literal computed property of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,
@@ -789,7 +789,7 @@ exports[`case/object-literal expression value of object literal 1`] = `
           "index": 74,
           "row": 3,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -890,7 +890,7 @@ exports[`case/object-literal expression value of object literal 1`] = `
                   "index": 71,
                   "row": 2,
                 },
-                "kind": 10172,
+                "kind": 10173,
                 "left": {
                   "end": {
                     "col": 26,
@@ -912,7 +912,7 @@ exports[`case/object-literal expression value of object literal 1`] = `
                     "index": 71,
                     "row": 2,
                   },
-                  "kind": 10172,
+                  "kind": 10173,
                   "left": {
                     "end": {
                       "col": 30,
@@ -968,7 +968,7 @@ exports[`case/object-literal expression value of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,
@@ -995,7 +995,7 @@ exports[`case/object-literal number literal property of object literal 1`] = `
           "index": 68,
           "row": 4,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -1161,7 +1161,7 @@ exports[`case/object-literal number literal property of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,
@@ -1188,7 +1188,7 @@ exports[`case/object-literal setter and getter of object literal 1`] = `
           "index": 63,
           "row": 7,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -1328,7 +1328,7 @@ exports[`case/object-literal setter and getter of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,
@@ -1355,7 +1355,7 @@ exports[`case/object-literal spread of object literal 1`] = `
           "index": 62,
           "row": 3,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -1462,7 +1462,7 @@ exports[`case/object-literal spread of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,
@@ -1489,7 +1489,7 @@ exports[`case/object-literal string literal property of object literal 1`] = `
           "index": 95,
           "row": 5,
         },
-        "kind": 10173,
+        "kind": 10174,
         "left": {
           "end": {
             "col": 8,
@@ -1698,7 +1698,7 @@ exports[`case/object-literal string literal property of object literal 1`] = `
           "row": 0,
         },
       },
-      "kind": 10176,
+      "kind": 10177,
       "start": {
         "col": 0,
         "index": 0,

@@ -47,7 +47,7 @@ exports[`cases/ destructure pattern array pattern in declaration 1`] = `
               "index": 23,
               "row": 0,
             },
-            "kind": 10180,
+            "kind": 10181,
             "start": {
               "col": 6,
               "index": 6,
@@ -75,7 +75,7 @@ exports[`cases/ destructure pattern array pattern in declaration 1`] = `
               "index": 36,
               "row": 0,
             },
-            "kind": 10169,
+            "kind": 10170,
             "optional": false,
             "start": {
               "col": 34,
@@ -128,7 +128,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                   "index": 78,
                   "row": 0,
                 },
-                "kind": 10178,
+                "kind": 10179,
                 "properties": [
                   {
                     "computed": false,
@@ -151,7 +151,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                         "row": 0,
                       },
                     },
-                    "kind": 10179,
+                    "kind": 10180,
                     "shorted": true,
                     "start": {
                       "col": 9,
@@ -181,7 +181,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                         "row": 0,
                       },
                     },
-                    "kind": 10179,
+                    "kind": 10180,
                     "shorted": true,
                     "start": {
                       "col": 14,
@@ -211,7 +211,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                         "row": 0,
                       },
                     },
-                    "kind": 10179,
+                    "kind": 10180,
                     "shorted": false,
                     "start": {
                       "col": 21,
@@ -224,7 +224,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                         "index": 46,
                         "row": 0,
                       },
-                      "kind": 10178,
+                      "kind": 10179,
                       "properties": [
                         {
                           "computed": false,
@@ -247,7 +247,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                               "row": 0,
                             },
                           },
-                          "kind": 10179,
+                          "kind": 10180,
                           "shorted": true,
                           "start": {
                             "col": 29,
@@ -277,7 +277,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                               "row": 0,
                             },
                           },
-                          "kind": 10179,
+                          "kind": 10180,
                           "shorted": true,
                           "start": {
                             "col": 36,
@@ -315,7 +315,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                         "row": 0,
                       },
                     },
-                    "kind": 10179,
+                    "kind": 10180,
                     "shorted": false,
                     "start": {
                       "col": 48,
@@ -358,7 +358,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
                         "index": 77,
                         "row": 0,
                       },
-                      "kind": 10180,
+                      "kind": 10181,
                       "start": {
                         "col": 55,
                         "index": 55,
@@ -379,7 +379,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
               "index": 80,
               "row": 0,
             },
-            "kind": 10180,
+            "kind": 10181,
             "start": {
               "col": 6,
               "index": 6,
@@ -407,7 +407,7 @@ exports[`cases/ destructure pattern nested array pattern in declaration 1`] = `
               "index": 93,
               "row": 0,
             },
-            "kind": 10169,
+            "kind": 10170,
             "optional": false,
             "start": {
               "col": 91,
@@ -458,7 +458,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
               "index": 134,
               "row": 9,
             },
-            "kind": 10178,
+            "kind": 10179,
             "properties": [
               {
                 "computed": false,
@@ -481,7 +481,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                     "row": 1,
                   },
                 },
-                "kind": 10179,
+                "kind": 10180,
                 "shorted": false,
                 "start": {
                   "col": 4,
@@ -494,7 +494,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                     "index": 115,
                     "row": 7,
                   },
-                  "kind": 10178,
+                  "kind": 10179,
                   "properties": [
                     {
                       "computed": false,
@@ -517,7 +517,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                           "row": 2,
                         },
                       },
-                      "kind": 10179,
+                      "kind": 10180,
                       "shorted": false,
                       "start": {
                         "col": 8,
@@ -530,7 +530,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                           "index": 109,
                           "row": 6,
                         },
-                        "kind": 10178,
+                        "kind": 10179,
                         "properties": [
                           {
                             "computed": false,
@@ -553,7 +553,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                                 "row": 3,
                               },
                             },
-                            "kind": 10179,
+                            "kind": 10180,
                             "shorted": true,
                             "start": {
                               "col": 12,
@@ -583,7 +583,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                                 "row": 4,
                               },
                             },
-                            "kind": 10179,
+                            "kind": 10180,
                             "shorted": true,
                             "start": {
                               "col": 12,
@@ -613,7 +613,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                                 "row": 5,
                               },
                             },
-                            "kind": 10179,
+                            "kind": 10180,
                             "shorted": true,
                             "start": {
                               "col": 12,
@@ -659,7 +659,7 @@ exports[`cases/ destructure pattern nested object pattern used in declaration 1`
                     "row": 8,
                   },
                 },
-                "kind": 10179,
+                "kind": 10180,
                 "shorted": true,
                 "start": {
                   "col": 4,
@@ -732,7 +732,7 @@ exports[`cases/ destructure pattern object pattern in declaration 1`] = `
               "index": 27,
               "row": 0,
             },
-            "kind": 10178,
+            "kind": 10179,
             "properties": [
               {
                 "computed": false,
@@ -755,7 +755,7 @@ exports[`cases/ destructure pattern object pattern in declaration 1`] = `
                     "row": 0,
                   },
                 },
-                "kind": 10179,
+                "kind": 10180,
                 "shorted": true,
                 "start": {
                   "col": 8,
@@ -785,7 +785,7 @@ exports[`cases/ destructure pattern object pattern in declaration 1`] = `
                     "row": 0,
                   },
                 },
-                "kind": 10179,
+                "kind": 10180,
                 "shorted": true,
                 "start": {
                   "col": 14,
@@ -815,7 +815,7 @@ exports[`cases/ destructure pattern object pattern in declaration 1`] = `
                     "row": 0,
                   },
                 },
-                "kind": 10179,
+                "kind": 10180,
                 "shorted": true,
                 "start": {
                   "col": 20,

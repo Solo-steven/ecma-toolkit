@@ -168,6 +168,7 @@ export enum SyntaxKinds {
     ClassExpression,
     ClassProperty,
     ClassAccessor,
+    ClassConstructor,
     ClassMethodDefinition,
     FunctionExpression,
     TemplateLiteral,

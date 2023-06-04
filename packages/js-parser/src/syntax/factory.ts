@@ -376,7 +376,6 @@ export function createClassMethodDefintion(
     body: AST.ClassMethodDefinition['body'],
     params: AST.ClassMethodDefinition['params'],
     async: AST.ClassMethodDefinition['async'],
-    type: AST.ClassMethodDefinition['type'],
     generator: AST.ClassMethodDefinition['generator'],
     computed: AST.ClassMethodDefinition['computed'],
     isStatic: AST.ClassMethodDefinition['static'],
@@ -384,8 +383,19 @@ export function createClassMethodDefintion(
 ): AST.ClassMethodDefinition {
     return {
         kind: SyntaxKinds.ClassMethodDefinition,
-        async, type, generator, computed, static: isStatic,
+        async, generator, computed, static: isStatic,
         key, params, body, start, end
+    }
+}
+export function createClassConstructor(
+    key: AST.ClassConstructor['key'],
+    body: AST.ClassConstructor['body'],
+    params: AST.ClassConstructor['params'],
+    start: SourcePosition, end: SourcePosition,
+) : AST.ClassConstructor{
+    return {
+        kind: SyntaxKinds.ClassConstructor,
+        key, body, params, start, end
     }
 }
 export function createClassAccessor(

@@ -56,6 +56,7 @@ import {
     ObjectAccessor,
     ClassAccessor,
     StringLiteral,
+    ClassConstructor,
 } from "../syntax/ast";
 import { SyntaxKinds } from "../syntax/kinds";
 import { 
@@ -1401,7 +1402,7 @@ export function createParser(code: string) {
         inClass: boolean = false, 
         withPropertyName: PropertyName | PrivateName | undefined = undefined, 
         isStatic: boolean = false
-    ): ObjectMethodDefinition | ClassMethodDefinition | ObjectAccessor | ClassAccessor {
+    ): ObjectMethodDefinition | ClassMethodDefinition | ObjectAccessor | ClassAccessor  | ClassConstructor{
         if(
             !(getValue() === "set" || getValue() === "get" || getValue() === "async" || match(SyntaxKinds.MultiplyOperator))
             && !withPropertyName
@@ -1474,10 +1475,10 @@ export function createParser(code: string) {
         }
         if(withPropertyName.kind === SyntaxKinds.Identifier) {
             if(withPropertyName.name === "constructor" && context.inClass) {
-                if(isAsync || generator) {
+                if(isAsync || generator || isStatic) {
                     throw createMessageError(ErrorMessageMap.constructor_can_not_be_async_or_generator);
                 }
-                type = "constructor";
+                return factory.createClassConstructor(withPropertyName as Identifier, body, parmas, start, cloneSourcePosition(body.end));
             }
         }
         /**
@@ -1488,7 +1489,7 @@ export function createParser(code: string) {
                 return factory.createClassAccessor(withPropertyName, body, parmas, type, computed, start, cloneSourcePosition(body.end));
             }
             return factory.createClassMethodDefintion(
-                withPropertyName, body, parmas, isAsync, type, generator, computed, isStatic,
+                withPropertyName, body, parmas, isAsync, generator, computed, isStatic,
                 start ? start : cloneSourcePosition(withPropertyName.start), 
                 cloneSourcePosition(body.end)
             );
