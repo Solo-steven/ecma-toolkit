@@ -184,6 +184,7 @@ export enum SyntaxKinds {
     UpdateExpression,
     UnaryExpression,
     BinaryExpression,
+    YieldExpression,
     AssigmentExpression,
     ConditionalExpression,
     SequenceExpression,

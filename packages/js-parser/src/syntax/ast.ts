@@ -11,6 +11,7 @@ import {
  * ======================================
  */
 export interface ModuleItem {
+    kind: SyntaxKinds;
     start: SourcePosition,
     end: SourcePosition,
 }
@@ -176,6 +177,12 @@ export interface ConditionalExpression extends ModuleItem {
     consequnce: Expression;
     alter: Expression;
 }
+export interface YieldExpression extends ModuleItem {
+    kind: SyntaxKinds.YieldExpression;
+    argument: Expression | null;
+    delegate: boolean;
+
+}
 export interface AssigmentExpression extends ModuleItem {
     kind: SyntaxKinds.AssigmentExpression;
     left: Expression;
@@ -199,7 +206,7 @@ export type Expression =
     // other expression
     CallExpression | MemberExpression | TaggedTemplateExpression |  NewExpression | ChainExpression |
     UpdateExpression | UnaryExpression | AwaitExpression | BinaryExpression |
-    ConditionalExpression | AssigmentExpression | SequenceExpression
+    ConditionalExpression | YieldExpression | AssigmentExpression | SequenceExpression
 ;
 export interface ExpressionStatement extends ModuleItem {
     kind: SyntaxKinds.ExpressionStatement;
@@ -355,7 +362,7 @@ export interface VariableDeclarator extends ModuleItem {
     id: Pattern;
     init: Expression | null;
 }
-export interface Function extends ModuleItem {
+export interface Function extends Omit<ModuleItem, "kind"> {
     name: Identifier | null;
     params: Array<Pattern>;
     body: FunctionBody;
@@ -370,7 +377,7 @@ export interface FunctionDeclaration extends ModuleItem, Function {
     kind: SyntaxKinds.FunctionDeclaration;
     name: Identifier
 }
-export interface Class extends ModuleItem {
+export interface Class extends Omit<ModuleItem, "kind"> {
     id: Identifier | null;
     superClass: Expression | null;
     body: ClassBody;
@@ -447,3 +454,49 @@ export interface ExportAllDeclaration extends ModuleItem {
     source: StringLiteral;
 }
 export type ExportDeclaration = ExportNamedDeclarations | ExportDefaultDeclaration | ExportAllDeclaration;
+
+
+/** ========================================
+ *   Helper
+ * =========================================
+ */
+
+export function isSuper(node: ModuleItem): node is Super {
+    return node.kind === SyntaxKinds.Super;
+}
+export function isThisExpression(node: ModuleItem): node is ThisExpression {
+    return node.kind === SyntaxKinds.ThisExpression;
+}
+export function isIdentifer(node: ModuleItem): node is Identifier {
+    return node.kind === SyntaxKinds.Identifier;
+}
+export function isPrivateName(node: ModuleItem): node is PrivateName {
+    return node.kind === SyntaxKinds.PrivateName;
+}
+export function isNumnerLiteral(node: ModuleItem): node is NumberLiteral {
+    return node.kind === SyntaxKinds.NumberLiteral;
+}
+export function isStringLiteral(node: ModuleItem): node is StringLiteral {
+    return node.kind === SyntaxKinds.StringLiteral;
+}
+export function isTemplateLiteral(node: ModuleItem): node is TemplateElement {
+    return node.kind === SyntaxKinds.TemplateLiteral;
+}
+export function isTemplateElement(node: ModuleItem): node is TemplateElement {
+    return node.kind === SyntaxKinds.TemplateElement;
+}
+export function isObjectExpression(node: ModuleItem): node is ObjectExpression {
+    return node.kind === SyntaxKinds.ObjectExpression;
+}
+export function isObjectProperty(node: ModuleItem): node is ObjectProperty {
+    return node.kind === SyntaxKinds.ObjectProperty;
+}
+export function isObjectMethodDefinition(node: ModuleItem): node is MethodDefinition {
+    return node.kind === SyntaxKinds.ObjectMethodDefintion;
+}
+export function isObjectAccessor(node: ModuleItem): node is ObjectAccessor {
+    return node.kind === SyntaxKinds.ObjectAccessor;
+}
+export function isSpreadElement(node: ModuleItem): node is SpreadElement {
+    return node.kind === SyntaxKinds.SpreadElement;
+}

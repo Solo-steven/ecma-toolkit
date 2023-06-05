@@ -4,9 +4,7 @@ import { createParser } from "@/src/parser";
 
 
 const code = `
-    function test() {
-        return 10;
-    }
+    a.b.c()
 `;
 
 console.log("=================================");

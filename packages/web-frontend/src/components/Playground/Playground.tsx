@@ -12,29 +12,36 @@ export function Playground() {
   const [code, setCode] = useState<string>("");
   const [astJson, setAstJson]= useState<string>("");
   const onJsCodeMirrorChange = useCallback((code: string) => {
-    console.log("Change Code");
     setCode(code);
   }, []);
+  const transformCode = () => {
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        setAstJson(JSON.stringify(createParser(code).parse(), null, 4));
+    } catch(e) {
+        console.log(e);
+    }
+  }
   return (
     <div className="bg-slate-950 mt-6" id="playground">
         <div className="hidden lg:block">
             <h2 className="ext-2xl font-bold tracking-tight text-slate-50 text-4xl text-center"> 
                 Write JavaScript Into Left Section 
             </h2>
-            <div className="mx-auto flex max-w-screen-lg items-center gap-x-14 p-10">
+            <div className="mx-auto flex max-w-screen-lg items-center gap-x-12 p-8">
                 <CodeMirror
-                    className="flex-1"
+                    className="flex-1 overflow-auto"
                     theme={androidstudio}
                     value={code}
-                    height="400px"
+                    height="500px"
                     extensions={codeMirrorJsExtensions}
                     onChange={onJsCodeMirrorChange}
                 />
                 <CodeMirror
-                    className="flex-1"
+                    className="flex-1 overflow-auto"
                     theme={androidstudio}
                     value={astJson}
-                    height="400px"
+                    height="500px"
                     extensions={codeMirrorJSONExtensions}
                 />
             </div>
@@ -42,19 +49,7 @@ export function Playground() {
                 <button 
                     role="button"
                     className="  z-50 cursor-pointer rounded-md bg-indigo-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    onClick={() => { 
-                        console.log("Click")
-                        try {
-                            if(code) {
-                                console.log("code");
-                              setAstJson(JSON.stringify(createParser(code).parse(), null, 4)) ;
-                            }else {
-                                console.log("No Code")
-                            }
-                        }catch(e){
-                            console.log(e);
-                        }
-                     }}
+                    onClick={transformCode}
                 >
                     Transform
                 </button>

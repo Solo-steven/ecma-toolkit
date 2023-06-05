@@ -267,6 +267,17 @@ export function createConditionalExpression(
         alter,start, end
     };
 }
+export function createYieldExpression(
+    argument: AST.YieldExpression['argument'],
+    delegate: AST.YieldExpression['delegate'],
+    start: SourcePosition, end: SourcePosition,
+): AST.YieldExpression {
+    return {
+        kind: SyntaxKinds.YieldExpression,
+        argument, delegate,
+        start, end
+    };
+}
 export function createAssignmentExpression(
     left: AST.Expression, 
     right: AST.Expression, 

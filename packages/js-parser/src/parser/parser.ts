@@ -794,9 +794,14 @@ export function createParser(code: string) {
         if(match(SyntaxKinds.Identifier)) {
             name = parseIdentifer();
         }
-        // TODO: parse ClassExtends
+        let superClass: Expression | null  = null;
+        if(match(SyntaxKinds.ExtendsKeyword)) {
+            nextToken();
+            superClass = parseLeftHandSideExpression();
+            
+        }
         const body = parseClassBody();
-        return factory.createClass(name, null, body, start, cloneSourcePosition(body.end));
+        return factory.createClass(name, superClass, body, start, cloneSourcePosition(body.end));
     }
     /** 
      * Parse ClassBody
@@ -888,6 +893,9 @@ export function createParser(code: string) {
         if(match(SyntaxKinds.ParenthesesLeftPunctuator)) {
             context.maybeArrow = true;
         }
+        if(match(SyntaxKinds.YieldKeyword)) {
+            return parseYieldExpression();
+        }
         const left = parseConditionalExpression();
         if (!matchSet(AssigmentOperators)) {
             return left;
@@ -895,6 +903,20 @@ export function createParser(code: string) {
         const operator = nextToken();
         const right = parseAssigmentExpression();
         return factory.createAssignmentExpression(left, right, operator as AssigmentOperatorKinds, cloneSourcePosition(left.start), cloneSourcePosition(right.end));
+    }
+    function parseYieldExpression() {
+        const { start } = expectGuard([SyntaxKinds.YieldKeyword]);
+        let delegate = false;
+        if(match(SyntaxKinds.MultiplyOperator)) {
+            nextToken();
+            delegate = true;
+        }
+        // TODO: start with expression
+        let argument: Expression | null = null;
+        if(matchSet([SyntaxKinds.Identifier, SyntaxKinds.NumberLiteral, SyntaxKinds.StringLiteral])) {
+            argument = parseAssigmentExpression();
+        }
+        return factory.createYieldExpression(argument, delegate, start, cloneSourcePosition(argument ? argument.end : start ));
     }
     function parseConditionalExpression(): Expression {
         const test = parseBinaryExpression();
@@ -1399,7 +1421,8 @@ export function createParser(code: string) {
      * used in object literal, it should throw a error.
      * @param {boolean} inClass is used in class or not. 
      * @param {PropertyNameundefined} withPropertyName parse methodDeinfition with exited propertyName or not
-     * @returns {MethodDefinition}
+     * @param {boolean} isStatic
+     * @returns {ObjectMethodDefinition | ClassMethodDefinition | ObjectAccessor | ClassAccessor  | ClassConstructor}
      */
     function parseMethodDefintion(
         inClass = false, 

@@ -1,3 +1,4 @@
+/* eslint-env node  */
 /** @type {import('jest').Config} */
 const config = {
     rootDir: ".",
