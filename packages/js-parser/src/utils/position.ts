@@ -6,8 +6,8 @@ export interface SourcePosition {
 
 export function createSourcePosition(): SourcePosition {
     return {
-        row: 0,
-        col: 0,
+        row: 1,
+        col: 1,
         index: 0
     };
 }

@@ -7,7 +7,8 @@
   "scripts": {
     "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js",
     "dev": "nodemon ./src/dev.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:update": "jest --updateSnapshot"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.1",

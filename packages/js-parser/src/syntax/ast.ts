@@ -500,3 +500,12 @@ export function isObjectAccessor(node: ModuleItem): node is ObjectAccessor {
 export function isSpreadElement(node: ModuleItem): node is SpreadElement {
     return node.kind === SyntaxKinds.SpreadElement;
 }
+export function isClassExpression(node: ModuleItem): node is ClassExpression {
+    return node.kind === SyntaxKinds.ClassExpression;
+}
+export function isArrayExpression(node: ModuleItem): node is ArrayExpression {
+    return node.kind === SyntaxKinds.ArrayExpression;
+}
+export function isFunctionExpression(node: ModuleItem): node is FunctionExpression {
+    return node.kind === SyntaxKinds.FunctionExpression;
+}

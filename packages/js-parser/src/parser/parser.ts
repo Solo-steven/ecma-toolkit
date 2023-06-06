@@ -882,6 +882,7 @@ export function createParser(code: string) {
     function parseExpression(): Expression {
         const exprs = [parseAssigmentExpression()];
         while(match(SyntaxKinds.CommaToken)) {
+            nextToken();
             exprs.push(parseAssigmentExpression());
         }
         if(exprs.length === 1) {
@@ -1116,17 +1117,15 @@ export function createParser(code: string) {
      */
     function parseMemberExpression(base: Expression, optional: boolean): Expression {
         if(!match(SyntaxKinds.DotOperator) && !match(SyntaxKinds.BracketLeftPunctuator) && !optional) {
-            throw createUnreachError([SyntaxKinds.DotOperator, SyntaxKinds.BracesLeftPunctuator]);
+            throw createUnreachError([SyntaxKinds.DotOperator, SyntaxKinds.BracketLeftPunctuator]);
         }
         if(match(SyntaxKinds.DotOperator)) {
-            const start = getStartPosition();
-            nextToken();
+            const { start } = expect(SyntaxKinds.DotOperator);
             const property = parseIdentiferWithKeyword();
             return factory.createMemberExpression(false, base, property, optional, start, cloneSourcePosition(property.end));
         }
-        else if(match(SyntaxKinds.BracesLeftPunctuator)){
-            const start = getStartPosition();
-            nextToken();
+        else if(match(SyntaxKinds.BracketLeftPunctuator)){
+            const { start }  = expect(SyntaxKinds.BracketLeftPunctuator);
             const property = parseExpression();
             const { end } = expect(SyntaxKinds.BracketRightPunctuator)
             return factory.createMemberExpression(true, base, property, optional, start, end);
@@ -1265,7 +1264,7 @@ export function createParser(code: string) {
      * or event another NewExpression
      * ```
      * NewExpression := 'new' NewExpression
-     *               := 'new' MemberExpressionWithoutOptional Arugment 
+     *               := 'new' MemberExpressionWithoutOptional Arugment?
      * ```
      * @returns {Expression}
      */
@@ -1281,6 +1280,10 @@ export function createParser(code: string) {
                 throw createMessageError(ErrorMessageMap.new_expression_cant_using_optional_chain);
             }
             base = parseMemberExpression(base, false);
+        }
+        // accpect New XXX -> No argument
+        if(!match(SyntaxKinds.ParenthesesLeftPunctuator)) {
+            return factory.createNewExpression(base, [], start, cloneSourcePosition(base.end));
         }
         const { end, nodes } = parseArguments()
         return factory.createNewExpression(base, nodes, start, end );

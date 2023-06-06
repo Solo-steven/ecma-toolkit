@@ -4,7 +4,7 @@ import { createParser } from "@/src/parser";
 
 
 const code = `
-    a.b.c()
+universe[galaxyName, otherUselessName]
 `;
 
 console.log("=================================");

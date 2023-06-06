@@ -275,7 +275,7 @@ export function createLexer(code: string): Lexer {
                 return readNumberLiteral();
             }
             case "\"":
-            case "\'": {
+            case "'": {
                 // String Literal
                 return readStringLiteral();
             }
@@ -707,8 +707,8 @@ export function createLexer(code: string): Lexer {
     }
     function readStringLiteral() {
         let mode = "";
-        if(startWith("\'")) {
-            mode = "\'";
+        if(startWith("'")) {
+            mode = "'";
         }else if(startWith("\"")) {
             mode = "\""
         }
@@ -725,7 +725,7 @@ export function createLexer(code: string): Lexer {
     }
     function readString() {
         let word = "";
-        let start = eatChar();
+        const start = eatChar();
         while(!startWithSet(
             [ ...LexicalLiteral.punctuators,
                 ...LexicalLiteral.operator, 
@@ -740,7 +740,7 @@ export function createLexer(code: string): Lexer {
             if(KeywordLiteralMapSyntaxKind[w] == null) {
                 throw new Error(`[Error]: Keyword ${w} have no match method to create token`);
             }
-            return finishToken(KeywordLiteralMapSyntaxKind[w], w);
+            return finishToken(KeywordLiteralMapSyntaxKind[w] as SyntaxKinds, w);
         }
         if((new Set(LexicalLiteral.BooleanLiteral)).has(w)) {
             if(w === "true") {
