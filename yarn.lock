@@ -4846,9 +4846,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-parser@workspace:*, js-parser@workspace:packages/js-parser":
+"js-compiler@workspace:*, js-compiler@workspace:packages/js-compiler":
   version: 0.0.0-use.local
-  resolution: "js-parser@workspace:packages/js-parser"
+  resolution: "js-compiler@workspace:packages/js-compiler"
   dependencies:
     "@babel/parser": ^7.22.4
     "@rollup/plugin-typescript": ^11.1.1
@@ -4857,6 +4857,7 @@ __metadata:
     "@types/jest": ^29.5.1
     "@types/node": ^18.15.5
     jest: ^29.5.0
+    js-types: "workspace:*"
     nodemon: ^2.0.21
     rollup: ^3.23.0
     rollup-plugin-dts: ^5.3.0
@@ -4872,6 +4873,16 @@ __metadata:
   checksum: 8a95213a5a77deb6cbe94d86340e8d9ace2b93bc367790b260101d2f36a2eaf4e4e22d9fa9cf459b38af3a32fb4190e638024cf82ec95ef708680e405ea7cc78
   languageName: node
   linkType: hard
+
+"js-types@workspace:*, js-types@workspace:packages/js-types":
+  version: 0.0.0-use.local
+  resolution: "js-types@workspace:packages/js-types"
+  dependencies:
+    "@rollup/plugin-typescript": ^11.1.1
+    rollup: ^3.23.0
+    rollup-plugin-dts: ^5.3.0
+  languageName: unknown
+  linkType: soft
 
 "js-yaml@npm:^3.13.1":
   version: 3.14.1
@@ -7097,7 +7108,7 @@ __metadata:
     autoprefixer: ^10.4.14
     eslint: 8.41.0
     eslint-config-next: 13.4.4
-    js-parser: "workspace:*"
+    js-compiler: "workspace:*"
     next: 13.4.4
     postcss: ^8.4.24
     react: 18.2.0

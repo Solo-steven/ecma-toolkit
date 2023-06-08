@@ -1,7 +1,7 @@
-import { SourcePosition } from '../utils/position';
+import { SourcePosition } from './position';
 import * as AST from './ast';
-import { SyntaxKinds } from "./kinds";
-import { AssigmentOperatorKinds, BinaryOperatorKinds, UnaryOperatorKinds, UpdateOperatorKinds } from './kinds';
+import { SyntaxKinds } from "./kind";
+import { AssigmentOperatorKinds, BinaryOperatorKinds, UnaryOperatorKinds, UpdateOperatorKinds } from './kind';
 
 export function createIdentifier(name: string, start: SourcePosition, end: SourcePosition): AST.Identifier {
     return {

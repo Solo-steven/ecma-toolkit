@@ -1,5 +1,5 @@
 import { createLexer } from "@/src/lexer";
-import { SyntaxKinds } from "@/src/syntax/kinds";
+import { SyntaxKinds } from "js-types";
 import { createParser } from "@/src/parser";
 
 const code = `

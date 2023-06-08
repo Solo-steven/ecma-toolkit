@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "target": "esnext",
+        "module": "esnext",    
+        "lib": ["ESNext", "DOM"],
+        "baseUrl": ".",
+        "paths": {
+            "@/src/*": ["src/*"]
+        },
+        "noEmit": true,
+    },
+    "exclude": [
+        "node_modules/**",
+        "src/tests/**"
+    ],
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    }
+}

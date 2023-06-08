@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "target": "es6",
+        "module": "commonjs",    
+        "lib": ["ESNext", "DOM"],
+        "baseUrl": ".",
+        "paths": {
+            "@/src/*": ["src/*"]
+        },
+        "noEmit": true,
+    },
+    "exclude": [
+        "node_modules/**",
+        "src/tests/**"
+    ]
+}

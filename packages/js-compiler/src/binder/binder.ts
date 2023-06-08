@@ -69,9 +69,9 @@ import {
     ExportAllDeclaration,
     TaggedTemplateExpression,
     ChainExpression,
-    ClassConstructor
-} from "../syntax/ast";
-import { SyntaxKinds } from "../syntax/kinds";
+    ClassConstructor,
+    SyntaxKinds
+} from "js-types";
 /**
  * Why not use visitor pattern there, there are two reason,
  * frist, binder should run after any visitor, because i want to 

@@ -1,11 +1,11 @@
-import { SourcePosition } from "../utils/position";
+import { SourcePosition } from "./position";
 import { 
     SyntaxKinds,
     UpdateOperatorKinds, 
     UnaryOperatorKinds, 
     BinaryOperatorKinds, 
     AssigmentOperatorKinds
-} from "./kinds";
+} from "./kind";
 /** ======================================
  *    Shared, Basic, Top Level AST Node
  * ======================================

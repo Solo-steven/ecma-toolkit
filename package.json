@@ -2,8 +2,9 @@
     "name": "ecma-parser",
     "private": true,
     "workspaces": [
-        "packages/js-parser",
-        "packages/web-frontend"
+        "packages/js-compiler",
+        "packages/web-frontend",
+        "packages/js-types"
     ],
     "packageManager": "yarn@3.5.1",
     "devDependencies": {

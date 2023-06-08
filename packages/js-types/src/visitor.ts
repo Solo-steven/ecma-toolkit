@@ -70,8 +70,8 @@ import {
     TaggedTemplateExpression,
     ChainExpression,
     ClassConstructor,
-} from "../syntax/ast";
-import { SyntaxKinds } from "../syntax/kinds";
+} from "./ast";
+import { SyntaxKinds } from "./kind";
 
 export type Visitor = {[key: number ]: (node: ModuleItem) => void }
 
