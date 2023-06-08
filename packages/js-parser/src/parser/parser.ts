@@ -267,7 +267,7 @@ export function createParser(code: string) {
         while(!match(SyntaxKinds.EOFToken)) {
             body.push(parseModuleItem());
         }
-        return factory.createProgram(body);
+        return factory.createProgram(body, body.length === 0 ? getStartPosition() : cloneSourcePosition(body[0].start), getEndPosition());
     }
     function parseModuleItem(): ModuleItem {
         const token = getToken();
@@ -1178,7 +1178,7 @@ export function createParser(code: string) {
             case SyntaxKinds.Identifier: {
                 if(lookahead() === SyntaxKinds.ArrowOperator) {
                     const argus = [parseIdentifer()];
-                    nextToken();
+                    // nextToken();
                     return parseArrowFunctionExpression(argus);
                 }
                 return parseIdentifer();

@@ -704,8 +704,11 @@ export function createRestElement(
         argument, start, end
     }
 }
-export function createProgram( body: Array<AST.ModuleItem>): AST.Program {
-    return { kind: SyntaxKinds.Program, body };
+export function createProgram(
+    body: Array<AST.ModuleItem>,
+    start: SourcePosition, end: SourcePosition
+): AST.Program {
+    return { kind: SyntaxKinds.Program, body, start, end };
 }
 export function createImportDeclaration(
     specifiers: AST.ImportDeclaration['specifiers'],

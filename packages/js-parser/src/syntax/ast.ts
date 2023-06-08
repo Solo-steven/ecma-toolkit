@@ -14,9 +14,10 @@ export interface ModuleItem {
     kind: SyntaxKinds;
     start: SourcePosition,
     end: SourcePosition,
+    parent?: ModuleItem;
 }
 export type StatementListItem = Statement | Declaration;
-export interface Program {
+export interface Program extends ModuleItem  {
     kind: SyntaxKinds.Program;
     body: Array<ModuleItem>; //TODO: using StatementListItem
 }
@@ -275,7 +276,7 @@ export interface ContinueStatement extends ModuleItem {
 }
 export interface BreakStatement extends ModuleItem {
     kind: SyntaxKinds.BreakStatement;
-    label?: Identifier;
+    label: Identifier | null;
 }
 export interface ReturnStatement extends ModuleItem {
     kind: SyntaxKinds.ReturnStatement;

@@ -2,9 +2,16 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "@/src/syntax/kinds";
 import { createParser } from "@/src/parser";
 
-
 const code = `
-universe[galaxyName, otherUselessName]
+import expres from "express"
+const app = express();
+
+app.get("/", function(req, res) {
+    res.json({});
+})
+app.listen(3000, function() {
+    console.log("Server On 3000")
+})
 `;
 
 console.log("=================================");
@@ -18,7 +25,7 @@ console.log("=================================");
 
 const lexer = createLexer(code);
 while(lexer.getToken() != SyntaxKinds.EOFToken) {
-    console.log(lexer.getSourceValue(), lexer.getStartPosition(), lexer.getEndPosition());
+    console.log(lexer.getToken(), lexer.getSourceValue(), lexer.getStartPosition(), lexer.getEndPosition());
     lexer.nextToken();
 }
 
@@ -27,3 +34,5 @@ console.log("============ Parser =============");
 console.log("=================================");
 
 console.log(JSON.stringify(createParser(code).parse(), null, 4));
+
+const ast = createParser(code).parse();
