@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js",
     "dev": "nodemon ./src/dev.ts",
-    "test": "jest",
+    "test": "ts-node ./src/tests/runner.ts",
     "test:update": "jest --updateSnapshot"
   },
   "devDependencies": {

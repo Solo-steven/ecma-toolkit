@@ -2,17 +2,7 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "js-types";
 import { createParser } from "@/src/parser";
 
-const code = `
-import expres from "express"
-const app = express();
-
-app.get("/", function(req, res) {
-    res.json({});
-})
-app.listen(3000, function() {
-    console.log("Server On 3000")
-})
-`;
+const code = `new foo().bar()`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

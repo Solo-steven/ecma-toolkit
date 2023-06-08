@@ -1051,7 +1051,7 @@ export function createParser(code: string) {
         }
         expectGuard([SyntaxKinds.ParenthesesLeftPunctuator], false);
         const { nodes, end } = parseArguments();
-        return Factory.createCallExpression(callee, nodes, optional, cloneSourcePosition(callee.end), end);
+        return Factory.createCallExpression(callee, nodes, optional, cloneSourcePosition(callee.start), end);
     }
     /**
      * Parse Arguments
@@ -1119,18 +1119,18 @@ export function createParser(code: string) {
             throw createUnreachError([SyntaxKinds.DotOperator, SyntaxKinds.BracketLeftPunctuator]);
         }
         if(match(SyntaxKinds.DotOperator)) {
-            const { start } = expect(SyntaxKinds.DotOperator);
+            expect(SyntaxKinds.DotOperator);
             const property = parseIdentiferWithKeyword();
-            return Factory.createMemberExpression(false, base, property, optional, start, cloneSourcePosition(property.end));
+            return Factory.createMemberExpression(false, base, property, optional, cloneSourcePosition(base.start), cloneSourcePosition(property.end));
         }
         else if(match(SyntaxKinds.BracketLeftPunctuator)){
-            const { start }  = expect(SyntaxKinds.BracketLeftPunctuator);
+            expect(SyntaxKinds.BracketLeftPunctuator);
             const property = parseExpression();
             const { end } = expect(SyntaxKinds.BracketRightPunctuator)
-            return Factory.createMemberExpression(true, base, property, optional, start, end);
+            return Factory.createMemberExpression(true, base, property, optional, cloneSourcePosition(base.start), end);
         }else {
             const property = parseIdentiferWithKeyword();
-            return Factory.createMemberExpression(false, base, property, optional, cloneSourcePosition(property.start), cloneSourcePosition(property.end));
+            return Factory.createMemberExpression(false, base, property, optional, cloneSourcePosition(base.start), cloneSourcePosition(property.end));
         }
     }
     function parseTagTemplateExpression(base: Expression) {

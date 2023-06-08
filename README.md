@@ -1,3 +1,3 @@
 # ecma-parser
 
-toy parser for parse your js.
+A handbook for anyone want to learn about how to write a parser that can parse your javascript.
