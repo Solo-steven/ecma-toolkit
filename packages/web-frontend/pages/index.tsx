@@ -5,7 +5,7 @@ import { AboutMe } from "@/src/components/AboutMe";
 
 export default function Home() {
   return (
-    <>
+    <div>
       <SEOHeader 
         title={"ECMA Parser, A toy parser for JavaScript"} 
         description="ECMA parser, a toy parser for parse your JavaScript code estree-like AST"
@@ -15,6 +15,6 @@ export default function Home() {
           <Playground />
           <AboutMe />
         </div>
-    </>
+    </div>
   )
 }
