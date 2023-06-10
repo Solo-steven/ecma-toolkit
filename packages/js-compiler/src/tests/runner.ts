@@ -3,6 +3,7 @@ import path from "path";
 import { readdir, stat, readFile } from "fs/promises";
 import { existsSync } from "fs";
 import { createParser } from "@/src/parser";
+import { transformSyntaxKindToLiteral } from "./transform";
 
 // eslint-disable-next-line no-useless-escape
 const jsFileRegex = new RegExp('.*\.js$');
@@ -63,6 +64,7 @@ async function runerAllTest() {
             readFile(testCase.jsonPath),
         ])
         const ast = createParser(code.toString()).parse();
+        transformSyntaxKindToLiteral(ast);
         const astString = JSON.stringify(ast, null, 4);
         if(astString === expectAST.toString()) {
             console.log("Done", testCase.jsPath)

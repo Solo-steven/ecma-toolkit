@@ -1177,8 +1177,11 @@ export function createParser(code: string) {
             case SyntaxKinds.Identifier: {
                 if(lookahead() === SyntaxKinds.ArrowOperator) {
                     const argus = [parseIdentifer()];
-                    // nextToken();
-                    return parseArrowFunctionExpression(argus);
+                    return parseArrowFunctionExpression({
+                        nodes: argus,
+                        start: argus[0].start,
+                        end: argus[0].end
+                    });
                 }
                 return parseIdentifer();
             }
@@ -1567,9 +1570,9 @@ export function createParser(code: string) {
             }
             return Factory.createSequenceExpression(nodes, start, end);
         }
-        return parseArrowFunctionExpression(nodes);
+        return parseArrowFunctionExpression({start, end, nodes});
     }
-    function parseArrowFunctionExpression(argus: Array<Expression>) {
+    function parseArrowFunctionExpression(metaData: ASTArrayWithMetaData<Expression>) {
         if(!match(SyntaxKinds.ArrowOperator)) {
             throw createUnexpectError(SyntaxKinds.ArrowOperator);
         }
@@ -1582,7 +1585,7 @@ export function createParser(code: string) {
             body = parseExpression();
             isExpression = true;
         }
-        return Factory.createArrowExpression(isExpression, body, argus, context.inAsync, cloneSourcePosition(argus[0].start), cloneSourcePosition(body.end));
+        return Factory.createArrowExpression(isExpression, body,  metaData.nodes, context.inAsync, cloneSourcePosition(metaData.start), cloneSourcePosition(body.end));
     }
 /** ================================================================================
  *  Parse Pattern

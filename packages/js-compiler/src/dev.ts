@@ -1,21 +1,14 @@
 import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "js-types";
 import { createParser } from "@/src/parser";
+import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`variable = {
-    numberProperty: 10,
-    expressionProperty: 10 + z * 7,
-    ...someOtherObject,
-    [9+8]: 10,
-    1: "string",
-    "key": "value",
-    otherShorted,
-    arrowProperty: (a,b,c) => {
-
-    },
-    method (a, v) {
-
+`class Component {
+    #someMethod() {
+        for(const item of this.someArray) {
+            console.log(item)
+        }
     }
 }`;
 
@@ -38,6 +31,6 @@ console.log("=================================");
 console.log("============ Parser =============");
 console.log("=================================");
 
-console.log(JSON.stringify(createParser(code).parse(), null, 4));
-
 const ast = createParser(code).parse();
+transformSyntaxKindToLiteral(ast);
+console.log(JSON.stringify(ast, null, 4));

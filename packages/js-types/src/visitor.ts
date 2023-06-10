@@ -70,35 +70,28 @@ import {
     TaggedTemplateExpression,
     ChainExpression,
     ClassConstructor,
+    ExpressionStatement,
+    Identifier,
+    NumberLiteral,
+    StringLiteral,
 } from "./ast";
 import { SyntaxKinds } from "./kind";
 
 export type Visitor = {[key: number ]: (node: ModuleItem) => void }
 
-export default function traversal(program: Program, visior: Visitor) {
-    visitNode(program, visior);
-}
-
-function visitIfNeed(node: ModuleItem | null, visitor: Visitor,) {
-    if(!node) return; 
-    if(visitor[node.kind]) {
-        visitor[node.kind](node);
-    }
-}
-function visitNode(node: ModuleItem | null, visior: Visitor) {
-    if(!node) return; 
-    const handler = VisitorTable[node.kind];
-    if(handler) {
-        handler(node, visior);
-    }
-}
-function visitNodes(nodes: Array<ModuleItem>, visior: Visitor) {
-    nodes.forEach(node => visitNode(node, visior));
-}
 const VisitorTable: { [key: number ]: (node: ModuleItem, visior: Visitor) => void } = {
     [SyntaxKinds.Program]: function visitProgram(node: Program, visitor: Visitor) {
         visitIfNeed(node, visitor);
         visitNodes(node.body, visitor);
+    },
+    [SyntaxKinds.NumberLiteral]: function visitNumberString(node: NumberLiteral, visitor: Visitor) {
+        visitIfNeed(node, visitor);
+    },
+    [SyntaxKinds.StringLiteral]: function visitStringLiteral(node: StringLiteral, visitor: Visitor) {
+        visitIfNeed(node, visitor);
+    },
+    [SyntaxKinds.Identifier]: function bindIdentifier(node: Identifier, visitor: Visitor) {
+        visitIfNeed(node, visitor);
     },
     [SyntaxKinds.Super]: function bindSuper(node: Super, visitor: Visitor ) {
         visitIfNeed(node, visitor);
@@ -226,6 +219,10 @@ const VisitorTable: { [key: number ]: (node: ModuleItem, visior: Visitor) => voi
     [SyntaxKinds.SequenceExpression]: function bindSequenceExpression(node: SequenceExpression, visitor: Visitor) {
         visitIfNeed(node, visitor);
         visitNodes(node.exprs, visitor);
+    },
+    [SyntaxKinds.ExpressionStatement]: function bindExpressionStatement(node: ExpressionStatement, visitor: Visitor) {
+        visitIfNeed(node, visitor);
+        visitNode(node.expr, visitor);
     },
     [SyntaxKinds.ObjectPattern]: function bindObjectPattern(node: ObjectPattern, visitor: Visitor) {
         visitIfNeed(node, visitor);
@@ -428,3 +425,26 @@ const VisitorTable: { [key: number ]: (node: ModuleItem, visior: Visitor) => voi
         visitNode(node.source, visitor);
     }
 };
+
+export function traversal(program: Program, visior: Visitor) {
+    visitNode(program, visior);
+}
+
+function visitIfNeed(node: ModuleItem | null, visitor: Visitor,) {
+    if(!node) return; 
+    if(visitor[node.kind]) {
+        visitor[node.kind](node);
+    }
+}
+function visitNode(node: ModuleItem | null, visior: Visitor) {
+    if(!node) return; 
+    const handler = VisitorTable[node.kind];
+    if(handler) {
+        handler(node, visior);
+    }else {
+        throw new Error(`AST Not Existed, ${node.kind}`)
+    }
+}
+function visitNodes(nodes: Array<ModuleItem>, visior: Visitor) {
+    nodes.forEach(node => visitNode(node, visior));
+}

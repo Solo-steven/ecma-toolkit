@@ -1,10 +1,10 @@
 {
-    "kind": 10120,
+    "kind": "Program",
     "body": [
         {
-            "kind": 10144,
+            "kind": "ClassDeclaration",
             "id": {
-                "kind": 10117,
+                "kind": "Identifer",
                 "name": "Component",
                 "start": {
                     "row": 1,
@@ -19,15 +19,15 @@
             },
             "superClass": null,
             "body": {
-                "kind": 10145,
+                "kind": "ClassBody",
                 "body": [
                     {
-                        "kind": 10156,
+                        "kind": "ClassProperty",
                         "computed": false,
                         "static": false,
                         "shorted": false,
                         "key": {
-                            "kind": 10117,
+                            "kind": "Identifer",
                             "name": "a",
                             "start": {
                                 "row": 2,
@@ -41,7 +41,7 @@
                             }
                         },
                         "value": {
-                            "kind": 10114,
+                            "kind": "NumberLiteral",
                             "value": "10",
                             "start": {
                                 "row": 2,
@@ -66,12 +66,12 @@
                         }
                     },
                     {
-                        "kind": 10156,
+                        "kind": "ClassProperty",
                         "computed": false,
                         "static": false,
                         "shorted": false,
                         "key": {
-                            "kind": 10117,
+                            "kind": "Identifer",
                             "name": "b",
                             "start": {
                                 "row": 3,
@@ -85,7 +85,7 @@
                             }
                         },
                         "value": {
-                            "kind": 10114,
+                            "kind": "NumberLiteral",
                             "value": "100",
                             "start": {
                                 "row": 3,
@@ -110,12 +110,12 @@
                         }
                     },
                     {
-                        "kind": 10156,
+                        "kind": "ClassProperty",
                         "computed": false,
                         "static": false,
                         "shorted": false,
                         "key": {
-                            "kind": 10117,
+                            "kind": "Identifer",
                             "name": "c",
                             "start": {
                                 "row": 4,
@@ -129,7 +129,7 @@
                             }
                         },
                         "value": {
-                            "kind": 10114,
+                            "kind": "NumberLiteral",
                             "value": "101",
                             "start": {
                                 "row": 4,
@@ -154,12 +154,12 @@
                         }
                     },
                     {
-                        "kind": 10156,
+                        "kind": "ClassProperty",
                         "computed": false,
                         "static": false,
                         "shorted": false,
                         "key": {
-                            "kind": 10117,
+                            "kind": "Identifer",
                             "name": "k",
                             "start": {
                                 "row": 5,
@@ -173,12 +173,12 @@
                             }
                         },
                         "value": {
-                            "kind": 10160,
+                            "kind": "FunctionExpression",
                             "name": null,
                             "generator": false,
                             "async": false,
                             "body": {
-                                "kind": 10143,
+                                "kind": "FunctionBody",
                                 "body": [],
                                 "start": {
                                     "row": 5,
