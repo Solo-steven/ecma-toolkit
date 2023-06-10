@@ -91,10 +91,10 @@ export function HeroSlider() {
         <div className="mx-auto max-w-2xl py-32 sm:py-52 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-6xl">
-              ECMA-Parser
+              ECMA-Toolkit
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-100">
-              A toy parser that maybe can parse your javascript into a EStree-like AST Data structure, but still 
+              A toy toolkit that maybe can parse your javascript into a EStree-like AST Data structure, but still 
               has some limitation
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
