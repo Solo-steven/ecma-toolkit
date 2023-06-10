@@ -7,8 +7,8 @@ export default function Home() {
   return (
     <div>
       <SEOHeader 
-        title={"ECMA Parser, A toy parser for JavaScript"} 
-        description="ECMA parser, a toy parser for parse your JavaScript code estree-like AST"
+        title={"ECMA Toolkit, A toy toolit for JavaScript"} 
+        description="ECMA toolkit, a toy toolkit for parse your JavaScript code estree-like AST"
       />
         <div className="bg-slate-950">
           <HeroSlider />

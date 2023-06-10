@@ -1,5 +1,5 @@
 {
-  "name": "ecma-parser",
+  "name": "emca-tookit",
   "private": true,
   "workspaces": [
     "packages/js-compiler",

@@ -6,6 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js",
+    "clean": "rm -rf ./dist",
     "dev": "nodemon ./src/dev.ts",
     "test": "ts-node ./src/tests/runner.ts",
     "test:update": "jest --updateSnapshot"
