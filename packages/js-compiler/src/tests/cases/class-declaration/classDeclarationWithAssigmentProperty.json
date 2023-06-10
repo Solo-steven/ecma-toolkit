@@ -1,0 +1,251 @@
+{
+    "kind": 10120,
+    "body": [
+        {
+            "kind": 10144,
+            "id": {
+                "kind": 10117,
+                "name": "Component",
+                "start": {
+                    "row": 1,
+                    "col": 7,
+                    "index": 6
+                },
+                "end": {
+                    "row": 1,
+                    "col": 16,
+                    "index": 15
+                }
+            },
+            "superClass": null,
+            "body": {
+                "kind": 10145,
+                "body": [
+                    {
+                        "kind": 10156,
+                        "computed": false,
+                        "static": false,
+                        "shorted": false,
+                        "key": {
+                            "kind": 10117,
+                            "name": "a",
+                            "start": {
+                                "row": 2,
+                                "col": 4,
+                                "index": 22
+                            },
+                            "end": {
+                                "row": 2,
+                                "col": 5,
+                                "index": 23
+                            }
+                        },
+                        "value": {
+                            "kind": 10114,
+                            "value": "10",
+                            "start": {
+                                "row": 2,
+                                "col": 8,
+                                "index": 26
+                            },
+                            "end": {
+                                "row": 2,
+                                "col": 10,
+                                "index": 28
+                            }
+                        },
+                        "start": {
+                            "row": 2,
+                            "col": 4,
+                            "index": 22
+                        },
+                        "end": {
+                            "row": 2,
+                            "col": 10,
+                            "index": 28
+                        }
+                    },
+                    {
+                        "kind": 10156,
+                        "computed": false,
+                        "static": false,
+                        "shorted": false,
+                        "key": {
+                            "kind": 10117,
+                            "name": "b",
+                            "start": {
+                                "row": 3,
+                                "col": 4,
+                                "index": 33
+                            },
+                            "end": {
+                                "row": 3,
+                                "col": 5,
+                                "index": 34
+                            }
+                        },
+                        "value": {
+                            "kind": 10114,
+                            "value": "100",
+                            "start": {
+                                "row": 3,
+                                "col": 8,
+                                "index": 37
+                            },
+                            "end": {
+                                "row": 3,
+                                "col": 11,
+                                "index": 40
+                            }
+                        },
+                        "start": {
+                            "row": 3,
+                            "col": 4,
+                            "index": 33
+                        },
+                        "end": {
+                            "row": 3,
+                            "col": 11,
+                            "index": 40
+                        }
+                    },
+                    {
+                        "kind": 10156,
+                        "computed": false,
+                        "static": false,
+                        "shorted": false,
+                        "key": {
+                            "kind": 10117,
+                            "name": "c",
+                            "start": {
+                                "row": 4,
+                                "col": 4,
+                                "index": 45
+                            },
+                            "end": {
+                                "row": 4,
+                                "col": 5,
+                                "index": 46
+                            }
+                        },
+                        "value": {
+                            "kind": 10114,
+                            "value": "101",
+                            "start": {
+                                "row": 4,
+                                "col": 8,
+                                "index": 49
+                            },
+                            "end": {
+                                "row": 4,
+                                "col": 11,
+                                "index": 52
+                            }
+                        },
+                        "start": {
+                            "row": 4,
+                            "col": 4,
+                            "index": 45
+                        },
+                        "end": {
+                            "row": 4,
+                            "col": 11,
+                            "index": 52
+                        }
+                    },
+                    {
+                        "kind": 10156,
+                        "computed": false,
+                        "static": false,
+                        "shorted": false,
+                        "key": {
+                            "kind": 10117,
+                            "name": "k",
+                            "start": {
+                                "row": 5,
+                                "col": 4,
+                                "index": 57
+                            },
+                            "end": {
+                                "row": 5,
+                                "col": 5,
+                                "index": 58
+                            }
+                        },
+                        "value": {
+                            "kind": 10160,
+                            "name": null,
+                            "generator": false,
+                            "async": false,
+                            "body": {
+                                "kind": 10143,
+                                "body": [],
+                                "start": {
+                                    "row": 5,
+                                    "col": 20,
+                                    "index": 73
+                                },
+                                "end": {
+                                    "row": 7,
+                                    "col": 5,
+                                    "index": 89
+                                }
+                            },
+                            "params": [],
+                            "start": {
+                                "row": 5,
+                                "col": 8,
+                                "index": 61
+                            },
+                            "end": {
+                                "row": 7,
+                                "col": 5,
+                                "index": 89
+                            }
+                        },
+                        "start": {
+                            "row": 5,
+                            "col": 4,
+                            "index": 57
+                        },
+                        "end": {
+                            "row": 7,
+                            "col": 5,
+                            "index": 89
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 17,
+                    "index": 16
+                },
+                "end": {
+                    "row": 8,
+                    "col": 1,
+                    "index": 91
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 8,
+                "col": 1,
+                "index": 91
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 8,
+        "col": 1,
+        "index": 91
+    }
+}

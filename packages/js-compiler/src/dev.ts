@@ -2,7 +2,22 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "js-types";
 import { createParser } from "@/src/parser";
 
-const code = `new foo().bar()`;
+const code = 
+`variable = {
+    numberProperty: 10,
+    expressionProperty: 10 + z * 7,
+    ...someOtherObject,
+    [9+8]: 10,
+    1: "string",
+    "key": "value",
+    otherShorted,
+    arrowProperty: (a,b,c) => {
+
+    },
+    method (a, v) {
+
+    }
+}`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");
