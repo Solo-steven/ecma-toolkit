@@ -900,7 +900,8 @@ export function createParser(code: string) {
         if (!matchSet(AssigmentOperators)) {
             return left;
         }
-        const operator = nextToken();
+        const operator = getToken();
+        nextToken();
         const right = parseAssigmentExpression();
         return Factory.createAssignmentExpression(left, right, operator as AssigmentOperatorKinds, cloneSourcePosition(left.start), cloneSourcePosition(right.end));
     }

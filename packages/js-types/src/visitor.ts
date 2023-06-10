@@ -117,6 +117,7 @@ const VisitorTable: { [key: number ]: (node: ModuleItem, visior: Visitor) => voi
     [SyntaxKinds.ObjectProperty]: function bindObjectProperty(node: ObjectProperty, visitor: Visitor) {
         visitIfNeed(node, visitor)
         visitNode(node.key, visitor);
+        visitNode(node.value, visitor);
     },
     [SyntaxKinds.ObjectMethodDefintion]: function bindObjectMethodDefintion(node: ObjectMethodDefinition, visitor: Visitor) {
         visitIfNeed(node, visitor);

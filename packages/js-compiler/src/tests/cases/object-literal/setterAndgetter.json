@@ -1,0 +1,174 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "AssigmentExpression",
+                "operator": "=",
+                "left": {
+                    "kind": "Identifer",
+                    "name": "variable",
+                    "start": {
+                        "row": 1,
+                        "col": 1,
+                        "index": 0
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 9,
+                        "index": 8
+                    }
+                },
+                "right": {
+                    "kind": "ObjectExpression",
+                    "properties": [
+                        {
+                            "kind": "ObjectAccessor",
+                            "key": {
+                                "kind": "Identifer",
+                                "name": "n",
+                                "start": {
+                                    "row": 2,
+                                    "col": 8,
+                                    "index": 21
+                                },
+                                "end": {
+                                    "row": 2,
+                                    "col": 9,
+                                    "index": 22
+                                }
+                            },
+                            "params": [],
+                            "body": {
+                                "kind": "FunctionBody",
+                                "body": [],
+                                "start": {
+                                    "row": 2,
+                                    "col": 12,
+                                    "index": 25
+                                },
+                                "end": {
+                                    "row": 4,
+                                    "col": 5,
+                                    "index": 33
+                                }
+                            },
+                            "type": "get",
+                            "computed": false,
+                            "start": {
+                                "row": 2,
+                                "col": 4,
+                                "index": 17
+                            },
+                            "end": {
+                                "row": 4,
+                                "col": 5,
+                                "index": 33
+                            }
+                        },
+                        {
+                            "kind": "ObjectAccessor",
+                            "key": {
+                                "kind": "Identifer",
+                                "name": "n",
+                                "start": {
+                                    "row": 5,
+                                    "col": 8,
+                                    "index": 43
+                                },
+                                "end": {
+                                    "row": 5,
+                                    "col": 9,
+                                    "index": 44
+                                }
+                            },
+                            "params": [
+                                {
+                                    "kind": "Identifer",
+                                    "name": "value",
+                                    "start": {
+                                        "row": 5,
+                                        "col": 11,
+                                        "index": 46
+                                    },
+                                    "end": {
+                                        "row": 5,
+                                        "col": 16,
+                                        "index": 51
+                                    }
+                                }
+                            ],
+                            "body": {
+                                "kind": "FunctionBody",
+                                "body": [],
+                                "start": {
+                                    "row": 5,
+                                    "col": 18,
+                                    "index": 53
+                                },
+                                "end": {
+                                    "row": 7,
+                                    "col": 5,
+                                    "index": 61
+                                }
+                            },
+                            "type": "set",
+                            "computed": false,
+                            "start": {
+                                "row": 5,
+                                "col": 4,
+                                "index": 39
+                            },
+                            "end": {
+                                "row": 7,
+                                "col": 5,
+                                "index": 61
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 12,
+                        "index": 11
+                    },
+                    "end": {
+                        "row": 8,
+                        "col": 1,
+                        "index": 63
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 8,
+                    "col": 1,
+                    "index": 63
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 8,
+                "col": 1,
+                "index": 63
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 8,
+        "col": 1,
+        "index": 63
+    }
+}

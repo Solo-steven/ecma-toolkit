@@ -4,11 +4,12 @@ import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`class Component {
-    #someMethod() {
-        for(const item of this.someArray) {
-            console.log(item)
-        }
+`variable = {
+    get n() {
+
+    },
+    set n (value) {
+
     }
 }`;
 

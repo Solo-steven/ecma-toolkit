@@ -390,17 +390,17 @@ export const SytaxKindsMapLexicalLiteral = {
     // ========= Token (Maybe Punctuator and Operator) =====
     [SyntaxKinds.CommaToken]: "CommaToken",
     // ========== Punctuator ===========
-    [SyntaxKinds.BracesLeftPunctuator]: "",   // {
-    [SyntaxKinds.BracesRightPunctuator]: "",  // }
-    [SyntaxKinds.BracketLeftPunctuator]: "",  // [
-    [SyntaxKinds.BracketRightPunctuator]: "", // ]
-    [SyntaxKinds.ParenthesesLeftPunctuator]: "",  // (
-    [SyntaxKinds.ParenthesesRightPunctuator]: "", // )
-    [SyntaxKinds.SingleQuotationPunctuator]: "",  // '
-    [SyntaxKinds.DoubleQuotationPunctuator]: "",  // "
-    [SyntaxKinds.SemiPunctuator]: "", // ;
-    [SyntaxKinds.ColonPunctuator]: "",    // :
-    [SyntaxKinds.HashTagPunctuator]: "",  // #
+    [SyntaxKinds.BracesLeftPunctuator]: "{",   // {
+    [SyntaxKinds.BracesRightPunctuator]: "}",  // }
+    [SyntaxKinds.BracketLeftPunctuator]: "[",  // [
+    [SyntaxKinds.BracketRightPunctuator]: "]", // ]
+    [SyntaxKinds.ParenthesesLeftPunctuator]: "(",  // (
+    [SyntaxKinds.ParenthesesRightPunctuator]: ")", // )
+    [SyntaxKinds.SingleQuotationPunctuator]: "'",  // '
+    [SyntaxKinds.DoubleQuotationPunctuator]: "\"",  // "
+    [SyntaxKinds.SemiPunctuator]: ";", // ;
+    [SyntaxKinds.ColonPunctuator]: ":",    // :
+    [SyntaxKinds.HashTagPunctuator]: "#",  // #
     // ========== Template ===========
     [SyntaxKinds.TemplateHead]: "TemplateHead",
     [SyntaxKinds.TemplateTail]: "TemplateTail",

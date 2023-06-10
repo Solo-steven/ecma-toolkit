@@ -1,13 +1,13 @@
 {
-    "kind": 10120,
+    "kind": "Program",
     "body": [
         {
-            "kind": 10178,
+            "kind": "ExpressionStatement",
             "expr": {
-                "kind": 10175,
-                "operator": 10094,
+                "kind": "AssigmentExpression",
+                "operator": "=",
                 "left": {
-                    "kind": 10117,
+                    "kind": "Identifer",
                     "name": "variable",
                     "start": {
                         "row": 1,
@@ -21,14 +21,14 @@
                     }
                 },
                 "right": {
-                    "kind": 10151,
+                    "kind": "ObjectExpression",
                     "properties": [
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": false,
                             "shorted": false,
                             "key": {
-                                "kind": 10117,
+                                "kind": "Identifer",
                                 "name": "numberProperty",
                                 "start": {
                                     "row": 2,
@@ -42,7 +42,7 @@
                                 }
                             },
                             "value": {
-                                "kind": 10114,
+                                "kind": "NumberLiteral",
                                 "value": "10",
                                 "start": {
                                     "row": 2,
@@ -67,11 +67,11 @@
                             }
                         },
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": false,
                             "shorted": false,
                             "key": {
-                                "kind": 10117,
+                                "kind": "Identifer",
                                 "name": "expressionProperty",
                                 "start": {
                                     "row": 3,
@@ -85,10 +85,10 @@
                                 }
                             },
                             "value": {
-                                "kind": 10173,
-                                "operator": 10046,
+                                "kind": "BinaryExpression",
+                                "operator": "+",
                                 "left": {
-                                    "kind": 10114,
+                                    "kind": "NumberLiteral",
                                     "value": "10",
                                     "start": {
                                         "row": 3,
@@ -102,10 +102,10 @@
                                     }
                                 },
                                 "right": {
-                                    "kind": 10173,
-                                    "operator": 10049,
+                                    "kind": "BinaryExpression",
+                                    "operator": "*",
                                     "left": {
-                                        "kind": 10117,
+                                        "kind": "Identifer",
                                         "name": "z",
                                         "start": {
                                             "row": 3,
@@ -119,7 +119,7 @@
                                         }
                                     },
                                     "right": {
-                                        "kind": 10114,
+                                        "kind": "NumberLiteral",
                                         "value": "7",
                                         "start": {
                                             "row": 3,
@@ -166,9 +166,9 @@
                             }
                         },
                         {
-                            "kind": 10149,
+                            "kind": "SpreadElement",
                             "argument": {
-                                "kind": 10117,
+                                "kind": "Identifer",
                                 "name": "someOtherObject",
                                 "start": {
                                     "row": 4,
@@ -193,14 +193,14 @@
                             }
                         },
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": true,
                             "shorted": false,
                             "key": {
-                                "kind": 10173,
-                                "operator": 10046,
+                                "kind": "BinaryExpression",
+                                "operator": "+",
                                 "left": {
-                                    "kind": 10114,
+                                    "kind": "NumberLiteral",
                                     "value": "9",
                                     "start": {
                                         "row": 5,
@@ -214,7 +214,7 @@
                                     }
                                 },
                                 "right": {
-                                    "kind": 10114,
+                                    "kind": "NumberLiteral",
                                     "value": "8",
                                     "start": {
                                         "row": 5,
@@ -239,7 +239,7 @@
                                 }
                             },
                             "value": {
-                                "kind": 10114,
+                                "kind": "NumberLiteral",
                                 "value": "10",
                                 "start": {
                                     "row": 5,
@@ -264,11 +264,11 @@
                             }
                         },
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": false,
                             "shorted": false,
                             "key": {
-                                "kind": 10114,
+                                "kind": "NumberLiteral",
                                 "value": "1",
                                 "start": {
                                     "row": 6,
@@ -282,7 +282,7 @@
                                 }
                             },
                             "value": {
-                                "kind": 10113,
+                                "kind": "StringLiteral",
                                 "value": "string",
                                 "start": {
                                     "row": 6,
@@ -307,11 +307,11 @@
                             }
                         },
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": false,
                             "shorted": false,
                             "key": {
-                                "kind": 10113,
+                                "kind": "StringLiteral",
                                 "value": "key",
                                 "start": {
                                     "row": 7,
@@ -325,7 +325,7 @@
                                 }
                             },
                             "value": {
-                                "kind": 10113,
+                                "kind": "StringLiteral",
                                 "value": "value",
                                 "start": {
                                     "row": 7,
@@ -350,11 +350,11 @@
                             }
                         },
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": false,
                             "shorted": true,
                             "key": {
-                                "kind": 10117,
+                                "kind": "Identifer",
                                 "name": "otherShorted",
                                 "start": {
                                     "row": 8,
@@ -379,11 +379,11 @@
                             }
                         },
                         {
-                            "kind": 10152,
+                            "kind": "ObjectProperty",
                             "computed": false,
                             "shorted": false,
                             "key": {
-                                "kind": 10117,
+                                "kind": "Identifer",
                                 "name": "arrowProperty",
                                 "start": {
                                     "row": 9,
@@ -397,12 +397,12 @@
                                 }
                             },
                             "value": {
-                                "kind": 10163,
+                                "kind": "ArrowFunctionExpression",
                                 "expressionBody": false,
                                 "async": false,
                                 "arguments": [
                                     {
-                                        "kind": 10117,
+                                        "kind": "Identifer",
                                         "name": "a",
                                         "start": {
                                             "row": 9,
@@ -416,7 +416,7 @@
                                         }
                                     },
                                     {
-                                        "kind": 10117,
+                                        "kind": "Identifer",
                                         "name": "b",
                                         "start": {
                                             "row": 9,
@@ -430,7 +430,7 @@
                                         }
                                     },
                                     {
-                                        "kind": 10117,
+                                        "kind": "Identifer",
                                         "name": "c",
                                         "start": {
                                             "row": 9,
@@ -445,7 +445,7 @@
                                     }
                                 ],
                                 "body": {
-                                    "kind": 10143,
+                                    "kind": "FunctionBody",
                                     "body": [],
                                     "start": {
                                         "row": 9,
@@ -460,8 +460,8 @@
                                 },
                                 "start": {
                                     "row": 9,
-                                    "col": 20,
-                                    "index": 187
+                                    "col": 19,
+                                    "index": 186
                                 },
                                 "end": {
                                     "row": 11,
@@ -481,12 +481,12 @@
                             }
                         },
                         {
-                            "kind": 10154,
+                            "kind": "ObjectMethodDefinition",
                             "async": false,
                             "generator": false,
                             "computed": false,
                             "key": {
-                                "kind": 10117,
+                                "kind": "Identifer",
                                 "name": "method",
                                 "start": {
                                     "row": 12,
@@ -501,7 +501,7 @@
                             },
                             "params": [
                                 {
-                                    "kind": 10117,
+                                    "kind": "Identifer",
                                     "name": "a",
                                     "start": {
                                         "row": 12,
@@ -515,7 +515,7 @@
                                     }
                                 },
                                 {
-                                    "kind": 10117,
+                                    "kind": "Identifer",
                                     "name": "v",
                                     "start": {
                                         "row": 12,
@@ -530,7 +530,7 @@
                                 }
                             ],
                             "body": {
-                                "kind": 10143,
+                                "kind": "FunctionBody",
                                 "body": [],
                                 "start": {
                                     "row": 12,
