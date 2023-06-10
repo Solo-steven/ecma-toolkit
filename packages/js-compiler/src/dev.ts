@@ -4,14 +4,7 @@ import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`variable = {
-    get n() {
-
-    },
-    set n (value) {
-
-    }
-}`;
+`const { data, name, value } = state`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

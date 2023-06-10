@@ -1,0 +1,277 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "VariableDeclaration",
+            "variant": "const",
+            "declarations": [
+                {
+                    "kind": "VariableDeclarator",
+                    "id": {
+                        "kind": "ObjectPattern",
+                        "properties": [
+                            {
+                                "kind": "ObjectPatternProperty",
+                                "computed": false,
+                                "shorted": false,
+                                "key": {
+                                    "kind": "Identifer",
+                                    "name": "props",
+                                    "start": {
+                                        "row": 2,
+                                        "col": 4,
+                                        "index": 12
+                                    },
+                                    "end": {
+                                        "row": 2,
+                                        "col": 9,
+                                        "index": 17
+                                    }
+                                },
+                                "value": {
+                                    "kind": "ObjectPattern",
+                                    "properties": [
+                                        {
+                                            "kind": "ObjectPatternProperty",
+                                            "computed": false,
+                                            "shorted": false,
+                                            "key": {
+                                                "kind": "Identifer",
+                                                "name": "someProperty",
+                                                "start": {
+                                                    "row": 3,
+                                                    "col": 8,
+                                                    "index": 29
+                                                },
+                                                "end": {
+                                                    "row": 3,
+                                                    "col": 20,
+                                                    "index": 41
+                                                }
+                                            },
+                                            "value": {
+                                                "kind": "ObjectPattern",
+                                                "properties": [
+                                                    {
+                                                        "kind": "ObjectPatternProperty",
+                                                        "computed": false,
+                                                        "shorted": true,
+                                                        "key": {
+                                                            "kind": "Identifer",
+                                                            "name": "data",
+                                                            "start": {
+                                                                "row": 4,
+                                                                "col": 12,
+                                                                "index": 57
+                                                            },
+                                                            "end": {
+                                                                "row": 4,
+                                                                "col": 16,
+                                                                "index": 61
+                                                            }
+                                                        },
+                                                        "start": {
+                                                            "row": 4,
+                                                            "col": 12,
+                                                            "index": 57
+                                                        },
+                                                        "end": {
+                                                            "row": 4,
+                                                            "col": 16,
+                                                            "index": 61
+                                                        }
+                                                    },
+                                                    {
+                                                        "kind": "ObjectPatternProperty",
+                                                        "computed": false,
+                                                        "shorted": true,
+                                                        "key": {
+                                                            "kind": "Identifer",
+                                                            "name": "value",
+                                                            "start": {
+                                                                "row": 5,
+                                                                "col": 12,
+                                                                "index": 75
+                                                            },
+                                                            "end": {
+                                                                "row": 5,
+                                                                "col": 17,
+                                                                "index": 80
+                                                            }
+                                                        },
+                                                        "start": {
+                                                            "row": 5,
+                                                            "col": 12,
+                                                            "index": 75
+                                                        },
+                                                        "end": {
+                                                            "row": 5,
+                                                            "col": 17,
+                                                            "index": 80
+                                                        }
+                                                    },
+                                                    {
+                                                        "kind": "ObjectPatternProperty",
+                                                        "computed": false,
+                                                        "shorted": true,
+                                                        "key": {
+                                                            "kind": "Identifer",
+                                                            "name": "name",
+                                                            "start": {
+                                                                "row": 6,
+                                                                "col": 12,
+                                                                "index": 94
+                                                            },
+                                                            "end": {
+                                                                "row": 6,
+                                                                "col": 16,
+                                                                "index": 98
+                                                            }
+                                                        },
+                                                        "start": {
+                                                            "row": 6,
+                                                            "col": 12,
+                                                            "index": 94
+                                                        },
+                                                        "end": {
+                                                            "row": 6,
+                                                            "col": 16,
+                                                            "index": 98
+                                                        }
+                                                    }
+                                                ],
+                                                "start": {
+                                                    "row": 3,
+                                                    "col": 22,
+                                                    "index": 43
+                                                },
+                                                "end": {
+                                                    "row": 7,
+                                                    "col": 9,
+                                                    "index": 109
+                                                }
+                                            },
+                                            "start": {
+                                                "row": 3,
+                                                "col": 8,
+                                                "index": 29
+                                            },
+                                            "end": {
+                                                "row": 7,
+                                                "col": 9,
+                                                "index": 109
+                                            }
+                                        }
+                                    ],
+                                    "start": {
+                                        "row": 2,
+                                        "col": 11,
+                                        "index": 19
+                                    },
+                                    "end": {
+                                        "row": 8,
+                                        "col": 5,
+                                        "index": 115
+                                    }
+                                },
+                                "start": {
+                                    "row": 2,
+                                    "col": 4,
+                                    "index": 12
+                                },
+                                "end": {
+                                    "row": 8,
+                                    "col": 5,
+                                    "index": 115
+                                }
+                            },
+                            {
+                                "kind": "ObjectPatternProperty",
+                                "computed": false,
+                                "shorted": true,
+                                "key": {
+                                    "kind": "Identifer",
+                                    "name": "otherProps",
+                                    "start": {
+                                        "row": 9,
+                                        "col": 4,
+                                        "index": 121
+                                    },
+                                    "end": {
+                                        "row": 9,
+                                        "col": 14,
+                                        "index": 131
+                                    }
+                                },
+                                "start": {
+                                    "row": 9,
+                                    "col": 4,
+                                    "index": 121
+                                },
+                                "end": {
+                                    "row": 9,
+                                    "col": 14,
+                                    "index": 131
+                                }
+                            }
+                        ],
+                        "start": {
+                            "row": 1,
+                            "col": 7,
+                            "index": 6
+                        },
+                        "end": {
+                            "row": 10,
+                            "col": 1,
+                            "index": 134
+                        }
+                    },
+                    "init": {
+                        "kind": "Identifer",
+                        "name": "someNestedObject",
+                        "start": {
+                            "row": 10,
+                            "col": 4,
+                            "index": 137
+                        },
+                        "end": {
+                            "row": 10,
+                            "col": 20,
+                            "index": 153
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 7,
+                        "index": 6
+                    },
+                    "end": {
+                        "row": 10,
+                        "col": 20,
+                        "index": 153
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 10,
+                "col": 20,
+                "index": 153
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 10,
+        "col": 20,
+        "index": 153
+    }
+}
