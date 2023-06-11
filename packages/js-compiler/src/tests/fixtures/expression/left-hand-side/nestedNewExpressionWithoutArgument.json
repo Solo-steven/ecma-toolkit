@@ -1,0 +1,56 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "NewExpression",
+                "callee": {
+                    "kind": "Identifer",
+                    "name": "T",
+                    "start": {
+                        "row": 1,
+                        "col": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 10,
+                        "index": 9
+                    }
+                },
+                "arguments": [],
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 10,
+                    "index": 9
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 5,
+                "index": 4
+            },
+            "end": {
+                "row": 1,
+                "col": 10,
+                "index": 9
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 5,
+        "index": 4
+    },
+    "end": {
+        "row": 1,
+        "col": 10,
+        "index": 9
+    }
+}

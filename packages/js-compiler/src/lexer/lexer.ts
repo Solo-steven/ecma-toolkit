@@ -293,7 +293,7 @@ export function createLexer(code: string): Lexer {
      * @returns {Error} - a error object
      */
     function subStateMachineError(name: string, char: string): Error {
-        return new Error(`[Error]: ${name} state machine should only be called when currnet position is ${char}. `);
+        return new Error(`[Error]: ${name} state machine should only be called when currnet position is ${char}. but current position is ${getChar()}`);
     }
     /**
      * lexicalError is used for tokenizer unexecpt char happended. ex: string start with " can't find end ""
@@ -591,18 +591,8 @@ export function createLexer(code: string): Lexer {
     function readTildeStart() {
         // [READ]: '^', '^='
         // [MUST]: call when current char is '^'
-        if(startWith("^=")) {
-            eatChar(1);
-            return finishToken(SyntaxKinds.BitwiseNOTAssginOperator, "^=");
-        }
-        eatChar();
-        return finishToken(SyntaxKinds.BitwiseNOTOperator, "^");
-    }
-    function readUpArrowStart() {
-        // [READ]: '~', '~='
-        // [MUST]: call when current char is '~'
         if(!startWith("~")) {
-            throw subStateMachineError("readWaveStart", "~");
+            throw subStateMachineError("readTildeStart", "~");
         } 
         if(startWith("~=")) {
             eatChar(2);
@@ -610,6 +600,19 @@ export function createLexer(code: string): Lexer {
         }
         eatChar();
         return finishToken(SyntaxKinds.BitwiseXOROperator, "~");
+    }
+    function readUpArrowStart() {
+        // [READ]: '~', '~='
+        // [MUST]: call when current char is '~'
+        if(!startWith("^")) {
+            throw subStateMachineError("readUpArrowStart", "~");
+        } 
+        if(startWith("^=")) {
+            eatChar(2);
+            return finishToken(SyntaxKinds.BitwiseNOTAssginOperator, "^=");
+        }
+        eatChar();
+        return finishToken(SyntaxKinds.BitwiseNOTOperator, "^");
     }
     /** ================================================
      *     Template

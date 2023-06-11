@@ -1,0 +1,159 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "CallExpression",
+                "optional": false,
+                "callee": {
+                    "kind": "MemberExpression",
+                    "computed": false,
+                    "optional": false,
+                    "object": {
+                        "kind": "MemberExpression",
+                        "computed": false,
+                        "optional": false,
+                        "object": {
+                            "kind": "MemberExpression",
+                            "computed": false,
+                            "optional": false,
+                            "object": {
+                                "kind": "Identifer",
+                                "name": "earth",
+                                "start": {
+                                    "row": 1,
+                                    "col": 1,
+                                    "index": 0
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 6,
+                                    "index": 5
+                                }
+                            },
+                            "property": {
+                                "kind": "Identifer",
+                                "name": "asia",
+                                "start": {
+                                    "row": 1,
+                                    "col": 7,
+                                    "index": 6
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 11,
+                                    "index": 10
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 1,
+                                "index": 0
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            }
+                        },
+                        "property": {
+                            "kind": "Identifer",
+                            "name": "Indonesia",
+                            "start": {
+                                "row": 1,
+                                "col": 12,
+                                "index": 11
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 21,
+                                "index": 20
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 1,
+                            "index": 0
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 21,
+                            "index": 20
+                        }
+                    },
+                    "property": {
+                        "kind": "Identifer",
+                        "name": "prepareForElection",
+                        "start": {
+                            "row": 1,
+                            "col": 22,
+                            "index": 21
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 40,
+                            "index": 39
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 1,
+                        "index": 0
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 40,
+                        "index": 39
+                    }
+                },
+                "arguments": [
+                    {
+                        "kind": "NumberLiteral",
+                        "value": "2014",
+                        "start": {
+                            "row": 1,
+                            "col": 41,
+                            "index": 40
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 45,
+                            "index": 44
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 46,
+                    "index": 45
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 46,
+                "index": 45
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 46,
+        "index": 45
+    }
+}

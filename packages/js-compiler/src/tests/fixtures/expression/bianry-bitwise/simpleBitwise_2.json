@@ -1,0 +1,83 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "Identifer",
+                "name": "x",
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 2,
+                    "index": 1
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 2,
+                "index": 1
+            }
+        },
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "UnaryExpression",
+                "operator": "~",
+                "argument": {
+                    "kind": "Identifer",
+                    "name": "y",
+                    "start": {
+                        "row": 1,
+                        "col": 5,
+                        "index": 4
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 6,
+                        "index": 5
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 3,
+                    "index": 2
+                },
+                "end": {
+                    "row": 1,
+                    "col": 6,
+                    "index": 5
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 3,
+                "index": 2
+            },
+            "end": {
+                "row": 1,
+                "col": 6,
+                "index": 5
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 6,
+        "index": 5
+    }
+}
