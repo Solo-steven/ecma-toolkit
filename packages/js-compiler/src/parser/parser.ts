@@ -69,10 +69,12 @@ import {
     SourcePosition,
     cloneSourcePosition,
     Factory,
+    isBinaryExpression,
 } from "js-types";
 import { getBinaryPrecedence, isBinaryOps } from "./helper";
 import { ErrorMessageMap } from "./error";
 import { createLexer } from "../lexer/index";
+import { transformSyntaxKindToLiteral } from "../tests/transform";
 
 /** ========================
  *  Context for parser
@@ -431,6 +433,16 @@ export function createParser(code: string) {
         }else {
             leftOrInit = parseExpression();
         }
+        /* dirty solution when there is a expression left in for-in statement, example like `for(i in array) {}` */
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if(isBinaryExpression(leftOrInit)) {
+            if(leftOrInit.operator === SyntaxKinds.InKeyword) {
+                expect(SyntaxKinds.ParenthesesRightPunctuator);
+                const body = parseStatement();
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                return Factory.createForInStatement(leftOrInit.left, leftOrInit.right,body, keywordStart, cloneSourcePosition(body.end));
+            }
+        }
         // branch
         if(match(SyntaxKinds.SemiPunctuator)) {
             // ForStatement
@@ -450,7 +462,7 @@ export function createParser(code: string) {
             const body = parseStatement();
             return Factory.createForStatement(body,leftOrInit, test, update, keywordStart, cloneSourcePosition(body.end));
         }else if (match(SyntaxKinds.InKeyword)) {
-            // ForInStatement
+            // ForInStatement when left is variableDeclaration.
             nextToken();
             const right = parseAssigmentExpression();
             expect(SyntaxKinds.ParenthesesRightPunctuator);

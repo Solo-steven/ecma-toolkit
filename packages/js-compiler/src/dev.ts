@@ -4,7 +4,7 @@ import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`useState(() => computedSomeThing());`;
+`for( c(a in b)[10] in m  ) {}`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

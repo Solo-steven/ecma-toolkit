@@ -510,3 +510,6 @@ export function isArrayExpression(node: ModuleItem): node is ArrayExpression {
 export function isFunctionExpression(node: ModuleItem): node is FunctionExpression {
     return node.kind === SyntaxKinds.FunctionExpression;
 }
+export function isBinaryExpression(node: ModuleItem): node is BinaryExpression {
+    return node.kind === SyntaxKinds.BinaryExpression;
+}

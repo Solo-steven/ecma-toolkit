@@ -567,7 +567,9 @@ export type BinaryOperatorKinds =
     SyntaxKinds.BitwiseLeftShiftOperator |      // <<
     SyntaxKinds.BitwiseRightShiftOperator |     // >>
     SyntaxKinds.BitwiseRightShiftFillOperator |  // >>>
-    SyntaxKinds.CommaToken     // ,
+    SyntaxKinds.CommaToken  |    // ,
+    SyntaxKinds.InKeyword |
+    SyntaxKinds.InstanceofKeyword
 ;
 export const BinaryOperators = [
     SyntaxKinds.PlusOperator,       // +
@@ -591,7 +593,9 @@ export const BinaryOperators = [
     SyntaxKinds.BitwiseLeftShiftOperator,      // <<
     SyntaxKinds.BitwiseRightShiftOperator,     // >>
     SyntaxKinds.BitwiseRightShiftFillOperator,  // >>>
-    SyntaxKinds.CommaToken     // ,
+    SyntaxKinds.CommaToken,    // ,
+    SyntaxKinds.InKeyword,
+    SyntaxKinds.InstanceofKeyword,
 ]
 export type UpdateOperatorKinds = 
     SyntaxKinds.IncreOperator |
