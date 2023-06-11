@@ -4,7 +4,7 @@ import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`const { data, name, value } = state`;
+`a=b=c`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");
