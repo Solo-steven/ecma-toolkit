@@ -1,0 +1,44 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ForStatement",
+            "init": null,
+            "test": null,
+            "update": null,
+            "body": {
+                "kind": 10135,
+                "start": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                },
+                "end": {
+                    "row": 1,
+                    "col": 9,
+                    "index": 8
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 9,
+                "index": 8
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 9,
+        "index": 8
+    }
+}

@@ -1,0 +1,340 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "TryStatement",
+            "block": {
+                "kind": "BlockStatement",
+                "body": [],
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 7,
+                    "index": 6
+                }
+            },
+            "handler": {
+                "kind": "CatchClause",
+                "param": {
+                    "kind": "ArrayPattern",
+                    "elements": [
+                        {
+                            "kind": "Identifer",
+                            "name": "a",
+                            "start": {
+                                "row": 1,
+                                "col": 16,
+                                "index": 15
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 17,
+                                "index": 16
+                            }
+                        },
+                        {
+                            "kind": "Identifer",
+                            "name": "b",
+                            "start": {
+                                "row": 1,
+                                "col": 18,
+                                "index": 17
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 19,
+                                "index": 18
+                            }
+                        },
+                        {
+                            "kind": "ObjectPattern",
+                            "properties": [
+                                {
+                                    "kind": "ObjectPatternProperty",
+                                    "computed": false,
+                                    "shorted": true,
+                                    "key": {
+                                        "kind": "Identifer",
+                                        "name": "c",
+                                        "start": {
+                                            "row": 1,
+                                            "col": 22,
+                                            "index": 21
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 23,
+                                            "index": 22
+                                        }
+                                    },
+                                    "start": {
+                                        "row": 1,
+                                        "col": 22,
+                                        "index": 21
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 23,
+                                        "index": 22
+                                    }
+                                },
+                                {
+                                    "kind": "ObjectPatternProperty",
+                                    "computed": false,
+                                    "shorted": false,
+                                    "key": {
+                                        "kind": "Identifer",
+                                        "name": "d",
+                                        "start": {
+                                            "row": 1,
+                                            "col": 25,
+                                            "index": 24
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 26,
+                                            "index": 25
+                                        }
+                                    },
+                                    "value": {
+                                        "kind": "AssigmentPattern",
+                                        "left": {
+                                            "kind": "Identifer",
+                                            "name": "e",
+                                            "start": {
+                                                "row": 1,
+                                                "col": 27,
+                                                "index": 26
+                                            },
+                                            "end": {
+                                                "row": 1,
+                                                "col": 28,
+                                                "index": 27
+                                            }
+                                        },
+                                        "right": {
+                                            "kind": "NumberLiteral",
+                                            "value": "0",
+                                            "start": {
+                                                "row": 1,
+                                                "col": 29,
+                                                "index": 28
+                                            },
+                                            "end": {
+                                                "row": 1,
+                                                "col": 30,
+                                                "index": 29
+                                            }
+                                        },
+                                        "start": {
+                                            "row": 1,
+                                            "col": 27,
+                                            "index": 26
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 30,
+                                            "index": 29
+                                        }
+                                    },
+                                    "start": {
+                                        "row": 1,
+                                        "col": 25,
+                                        "index": 24
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 30,
+                                        "index": 29
+                                    }
+                                },
+                                {
+                                    "kind": "ObjectPatternProperty",
+                                    "computed": true,
+                                    "shorted": false,
+                                    "key": {
+                                        "kind": "Identifer",
+                                        "name": "f",
+                                        "start": {
+                                            "row": 1,
+                                            "col": 33,
+                                            "index": 32
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 34,
+                                            "index": 33
+                                        }
+                                    },
+                                    "value": {
+                                        "kind": "AssigmentPattern",
+                                        "left": {
+                                            "kind": "Identifer",
+                                            "name": "g",
+                                            "start": {
+                                                "row": 1,
+                                                "col": 36,
+                                                "index": 35
+                                            },
+                                            "end": {
+                                                "row": 1,
+                                                "col": 37,
+                                                "index": 36
+                                            }
+                                        },
+                                        "right": {
+                                            "kind": "NumberLiteral",
+                                            "value": "0",
+                                            "start": {
+                                                "row": 1,
+                                                "col": 38,
+                                                "index": 37
+                                            },
+                                            "end": {
+                                                "row": 1,
+                                                "col": 39,
+                                                "index": 38
+                                            }
+                                        },
+                                        "start": {
+                                            "row": 1,
+                                            "col": 36,
+                                            "index": 35
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 39,
+                                            "index": 38
+                                        }
+                                    },
+                                    "start": {
+                                        "row": 1,
+                                        "col": 33,
+                                        "index": 32
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 39,
+                                        "index": 38
+                                    }
+                                },
+                                {
+                                    "kind": "ObjectPatternProperty",
+                                    "computed": false,
+                                    "shorted": false,
+                                    "key": {
+                                        "kind": "Identifer",
+                                        "name": "h",
+                                        "start": {
+                                            "row": 1,
+                                            "col": 41,
+                                            "index": 40
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 42,
+                                            "index": 41
+                                        }
+                                    },
+                                    "value": {
+                                        "kind": "Identifer",
+                                        "name": "i",
+                                        "start": {
+                                            "row": 1,
+                                            "col": 43,
+                                            "index": 42
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 44,
+                                            "index": 43
+                                        }
+                                    },
+                                    "start": {
+                                        "row": 1,
+                                        "col": 41,
+                                        "index": 40
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 44,
+                                        "index": 43
+                                    }
+                                }
+                            ],
+                            "start": {
+                                "row": 1,
+                                "col": 21,
+                                "index": 20
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 45,
+                                "index": 44
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 15,
+                        "index": 14
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 46,
+                        "index": 45
+                    }
+                },
+                "body": {
+                    "kind": "BlockStatement",
+                    "body": [],
+                    "start": {
+                        "row": 1,
+                        "col": 48,
+                        "index": 47
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 50,
+                        "index": 49
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                },
+                "end": {
+                    "row": 1,
+                    "col": 50,
+                    "index": 49
+                }
+            },
+            "finalizer": null,
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 50,
+                "index": 49
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 50,
+        "index": 49
+    }
+}

@@ -1,0 +1,84 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "WhileStatement",
+            "test": {
+                "kind": 10147,
+                "value": true,
+                "start": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                },
+                "end": {
+                    "row": 1,
+                    "col": 12,
+                    "index": 11
+                }
+            },
+            "body": {
+                "kind": "ExpressionStatement",
+                "expr": {
+                    "kind": "CallExpression",
+                    "optional": false,
+                    "callee": {
+                        "kind": "Identifer",
+                        "name": "doSomething",
+                        "start": {
+                            "row": 1,
+                            "col": 14,
+                            "index": 13
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 25,
+                            "index": 24
+                        }
+                    },
+                    "arguments": [],
+                    "start": {
+                        "row": 1,
+                        "col": 14,
+                        "index": 13
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 27,
+                        "index": 26
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                },
+                "end": {
+                    "row": 1,
+                    "col": 27,
+                    "index": 26
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 27,
+                "index": 26
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 27,
+        "index": 26
+    }
+}

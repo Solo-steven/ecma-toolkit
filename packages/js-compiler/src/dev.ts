@@ -4,7 +4,12 @@ import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`for( c(a in b)[10] in m  ) {}`;
+`if (true)
+for (1;;)
+    1;
+else
+for (x of y)
+    2;`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

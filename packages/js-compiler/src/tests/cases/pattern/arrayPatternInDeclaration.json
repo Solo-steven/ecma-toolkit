@@ -8,7 +8,7 @@
                 {
                     "kind": "VariableDeclarator",
                     "id": {
-                        "kind": "ArrayExpression",
+                        "kind": "ArrayPattern",
                         "elements": [
                             {
                                 "kind": "Identifer",

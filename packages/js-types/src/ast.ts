@@ -70,6 +70,10 @@ export interface StringLiteral extends ModuleItem {
     kind: SyntaxKinds.StringLiteral;
     value: string;
 }
+export interface BoolLiteral extends ModuleItem {
+    kind: SyntaxKinds.BooleanLiteral;
+    value: boolean;
+}
 export interface TemplateLiteral extends ModuleItem {
     kind: SyntaxKinds.TemplateLiteral,
     quasis: Array<TemplateElement>;
@@ -196,10 +200,11 @@ export interface SequenceExpression extends ModuleItem {
 }
 
 export type Expression =
+    Pattern |
     // identifer and super and ThisExpression
     Identifier  | PrivateName | Super | ThisExpression |
     // literals 
-    NumberLiteral | StringLiteral | TemplateLiteral |
+    NumberLiteral | StringLiteral | BoolLiteral | TemplateLiteral |
     // structal literal
     ObjectExpression | ArrayExpression | ArrorFunctionExpression | FunctionExpression | ClassExpression |
     // meta property and spread element
@@ -231,7 +236,7 @@ export interface ObjectPatternProperty extends ModuleItem {
 }
 export interface ArrayPattern extends ModuleItem {
     kind: SyntaxKinds.ArrayPattern;
-    elements: Array<Pattern | null>;
+    elements: Array< null | Expression>;
 }
 export interface AssignmentPattern extends ModuleItem {
     kind: SyntaxKinds.AssignmentPattern;
@@ -320,6 +325,9 @@ export interface WithStatement extends ModuleItem {
 export interface DebuggerStatement extends ModuleItem {
     kind: SyntaxKinds.DebuggerStatement;
 }
+export interface EmptyStatement extends ModuleItem {
+    kind: SyntaxKinds.EmptyStatement;
+}
 export interface ForStatement extends ModuleItem {
     kind: SyntaxKinds.ForStatement;
     init: Expression | VariableDeclaration | null;
@@ -346,7 +354,7 @@ export type Statement =
     BreakStatement | ContinueStatement | ReturnStatement | LabeledStatement |
     WhileStatement | DoWhileStatement |
     TryStatement | ThrowStatement |
-    WithStatement | DebuggerStatement |
+    WithStatement | DebuggerStatement | EmptyStatement |
     ExpressionStatement | VariableDeclaration /** when is `var` */;
 
 /** ================================

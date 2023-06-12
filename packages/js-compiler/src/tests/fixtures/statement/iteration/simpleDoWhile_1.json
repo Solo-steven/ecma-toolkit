@@ -1,0 +1,84 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "DoWhileStatement",
+            "test": {
+                "kind": 10147,
+                "value": true,
+                "start": {
+                    "row": 1,
+                    "col": 19,
+                    "index": 18
+                },
+                "end": {
+                    "row": 1,
+                    "col": 23,
+                    "index": 22
+                }
+            },
+            "body": {
+                "kind": "ExpressionStatement",
+                "expr": {
+                    "kind": "CallExpression",
+                    "optional": false,
+                    "callee": {
+                        "kind": "Identifer",
+                        "name": "keep",
+                        "start": {
+                            "row": 1,
+                            "col": 4,
+                            "index": 3
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 8,
+                            "index": 7
+                        }
+                    },
+                    "arguments": [],
+                    "start": {
+                        "row": 1,
+                        "col": 4,
+                        "index": 3
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 10,
+                        "index": 9
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 4,
+                    "index": 3
+                },
+                "end": {
+                    "row": 1,
+                    "col": 10,
+                    "index": 9
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 24,
+                "index": 23
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 24,
+        "index": 23
+    }
+}

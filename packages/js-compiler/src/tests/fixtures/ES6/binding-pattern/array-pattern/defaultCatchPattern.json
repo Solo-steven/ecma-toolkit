@@ -1,0 +1,126 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "TryStatement",
+            "block": {
+                "kind": "BlockStatement",
+                "body": [],
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                }
+            },
+            "handler": {
+                "kind": "CatchClause",
+                "param": {
+                    "kind": "ArrayPattern",
+                    "elements": [
+                        {
+                            "kind": "AssigmentPattern",
+                            "left": {
+                                "kind": "Identifer",
+                                "name": "a",
+                                "start": {
+                                    "row": 1,
+                                    "col": 17,
+                                    "index": 16
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 18,
+                                    "index": 17
+                                }
+                            },
+                            "right": {
+                                "kind": "NumberLiteral",
+                                "value": "0",
+                                "start": {
+                                    "row": 1,
+                                    "col": 21,
+                                    "index": 20
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 22,
+                                    "index": 21
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 17,
+                                "index": 16
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 22,
+                                "index": 21
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 16,
+                        "index": 15
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 23,
+                        "index": 22
+                    }
+                },
+                "body": {
+                    "kind": "BlockStatement",
+                    "body": [],
+                    "start": {
+                        "row": 1,
+                        "col": 25,
+                        "index": 24
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 28,
+                        "index": 27
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 9,
+                    "index": 8
+                },
+                "end": {
+                    "row": 1,
+                    "col": 28,
+                    "index": 27
+                }
+            },
+            "finalizer": null,
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 28,
+                "index": 27
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 28,
+        "index": 27
+    }
+}

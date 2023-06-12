@@ -1,0 +1,100 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ForStatement",
+            "init": {
+                "kind": "VariableDeclaration",
+                "variant": "var",
+                "declarations": [
+                    {
+                        "kind": "VariableDeclarator",
+                        "id": {
+                            "kind": "Identifer",
+                            "name": "x",
+                            "start": {
+                                "row": 1,
+                                "col": 9,
+                                "index": 8
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 10,
+                                "index": 9
+                            }
+                        },
+                        "init": {
+                            "kind": "NumberLiteral",
+                            "value": "0",
+                            "start": {
+                                "row": 1,
+                                "col": 13,
+                                "index": 12
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 14,
+                                "index": 13
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 9,
+                            "index": 8
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 14,
+                            "index": 13
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                }
+            },
+            "test": null,
+            "update": null,
+            "body": {
+                "kind": 10135,
+                "start": {
+                    "row": 1,
+                    "col": 17,
+                    "index": 16
+                },
+                "end": {
+                    "row": 1,
+                    "col": 18,
+                    "index": 17
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 18,
+                "index": 17
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 18,
+        "index": 17
+    }
+}

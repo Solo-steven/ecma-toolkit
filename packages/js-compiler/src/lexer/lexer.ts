@@ -692,6 +692,9 @@ export function createLexer(code: string): Lexer {
                 }
                 return finishToken(SyntaxKinds.NumberLiteral, `0.${floatWord}`);
             }
+            if(!startWithSet(["x", "b", "o"])) {
+                return finishToken(SyntaxKinds.NumberLiteral, `0`);
+            }
             throw new Error(`[Error]: Not Support 0x 0b Number`)
         }
         // Start With Non 0

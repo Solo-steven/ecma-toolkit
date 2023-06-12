@@ -143,6 +143,7 @@ export enum SyntaxKinds {
     CatchClause,
     ThrowStatement,
     DebuggerStatement,
+    EmptyStatement,
     WithStatement,
     ForInStatement,
     ForOfStatement,
@@ -156,6 +157,7 @@ export enum SyntaxKinds {
     ClassDeclaration,
     ClassBody,
     // ========== Expression ==========
+    BooleanLiteral,
     MetaProperty,
     Super,
     ThisExpression,

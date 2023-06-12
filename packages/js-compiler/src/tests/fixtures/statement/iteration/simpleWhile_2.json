@@ -1,0 +1,169 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "WhileStatement",
+            "test": {
+                "kind": "BinaryExpression",
+                "operator": "<",
+                "left": {
+                    "kind": "Identifer",
+                    "name": "x",
+                    "start": {
+                        "row": 1,
+                        "col": 8,
+                        "index": 7
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 9,
+                        "index": 8
+                    }
+                },
+                "right": {
+                    "kind": "NumberLiteral",
+                    "value": "10",
+                    "start": {
+                        "row": 1,
+                        "col": 12,
+                        "index": 11
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 14,
+                        "index": 13
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                },
+                "end": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                }
+            },
+            "body": {
+                "kind": "BlockStatement",
+                "body": [
+                    {
+                        "kind": "ExpressionStatement",
+                        "expr": {
+                            "kind": "UpdateExpression",
+                            "operator": "++",
+                            "prefix": false,
+                            "argument": {
+                                "kind": "Identifer",
+                                "name": "x",
+                                "start": {
+                                    "row": 1,
+                                    "col": 18,
+                                    "index": 17
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 19,
+                                    "index": 18
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 18,
+                                "index": 17
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 21,
+                                "index": 20
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 18,
+                            "index": 17
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 21,
+                            "index": 20
+                        }
+                    },
+                    {
+                        "kind": "ExpressionStatement",
+                        "expr": {
+                            "kind": "UpdateExpression",
+                            "operator": "--",
+                            "prefix": false,
+                            "argument": {
+                                "kind": "Identifer",
+                                "name": "y",
+                                "start": {
+                                    "row": 1,
+                                    "col": 23,
+                                    "index": 22
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 24,
+                                    "index": 23
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 23,
+                                "index": 22
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 26,
+                                "index": 25
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 23,
+                            "index": 22
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 26,
+                            "index": 25
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 16,
+                    "index": 15
+                },
+                "end": {
+                    "row": 1,
+                    "col": 29,
+                    "index": 28
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 29,
+                "index": 28
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 29,
+        "index": 28
+    }
+}

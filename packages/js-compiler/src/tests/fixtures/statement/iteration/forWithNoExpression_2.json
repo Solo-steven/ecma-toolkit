@@ -1,0 +1,45 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ForStatement",
+            "init": null,
+            "test": null,
+            "update": null,
+            "body": {
+                "kind": "BlockStatement",
+                "body": [],
+                "start": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                },
+                "end": {
+                    "row": 1,
+                    "col": 10,
+                    "index": 9
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 10,
+                "index": 9
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 10,
+        "index": 9
+    }
+}

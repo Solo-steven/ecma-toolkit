@@ -70,6 +70,7 @@ import {
     cloneSourcePosition,
     Factory,
     isBinaryExpression,
+    EmptyStatement,
 } from "js-types";
 import { getBinaryPrecedence, isBinaryOps } from "./helper";
 import { ErrorMessageMap } from "./error";
@@ -84,6 +85,8 @@ interface Context {
     maybeArrow: boolean;
     inAsync: boolean;
     inClass: boolean,
+    maybeForIn: boolean,
+    inDestructAssignment: boolean,
 }
 
 interface ASTArrayWithMetaData<T> {
@@ -100,6 +103,8 @@ function createContext(): Context {
         maybeArrow: false,
         inAsync: false,
         inClass: false,
+        maybeForIn: false,
+        inDestructAssignment: false,
     }
 }
 
@@ -375,6 +380,8 @@ export function createParser(code: string) {
                 return parseWithStatement();
             case SyntaxKinds.DebuggerKeyword:
                 return parseDebuggerStatement();
+            case SyntaxKinds.SemiPunctuator:
+                return parseEmptyStatement();
             case SyntaxKinds.IfKeyword:
                 return parseIfStatement();
             case SyntaxKinds.ForKeyword:
@@ -415,6 +422,14 @@ export function createParser(code: string) {
  * entry point reference: https://tc39.es/ecma262/#prod-Statement
  * ==================================================================
  */
+    function helperCheckDeclarationmaybeForInOrForOfStatement(declaration: VariableDeclaration) {
+        if(declaration.declarations.length > 1) {
+            throw createMessageError(ErrorMessageMap.for_in_of_loop_can_not_have_one_more_binding);
+        }
+        if(declaration.declarations[0].init !== null) {
+            throw createMessageError(ErrorMessageMap.for_in_of_loop_can_not_using_initializer);
+        }
+    }
     /**
      * 
      */
@@ -426,20 +441,20 @@ export function createParser(code: string) {
             isAwait = true;
         }
         expect(SyntaxKinds.ParenthesesLeftPunctuator);
+        context.maybeForIn = true;
         if(matchSet([SyntaxKinds.LetKeyword, SyntaxKinds.ConstKeyword, SyntaxKinds.VarKeyword])) {
-            leftOrInit = parseVariableDeclaration();
+            leftOrInit = parseVariableDeclaration(false);
         }else if (match(SyntaxKinds.SemiPunctuator)) {
             leftOrInit = null;
         }else {
             leftOrInit = parseExpression();
         }
+        context.maybeForIn = false;
         /* dirty solution when there is a expression left in for-in statement, example like `for(i in array) {}` */
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if(isBinaryExpression(leftOrInit)) {
+        if(leftOrInit && isBinaryExpression(leftOrInit)) {
             if(leftOrInit.operator === SyntaxKinds.InKeyword) {
                 expect(SyntaxKinds.ParenthesesRightPunctuator);
                 const body = parseStatement();
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 return Factory.createForInStatement(leftOrInit.left, leftOrInit.right,body, keywordStart, cloneSourcePosition(body.end));
             }
         }
@@ -451,10 +466,7 @@ export function createParser(code: string) {
             if(!match(SyntaxKinds.SemiPunctuator)) {
                 test = parseExpression();
             }
-            if(!match(SyntaxKinds.SemiPunctuator)) {
-                throw createUnexpectError(SyntaxKinds.SemiPunctuator, "for statement test expression must concat a semi");
-            }
-            nextToken();
+            expect(SyntaxKinds.SemiPunctuator);
             if(!match(SyntaxKinds.ParenthesesRightPunctuator)) {
                 update = parseExpression();
             }
@@ -463,6 +475,9 @@ export function createParser(code: string) {
             return Factory.createForStatement(body,leftOrInit, test, update, keywordStart, cloneSourcePosition(body.end));
         }else if (match(SyntaxKinds.InKeyword)) {
             // ForInStatement when left is variableDeclaration.
+            if(leftOrInit.kind === SyntaxKinds.VariableDeclaration) {
+                helperCheckDeclarationmaybeForInOrForOfStatement(leftOrInit);
+            }
             nextToken();
             const right = parseAssigmentExpression();
             expect(SyntaxKinds.ParenthesesRightPunctuator);
@@ -470,11 +485,17 @@ export function createParser(code: string) {
             return Factory.createForInStatement(leftOrInit, right, body, keywordStart, cloneSourcePosition(body.end));
         }else if(getValue() === "of") {
             // ForOfStatement
+            if(leftOrInit.kind === SyntaxKinds.VariableDeclaration) {
+                helperCheckDeclarationmaybeForInOrForOfStatement(leftOrInit);
+            }
             nextToken();
             const right = parseAssigmentExpression();
             expect(SyntaxKinds.ParenthesesRightPunctuator);
             const body = parseStatement();
-            return Factory.createForOfStatement(isAwait,leftOrInit, right, body, keywordStart, cloneSourcePosition(body.end));
+            return Factory.createForOfStatement(isAwait, leftOrInit, right, body, keywordStart, cloneSourcePosition(body.end));
+        }
+        if(match(SyntaxKinds.ParenthesesRightPunctuator)) {
+            throw createMessageError(ErrorMessageMap.for_in_of_loop_can_not_using_initializer);
         }
    }
    function parseIfStatement(): IfStatement {
@@ -652,6 +673,10 @@ export function createParser(code: string) {
        maybeSemi();
        return Factory.createDebuggerStatement(start, end);
    }
+   function parseEmptyStatement(): EmptyStatement {
+    const { start, end } =  expectGuard([SyntaxKinds.SemiPunctuator]);
+    return Factory.createEmptyStatement(start, end);
+   }
 /** =================================================================
  * Parse Delcarations
  * entry point reference: https://tc39.es/ecma262/#prod-Declaration
@@ -661,7 +686,7 @@ export function createParser(code: string) {
      * 
      * @returns {VariableDeclaration}
      */
-    function parseVariableDeclaration():VariableDeclaration {
+    function parseVariableDeclaration(shouldEatSemi = true):VariableDeclaration {
         const { start: keywordStart, value: variant } = expectGuard([SyntaxKinds.VarKeyword, SyntaxKinds.ConstKeyword,SyntaxKinds.LetKeyword])
         let shouldStop = false, isStart = true;
         const declarations: Array<VariableDeclarator> = [];
@@ -688,9 +713,15 @@ export function createParser(code: string) {
                 declarations.push(Factory.createVariableDeclarator(id, init, cloneSourcePosition(id.start), cloneSourcePosition(init.end)));
                 continue;
             }
+            // TODO: using helper 
+            if(id.kind !== SyntaxKinds.Identifier && !context.maybeForIn) {
+                throw createMessageError(ErrorMessageMap.destructing_pattern_must_need_initializer);
+            }
             declarations.push(Factory.createVariableDeclarator(id, null, cloneSourcePosition(id.start), cloneSourcePosition(id.end)));
         }
-        maybeSemi();
+        if(shouldEatSemi) {
+             maybeSemi();
+        }
         return Factory.createVariableDeclaration(declarations, variant as VariableDeclaration['variant'], keywordStart, declarations[declarations.length - 1].end);
     }
     function parseFunctionDeclaration() {
@@ -998,7 +1029,7 @@ export function createParser(code: string) {
             const operator = getToken() as UpdateOperatorKinds;
             const end = getEndPosition();
             nextToken();
-            Factory.createUpdateExpression(argument, operator, false, cloneSourcePosition(argument.start), end);
+            return Factory.createUpdateExpression(argument, operator, false, cloneSourcePosition(argument.start), end);
         }
         return argument;
     }
@@ -1153,6 +1184,9 @@ export function createParser(code: string) {
     }
     function parsePrimaryExpression(): Expression {
         switch(getToken()) {
+            case SyntaxKinds.TrueKeyword:
+            case SyntaxKinds.FalseKeyword:
+                return parseBoolLiteral();
             case SyntaxKinds.NumberLiteral:
                 return parseNumberLiteral();
             case SyntaxKinds.StringLiteral:
@@ -1175,8 +1209,14 @@ export function createParser(code: string) {
             case SyntaxKinds.ThisKeyword:
                 return parseThisExpression();
             case SyntaxKinds.BracesLeftPunctuator:
+                if(context.maybeForIn || context.inDestructAssignment) {
+                    return parseObjectPattern();
+                }
                 return parseObjectExpression();
             case SyntaxKinds.BracketLeftPunctuator:
+                if(context.maybeForIn || context.inDestructAssignment) {
+                    return parseArrayPattern();
+                }
                 return parseArrayExpression();
             case SyntaxKinds.FunctionKeyword:
                 return parseFunctionExpression();
@@ -1221,6 +1261,10 @@ export function createParser(code: string) {
     function parseStringLiteral() {
         const { start, end, value } = expectGuard([SyntaxKinds.StringLiteral]);
         return Factory.createStringLiteral(value, start, end);
+    }
+    function parseBoolLiteral() {
+        const { start, end, value } = expectGuard([SyntaxKinds.TrueKeyword, SyntaxKinds.FalseKeyword]);
+        return Factory.createBoolLiteral(value === "true" ? true : false, start, end);
     }
     function parseTemplateLiteral() {
         if(!matchSet([SyntaxKinds.TemplateHead, SyntaxKinds.TemplateNoSubstitution])) {
@@ -1438,7 +1482,7 @@ export function createParser(code: string) {
      * this method should allow using when in class or in object literal, ClassElement can be PrivateName, when it 
      * used in object literal, it should throw a error.
      * @param {boolean} inClass is used in class or not. 
-     * @param {PropertyNameundefined} withPropertyName parse methodDeinfition with exited propertyName or not
+     * @param {PropertyName | PrivateName | undefined } withPropertyName parse methodDeinfition with exited propertyName or not
      * @param {boolean} isStatic
      * @returns {ObjectMethodDefinition | ClassMethodDefinition | ObjectAccessor | ClassAccessor  | ClassConstructor}
      */
@@ -1720,22 +1764,37 @@ export function createParser(code: string) {
     function parseArrayPattern(): ArrayPattern {
         const { start } = expectGuard([SyntaxKinds.BracketLeftPunctuator])
         let isStart = true;
-        const elements: Array<Pattern | null> = [];
+        const elements: Array<Expression| null> = [];
+        context.inDestructAssignment = true;
         while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
                 isStart = false;
             }else {
                 expect(SyntaxKinds.CommaToken)
             }
-            if(match(SyntaxKinds.BracketLeftPunctuator) || match(SyntaxKinds.EOFToken)) {
+            if(match(SyntaxKinds.BracketRightPunctuator) || match(SyntaxKinds.EOFToken)) {
                 continue;
             }
             if(match(SyntaxKinds.CommaToken)) {
                 elements.push(null);
                 continue;
             }
-            elements.push(parseBindingElement());
+            if(match(SyntaxKinds.SpreadOperator)) {
+                nextToken();
+                const expr = parseLeftHandSideExpression();
+                elements.push(Factory.createRestElement(expr, cloneSourcePosition(expr.start), cloneSourcePosition(expr.end)));
+                continue;
+            }
+            const expr = parseLeftHandSideExpression();
+            if(match(SyntaxKinds.AssginOperator)) {
+                nextToken();
+                const init = parseAssigmentExpression();
+                elements.push(Factory.createAssignmentPattern(expr as Pattern, init, cloneSourcePosition(expr.start), cloneSourcePosition(init.end)));
+                continue;
+            }
+            elements.push(expr);
         }
+        context.inDestructAssignment = false;
         const { end } =  expect(SyntaxKinds.BracketRightPunctuator);
         return Factory.createArrayPattern(elements, start, end);
     }

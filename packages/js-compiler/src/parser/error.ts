@@ -9,4 +9,8 @@ export const ErrorMessageMap = {
     private_field_can_not_use_in_object: "Private field '#test' must be declared in an enclosing class",
     rest_element_should_be_last_property: "RestElement should be the lastest property",
     rest_element_can_not_end_with_comma: "RestElement can not concat with comma",
+    for_in_of_loop_can_not_using_initializer: "for in and for of loop can not usng initializer",
+    for_in_of_loop_can_not_have_one_more_binding: "variable declaration in for-in or for-of statement can't not have more than one binding",
+    await_can_just_in_for_of_loop: "await can only be in for of loop",
+    destructing_pattern_must_need_initializer: "destucturing pattern must have a initializer",
 }

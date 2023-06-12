@@ -1,0 +1,156 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ForInStatement",
+            "left": {
+                "kind": "MemberExpression",
+                "computed": true,
+                "optional": false,
+                "object": {
+                    "kind": "CallExpression",
+                    "optional": false,
+                    "callee": {
+                        "kind": "Identifer",
+                        "name": "a",
+                        "start": {
+                            "row": 1,
+                            "col": 6,
+                            "index": 5
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 7,
+                            "index": 6
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "kind": "BinaryExpression",
+                            "operator": "in",
+                            "left": {
+                                "kind": "Identifer",
+                                "name": "b",
+                                "start": {
+                                    "row": 1,
+                                    "col": 8,
+                                    "index": 7
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 9,
+                                    "index": 8
+                                }
+                            },
+                            "right": {
+                                "kind": "Identifer",
+                                "name": "c",
+                                "start": {
+                                    "row": 1,
+                                    "col": 13,
+                                    "index": 12
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 14,
+                                    "index": 13
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 8,
+                                "index": 7
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 14,
+                                "index": 13
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 6,
+                        "index": 5
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 15,
+                        "index": 14
+                    }
+                },
+                "property": {
+                    "kind": "NumberLiteral",
+                    "value": "0",
+                    "start": {
+                        "row": 1,
+                        "col": 16,
+                        "index": 15
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 17,
+                        "index": 16
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 6,
+                    "index": 5
+                },
+                "end": {
+                    "row": 1,
+                    "col": 18,
+                    "index": 17
+                }
+            },
+            "right": {
+                "kind": "Identifer",
+                "name": "d",
+                "start": {
+                    "row": 1,
+                    "col": 22,
+                    "index": 21
+                },
+                "end": {
+                    "row": 1,
+                    "col": 23,
+                    "index": 22
+                }
+            },
+            "body": {
+                "kind": 10135,
+                "start": {
+                    "row": 1,
+                    "col": 24,
+                    "index": 23
+                },
+                "end": {
+                    "row": 1,
+                    "col": 25,
+                    "index": 24
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 25,
+                "index": 24
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 25,
+        "index": 24
+    }
+}

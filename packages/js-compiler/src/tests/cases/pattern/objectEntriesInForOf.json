@@ -1,0 +1,189 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ForOfStatement",
+            "await": false,
+            "left": {
+                "kind": "VariableDeclaration",
+                "variant": "const",
+                "declarations": [
+                    {
+                        "kind": "VariableDeclarator",
+                        "id": {
+                            "kind": "ArrayPattern",
+                            "elements": [
+                                {
+                                    "kind": "Identifer",
+                                    "name": "key",
+                                    "start": {
+                                        "row": 1,
+                                        "col": 12,
+                                        "index": 11
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 15,
+                                        "index": 14
+                                    }
+                                },
+                                {
+                                    "kind": "Identifer",
+                                    "name": "value",
+                                    "start": {
+                                        "row": 1,
+                                        "col": 16,
+                                        "index": 15
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 21,
+                                        "index": 20
+                                    }
+                                }
+                            ],
+                            "start": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 22,
+                                "index": 21
+                            }
+                        },
+                        "init": null,
+                        "start": {
+                            "row": 1,
+                            "col": 11,
+                            "index": 10
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 22,
+                            "index": 21
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 22,
+                    "index": 21
+                }
+            },
+            "right": {
+                "kind": "CallExpression",
+                "optional": false,
+                "callee": {
+                    "kind": "MemberExpression",
+                    "computed": false,
+                    "optional": false,
+                    "object": {
+                        "kind": "Identifer",
+                        "name": "Object",
+                        "start": {
+                            "row": 1,
+                            "col": 26,
+                            "index": 25
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 32,
+                            "index": 31
+                        }
+                    },
+                    "property": {
+                        "kind": "Identifer",
+                        "name": "entries",
+                        "start": {
+                            "row": 1,
+                            "col": 33,
+                            "index": 32
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 40,
+                            "index": 39
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 26,
+                        "index": 25
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 40,
+                        "index": 39
+                    }
+                },
+                "arguments": [
+                    {
+                        "kind": "Identifer",
+                        "name": "someOject",
+                        "start": {
+                            "row": 1,
+                            "col": 41,
+                            "index": 40
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 50,
+                            "index": 49
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 26,
+                    "index": 25
+                },
+                "end": {
+                    "row": 1,
+                    "col": 51,
+                    "index": 50
+                }
+            },
+            "body": {
+                "kind": "BlockStatement",
+                "body": [],
+                "start": {
+                    "row": 1,
+                    "col": 53,
+                    "index": 52
+                },
+                "end": {
+                    "row": 1,
+                    "col": 55,
+                    "index": 54
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 55,
+                "index": 54
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 55,
+        "index": 54
+    }
+}

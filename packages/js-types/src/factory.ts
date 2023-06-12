@@ -28,6 +28,12 @@ export function createStringLiteral(value: string, start: SourcePosition, end: S
         value, start, end
     }
 }
+export function createBoolLiteral(value: boolean, start: SourcePosition, end: SourcePosition): AST.BoolLiteral {
+    return {
+        kind: SyntaxKinds.BooleanLiteral,
+        value, start, end
+    }
+}
 export function createTemplateLiteral(quasis: Array<AST.TemplateElement>, expressions: Array<AST.Expression>, start: SourcePosition, end: SourcePosition): AST.TemplateLiteral {
     return {
         kind: SyntaxKinds.TemplateLiteral,
@@ -609,6 +615,14 @@ export function createDebuggerStatement(
 ): AST.DebuggerStatement {
     return {
         kind: SyntaxKinds.DebuggerStatement, start, end
+    }
+}
+export function createEmptyStatement(
+    start: SourcePosition, 
+    end: SourcePosition
+): AST.EmptyStatement {
+    return {
+        kind: SyntaxKinds.EmptyStatement, start, end
     }
 }
 export function createForStatement(

@@ -198,6 +198,7 @@ function report() {
     const updateRate = updateTestCases.length / allTestCaseCount;
     console.log("\n==========================================================\n");
     console.log(`Pass rate:  ${passRate}`);
+    console.log(`Update rate: ${updateRate}`);
     console.log(`Failed rate : ${failedRate}`);
     if(passRate < gate - updateRate) {
         process.exit(1);

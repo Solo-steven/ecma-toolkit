@@ -191,7 +191,7 @@ const VisitorTable: Visitor = {
         node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.ObjectPatternProperty];
     },
     [SyntaxKinds.ArrayPattern]: function ArrayPattern(node: ArrayPattern) {
-        node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.ArrayExpression];
+        node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.ArrayPattern];
     },
     [SyntaxKinds.AssignmentPattern]: function AssigmentPattern(node: AssignmentPattern) {
         node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.AssignmentPattern];

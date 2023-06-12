@@ -1,0 +1,143 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ForInStatement",
+            "left": {
+                "kind": "VariableDeclaration",
+                "variant": "let",
+                "declarations": [
+                    {
+                        "kind": "VariableDeclarator",
+                        "id": {
+                            "kind": "Identifer",
+                            "name": "x",
+                            "start": {
+                                "row": 1,
+                                "col": 10,
+                                "index": 9
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            }
+                        },
+                        "init": null,
+                        "start": {
+                            "row": 1,
+                            "col": 10,
+                            "index": 9
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 11,
+                            "index": 10
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 6,
+                    "index": 5
+                },
+                "end": {
+                    "row": 1,
+                    "col": 11,
+                    "index": 10
+                }
+            },
+            "right": {
+                "kind": "Identifer",
+                "name": "list",
+                "start": {
+                    "row": 1,
+                    "col": 15,
+                    "index": 14
+                },
+                "end": {
+                    "row": 1,
+                    "col": 19,
+                    "index": 18
+                }
+            },
+            "body": {
+                "kind": "ExpressionStatement",
+                "expr": {
+                    "kind": "CallExpression",
+                    "optional": false,
+                    "callee": {
+                        "kind": "Identifer",
+                        "name": "process",
+                        "start": {
+                            "row": 1,
+                            "col": 21,
+                            "index": 20
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 28,
+                            "index": 27
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "kind": "Identifer",
+                            "name": "x",
+                            "start": {
+                                "row": 1,
+                                "col": 29,
+                                "index": 28
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 30,
+                                "index": 29
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 21,
+                        "index": 20
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 31,
+                        "index": 30
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 21,
+                    "index": 20
+                },
+                "end": {
+                    "row": 1,
+                    "col": 31,
+                    "index": 30
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 31,
+                "index": 30
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 32,
+        "index": 31
+    }
+}

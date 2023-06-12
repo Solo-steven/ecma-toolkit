@@ -1,0 +1,98 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "BlockStatement",
+            "body": [
+                {
+                    "kind": "DoWhileStatement",
+                    "test": {
+                        "kind": 10147,
+                        "value": false,
+                        "start": {
+                            "row": 1,
+                            "col": 17,
+                            "index": 16
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 22,
+                            "index": 21
+                        }
+                    },
+                    "body": {
+                        "kind": "BlockStatement",
+                        "body": [],
+                        "start": {
+                            "row": 1,
+                            "col": 6,
+                            "index": 5
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 9,
+                            "index": 8
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 3,
+                        "index": 2
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 23,
+                        "index": 22
+                    }
+                },
+                {
+                    "kind": "ExpressionStatement",
+                    "expr": {
+                        "kind": 10147,
+                        "value": false,
+                        "start": {
+                            "row": 1,
+                            "col": 24,
+                            "index": 23
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 29,
+                            "index": 28
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 24,
+                        "index": 23
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 29,
+                        "index": 28
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 31,
+                "index": 30
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 31,
+        "index": 30
+    }
+}
