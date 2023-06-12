@@ -31,7 +31,7 @@ export function Playground() {
     }
   }
   return (
-    <div className="relative bg-slate-950 mt-6" id="playground">
+    <div className="bg-slate-950 mt-6" id="playground">
         <div className="hidden lg:block">
             <h2 className="ext-2xl font-bold tracking-tight text-slate-50 text-4xl text-center"> 
                 Write JavaScript Into Left Section 
