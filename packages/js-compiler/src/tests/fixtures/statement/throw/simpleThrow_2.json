@@ -1,0 +1,70 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ThrowStatement",
+            "argu": {
+                "kind": "BinaryExpression",
+                "operator": "*",
+                "left": {
+                    "kind": "Identifer",
+                    "name": "x",
+                    "start": {
+                        "row": 1,
+                        "col": 7,
+                        "index": 6
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 8,
+                        "index": 7
+                    }
+                },
+                "right": {
+                    "kind": "Identifer",
+                    "name": "y",
+                    "start": {
+                        "row": 1,
+                        "col": 11,
+                        "index": 10
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 12,
+                        "index": 11
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 7,
+                    "index": 6
+                },
+                "end": {
+                    "row": 1,
+                    "col": 12,
+                    "index": 11
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 12,
+                "index": 11
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 12,
+        "index": 11
+    }
+}

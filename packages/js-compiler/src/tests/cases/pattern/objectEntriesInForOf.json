@@ -32,13 +32,13 @@
                                     "name": "value",
                                     "start": {
                                         "row": 1,
-                                        "col": 16,
-                                        "index": 15
+                                        "col": 17,
+                                        "index": 16
                                     },
                                     "end": {
                                         "row": 1,
-                                        "col": 21,
-                                        "index": 20
+                                        "col": 22,
+                                        "index": 21
                                     }
                                 }
                             ],
@@ -49,8 +49,8 @@
                             },
                             "end": {
                                 "row": 1,
-                                "col": 22,
-                                "index": 21
+                                "col": 23,
+                                "index": 22
                             }
                         },
                         "init": null,
@@ -61,8 +61,8 @@
                         },
                         "end": {
                             "row": 1,
-                            "col": 22,
-                            "index": 21
+                            "col": 23,
+                            "index": 22
                         }
                     }
                 ],
@@ -73,8 +73,8 @@
                 },
                 "end": {
                     "row": 1,
-                    "col": 22,
-                    "index": 21
+                    "col": 23,
+                    "index": 22
                 }
             },
             "right": {
@@ -89,13 +89,13 @@
                         "name": "Object",
                         "start": {
                             "row": 1,
-                            "col": 26,
-                            "index": 25
+                            "col": 27,
+                            "index": 26
                         },
                         "end": {
                             "row": 1,
-                            "col": 32,
-                            "index": 31
+                            "col": 33,
+                            "index": 32
                         }
                     },
                     "property": {
@@ -103,24 +103,24 @@
                         "name": "entries",
                         "start": {
                             "row": 1,
-                            "col": 33,
-                            "index": 32
+                            "col": 34,
+                            "index": 33
                         },
                         "end": {
                             "row": 1,
-                            "col": 40,
-                            "index": 39
+                            "col": 41,
+                            "index": 40
                         }
                     },
                     "start": {
                         "row": 1,
-                        "col": 26,
-                        "index": 25
+                        "col": 27,
+                        "index": 26
                     },
                     "end": {
                         "row": 1,
-                        "col": 40,
-                        "index": 39
+                        "col": 41,
+                        "index": 40
                     }
                 },
                 "arguments": [
@@ -129,25 +129,25 @@
                         "name": "someOject",
                         "start": {
                             "row": 1,
-                            "col": 41,
-                            "index": 40
+                            "col": 42,
+                            "index": 41
                         },
                         "end": {
                             "row": 1,
-                            "col": 50,
-                            "index": 49
+                            "col": 51,
+                            "index": 50
                         }
                     }
                 ],
                 "start": {
                     "row": 1,
-                    "col": 26,
-                    "index": 25
+                    "col": 27,
+                    "index": 26
                 },
                 "end": {
                     "row": 1,
-                    "col": 51,
-                    "index": 50
+                    "col": 52,
+                    "index": 51
                 }
             },
             "body": {
@@ -155,13 +155,13 @@
                 "body": [],
                 "start": {
                     "row": 1,
-                    "col": 53,
-                    "index": 52
+                    "col": 54,
+                    "index": 53
                 },
                 "end": {
                     "row": 1,
-                    "col": 55,
-                    "index": 54
+                    "col": 56,
+                    "index": 55
                 }
             },
             "start": {
@@ -171,8 +171,8 @@
             },
             "end": {
                 "row": 1,
-                "col": 55,
-                "index": 54
+                "col": 56,
+                "index": 55
             }
         }
     ],
@@ -183,7 +183,7 @@
     },
     "end": {
         "row": 1,
-        "col": 55,
-        "index": 54
+        "col": 56,
+        "index": 55
     }
 }

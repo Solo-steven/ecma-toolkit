@@ -1,0 +1,86 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ThrowStatement",
+            "argu": {
+                "kind": "ObjectExpression",
+                "properties": [
+                    {
+                        "kind": "ObjectProperty",
+                        "computed": false,
+                        "shorted": false,
+                        "key": {
+                            "kind": "Identifer",
+                            "name": "message",
+                            "start": {
+                                "row": 1,
+                                "col": 9,
+                                "index": 8
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 16,
+                                "index": 15
+                            }
+                        },
+                        "value": {
+                            "kind": "StringLiteral",
+                            "value": "Error",
+                            "start": {
+                                "row": 1,
+                                "col": 18,
+                                "index": 17
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 25,
+                                "index": 24
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 9,
+                            "index": 8
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 25,
+                            "index": 24
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 7,
+                    "index": 6
+                },
+                "end": {
+                    "row": 1,
+                    "col": 27,
+                    "index": 26
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 27,
+                "index": 26
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 27,
+        "index": 26
+    }
+}

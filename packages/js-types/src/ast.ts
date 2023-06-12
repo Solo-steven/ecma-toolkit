@@ -314,7 +314,7 @@ export interface CatchClause extends ModuleItem {
     body: BlockStatement;
 }
 export interface ThrowStatement extends ModuleItem {
-    kind: SyntaxKinds.ThrowKeyword;
+    kind: SyntaxKinds.ThrowStatement;
     argu: Expression;
 }
 export interface WithStatement extends ModuleItem {

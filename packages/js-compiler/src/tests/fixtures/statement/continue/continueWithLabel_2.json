@@ -1,0 +1,124 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "LabledStatement",
+            "label": {
+                "kind": "Identifer",
+                "name": "done",
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                }
+            },
+            "body": {
+                "kind": "WhileStatement",
+                "test": {
+                    "kind": 10147,
+                    "value": true,
+                    "start": {
+                        "row": 1,
+                        "col": 14,
+                        "index": 13
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 18,
+                        "index": 17
+                    }
+                },
+                "body": {
+                    "kind": "BlockStatement",
+                    "body": [
+                        {
+                            "kind": "ContinueStatement",
+                            "label": {
+                                "kind": "Identifer",
+                                "name": "done",
+                                "start": {
+                                    "row": 1,
+                                    "col": 31,
+                                    "index": 30
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 35,
+                                    "index": 34
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 22,
+                                "index": 21
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 35,
+                                "index": 34
+                            }
+                        },
+                        {
+                            "kind": 10135,
+                            "start": {
+                                "row": 1,
+                                "col": 35,
+                                "index": 34
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 36,
+                                "index": 35
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 20,
+                        "index": 19
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 38,
+                        "index": 37
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 7,
+                    "index": 6
+                },
+                "end": {
+                    "row": 1,
+                    "col": 38,
+                    "index": 37
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 38,
+                "index": 37
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 38,
+        "index": 37
+    }
+}

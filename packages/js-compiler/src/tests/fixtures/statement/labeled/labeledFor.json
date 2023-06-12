@@ -1,0 +1,85 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "LabledStatement",
+            "label": {
+                "kind": "Identifer",
+                "name": "start",
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 6,
+                    "index": 5
+                }
+            },
+            "body": {
+                "kind": "ForStatement",
+                "init": null,
+                "test": null,
+                "update": null,
+                "body": {
+                    "kind": "BreakStatement",
+                    "label": {
+                        "kind": "Identifer",
+                        "name": "start",
+                        "start": {
+                            "row": 1,
+                            "col": 23,
+                            "index": 22
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 28,
+                            "index": 27
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 17,
+                        "index": 16
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 22,
+                        "index": 21
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 8,
+                    "index": 7
+                },
+                "end": {
+                    "row": 1,
+                    "col": 22,
+                    "index": 21
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 22,
+                "index": 21
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 28,
+        "index": 27
+    }
+}

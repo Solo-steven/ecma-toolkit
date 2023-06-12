@@ -595,7 +595,7 @@ export function createThrowStatement(
     end: SourcePosition
 ): AST.ThrowStatement {
     return {
-        kind: SyntaxKinds.ThrowKeyword,
+        kind: SyntaxKinds.ThrowStatement,
         argu, start, end
     }
 }

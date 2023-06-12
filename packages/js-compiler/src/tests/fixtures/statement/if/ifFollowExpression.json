@@ -1,0 +1,100 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "IfStatement",
+            "test": {
+                "kind": "Identifer",
+                "name": "morning",
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 12,
+                    "index": 11
+                }
+            },
+            "conseqence": {
+                "kind": "ExpressionStatement",
+                "expr": {
+                    "kind": "FunctionExpression",
+                    "name": {
+                        "kind": "Identifer",
+                        "name": "a",
+                        "start": {
+                            "row": 1,
+                            "col": 23,
+                            "index": 22
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 24,
+                            "index": 23
+                        }
+                    },
+                    "generator": false,
+                    "async": false,
+                    "body": {
+                        "kind": "FunctionBody",
+                        "body": [],
+                        "start": {
+                            "row": 1,
+                            "col": 26,
+                            "index": 25
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 28,
+                            "index": 27
+                        }
+                    },
+                    "params": [],
+                    "start": {
+                        "row": 1,
+                        "col": 14,
+                        "index": 13
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 28,
+                        "index": 27
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                },
+                "end": {
+                    "row": 1,
+                    "col": 28,
+                    "index": 27
+                }
+            },
+            "alternative": null,
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 28,
+                "index": 27
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 29,
+        "index": 28
+    }
+}

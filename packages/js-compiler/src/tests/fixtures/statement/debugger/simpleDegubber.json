@@ -1,0 +1,28 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": 10134,
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 9,
+                "index": 8
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 10,
+        "index": 9
+    }
+}

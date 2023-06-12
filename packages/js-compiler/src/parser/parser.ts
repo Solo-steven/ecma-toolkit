@@ -540,7 +540,6 @@ export function createParser(code: string) {
    }
    function parseSwitchStatement() {
         const { start: keywordStart } =  expectGuard([SyntaxKinds.SwitchKeyword]);
-        nextToken();
         expect(SyntaxKinds.ParenthesesLeftPunctuator);
         const discriminant = parseExpression();
         expect(SyntaxKinds.ParenthesesRightPunctuator);
@@ -552,7 +551,7 @@ export function createParser(code: string) {
     
    }
    function parseSwitchCases(): ASTArrayWithMetaData<SwitchCase> {
-        const { start } = expectGuard([SyntaxKinds.BracketLeftPunctuator]);
+        const { start } = expectGuard([SyntaxKinds.BracesLeftPunctuator]);
         const cases: Array<SwitchCase> = [];
         while(!match(SyntaxKinds.BracesRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             let test: Expression | null = null;
@@ -612,7 +611,7 @@ export function createParser(code: string) {
             return Factory.createLabeledStatement(label, delcar, cloneSourcePosition(label.start), cloneSourcePosition(delcar.end));
         }else {
             const statement = parseStatement();
-            return Factory.createLabeledStatement(label, parseStatement(), cloneSourcePosition(label.start), cloneSourcePosition(statement.end));
+            return Factory.createLabeledStatement(label, statement, cloneSourcePosition(label.start), cloneSourcePosition(statement.end));
         }
    } 
    function parseReturnStatement(): ReturnStatement {

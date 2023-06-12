@@ -1,0 +1,129 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "SwitchStatement",
+            "discriminant": {
+                "kind": "Identifer",
+                "name": "answer",
+                "start": {
+                    "row": 1,
+                    "col": 9,
+                    "index": 8
+                },
+                "end": {
+                    "row": 1,
+                    "col": 15,
+                    "index": 14
+                }
+            },
+            "cases": [
+                {
+                    "kind": "SwitchCase",
+                    "test": {
+                        "kind": "NumberLiteral",
+                        "value": "42",
+                        "start": {
+                            "row": 1,
+                            "col": 24,
+                            "index": 23
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 26,
+                            "index": 25
+                        }
+                    },
+                    "consequence": [
+                        {
+                            "kind": "ExpressionStatement",
+                            "expr": {
+                                "kind": "CallExpression",
+                                "optional": false,
+                                "callee": {
+                                    "kind": "Identifer",
+                                    "name": "hi",
+                                    "start": {
+                                        "row": 1,
+                                        "col": 28,
+                                        "index": 27
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 30,
+                                        "index": 29
+                                    }
+                                },
+                                "arguments": [],
+                                "start": {
+                                    "row": 1,
+                                    "col": 28,
+                                    "index": 27
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 32,
+                                    "index": 31
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 28,
+                                "index": 27
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 32,
+                                "index": 31
+                            }
+                        },
+                        {
+                            "kind": "BreakStatement",
+                            "label": null,
+                            "start": {
+                                "row": 1,
+                                "col": 34,
+                                "index": 33
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 39,
+                                "index": 38
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 19,
+                        "index": 18
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 41,
+                        "index": 40
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 42,
+                "index": 41
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 42,
+        "index": 41
+    }
+}

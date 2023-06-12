@@ -1,0 +1,185 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "TryStatement",
+            "block": {
+                "kind": "BlockStatement",
+                "body": [
+                    {
+                        "kind": "ExpressionStatement",
+                        "expr": {
+                            "kind": "CallExpression",
+                            "optional": false,
+                            "callee": {
+                                "kind": "Identifer",
+                                "name": "doThat",
+                                "start": {
+                                    "row": 1,
+                                    "col": 7,
+                                    "index": 6
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 13,
+                                    "index": 12
+                                }
+                            },
+                            "arguments": [],
+                            "start": {
+                                "row": 1,
+                                "col": 7,
+                                "index": 6
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 15,
+                                "index": 14
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 7,
+                            "index": 6
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 15,
+                            "index": 14
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 18,
+                    "index": 17
+                }
+            },
+            "handler": {
+                "kind": "CatchClause",
+                "param": {
+                    "kind": "Identifer",
+                    "name": "e",
+                    "start": {
+                        "row": 1,
+                        "col": 26,
+                        "index": 25
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 27,
+                        "index": 26
+                    }
+                },
+                "body": {
+                    "kind": "BlockStatement",
+                    "body": [
+                        {
+                            "kind": "ExpressionStatement",
+                            "expr": {
+                                "kind": "CallExpression",
+                                "optional": false,
+                                "callee": {
+                                    "kind": "Identifer",
+                                    "name": "say",
+                                    "start": {
+                                        "row": 1,
+                                        "col": 31,
+                                        "index": 30
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 34,
+                                        "index": 33
+                                    }
+                                },
+                                "arguments": [
+                                    {
+                                        "kind": "Identifer",
+                                        "name": "e",
+                                        "start": {
+                                            "row": 1,
+                                            "col": 35,
+                                            "index": 34
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 36,
+                                            "index": 35
+                                        }
+                                    }
+                                ],
+                                "start": {
+                                    "row": 1,
+                                    "col": 31,
+                                    "index": 30
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 37,
+                                    "index": 36
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 31,
+                                "index": 30
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 37,
+                                "index": 36
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 29,
+                        "index": 28
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 39,
+                        "index": 38
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 19,
+                    "index": 18
+                },
+                "end": {
+                    "row": 1,
+                    "col": 39,
+                    "index": 38
+                }
+            },
+            "finalizer": null,
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 39,
+                "index": 38
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 39,
+        "index": 38
+    }
+}

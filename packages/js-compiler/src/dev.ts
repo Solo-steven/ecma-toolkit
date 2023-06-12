@@ -4,12 +4,7 @@ import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 
 const code = 
-`if (true)
-for (1;;)
-    1;
-else
-for (x of y)
-    2;`;
+`switch (answer) { case 42: hi(); break; }`;
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

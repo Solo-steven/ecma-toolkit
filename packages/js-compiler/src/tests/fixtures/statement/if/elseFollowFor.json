@@ -1,0 +1,167 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "IfStatement",
+            "test": {
+                "kind": 10147,
+                "value": true,
+                "start": {
+                    "row": 1,
+                    "col": 5,
+                    "index": 4
+                },
+                "end": {
+                    "row": 1,
+                    "col": 9,
+                    "index": 8
+                }
+            },
+            "conseqence": {
+                "kind": "ForStatement",
+                "init": {
+                    "kind": "NumberLiteral",
+                    "value": "1",
+                    "start": {
+                        "row": 2,
+                        "col": 9,
+                        "index": 19
+                    },
+                    "end": {
+                        "row": 2,
+                        "col": 10,
+                        "index": 20
+                    }
+                },
+                "test": null,
+                "update": null,
+                "body": {
+                    "kind": "ExpressionStatement",
+                    "expr": {
+                        "kind": "NumberLiteral",
+                        "value": "1",
+                        "start": {
+                            "row": 3,
+                            "col": 8,
+                            "index": 32
+                        },
+                        "end": {
+                            "row": 3,
+                            "col": 9,
+                            "index": 33
+                        }
+                    },
+                    "start": {
+                        "row": 3,
+                        "col": 8,
+                        "index": 32
+                    },
+                    "end": {
+                        "row": 3,
+                        "col": 9,
+                        "index": 33
+                    }
+                },
+                "start": {
+                    "row": 2,
+                    "col": 4,
+                    "index": 14
+                },
+                "end": {
+                    "row": 3,
+                    "col": 9,
+                    "index": 33
+                }
+            },
+            "alternative": {
+                "kind": "ForOfStatement",
+                "await": false,
+                "left": {
+                    "kind": "Identifer",
+                    "name": "x",
+                    "start": {
+                        "row": 5,
+                        "col": 9,
+                        "index": 49
+                    },
+                    "end": {
+                        "row": 5,
+                        "col": 10,
+                        "index": 50
+                    }
+                },
+                "right": {
+                    "kind": "Identifer",
+                    "name": "y",
+                    "start": {
+                        "row": 5,
+                        "col": 14,
+                        "index": 54
+                    },
+                    "end": {
+                        "row": 5,
+                        "col": 15,
+                        "index": 55
+                    }
+                },
+                "body": {
+                    "kind": "ExpressionStatement",
+                    "expr": {
+                        "kind": "NumberLiteral",
+                        "value": "2",
+                        "start": {
+                            "row": 6,
+                            "col": 8,
+                            "index": 65
+                        },
+                        "end": {
+                            "row": 6,
+                            "col": 9,
+                            "index": 66
+                        }
+                    },
+                    "start": {
+                        "row": 6,
+                        "col": 8,
+                        "index": 65
+                    },
+                    "end": {
+                        "row": 6,
+                        "col": 9,
+                        "index": 66
+                    }
+                },
+                "start": {
+                    "row": 5,
+                    "col": 4,
+                    "index": 44
+                },
+                "end": {
+                    "row": 6,
+                    "col": 9,
+                    "index": 66
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 6,
+                "col": 9,
+                "index": 66
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 6,
+        "col": 10,
+        "index": 67
+    }
+}
