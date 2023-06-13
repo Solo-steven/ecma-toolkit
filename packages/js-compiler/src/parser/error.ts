@@ -13,4 +13,6 @@ export const ErrorMessageMap = {
     for_in_of_loop_can_not_have_one_more_binding: "variable declaration in for-in or for-of statement can't not have more than one binding",
     await_can_just_in_for_of_loop: "await can only be in for of loop",
     destructing_pattern_must_need_initializer: "destucturing pattern must have a initializer",
+    object_property_can_not_have_initializer: "object property can not have initializer",
+    invalid_left_value: "invalid left value",
 }

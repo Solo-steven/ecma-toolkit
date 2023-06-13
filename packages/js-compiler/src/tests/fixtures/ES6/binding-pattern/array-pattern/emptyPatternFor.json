@@ -66,7 +66,7 @@
                             }
                         },
                         "init": {
-                            "kind": "ArrayPattern",
+                            "kind": "ArrayExpression",
                             "elements": [],
                             "start": {
                                 "row": 1,

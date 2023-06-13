@@ -69,10 +69,16 @@ import {
     SourcePosition,
     cloneSourcePosition,
     Factory,
-    isBinaryExpression,
     EmptyStatement,
+    ObjectExpression,
+    ArrayExpression,
+    isBinaryExpression,
+    isArrayExpression,
+    isObjectExpression,
+    SpreadElement,
+    SytaxKindsMapLexicalLiteral,
+    AssigmentExpression,
 } from "js-types";
-import { getBinaryPrecedence, isBinaryOps } from "./helper";
 import { ErrorMessageMap } from "./error";
 import { createLexer } from "../lexer/index";
 import { transformSyntaxKindToLiteral } from "../tests/transform";
@@ -86,7 +92,6 @@ interface Context {
     inAsync: boolean;
     inClass: boolean,
     maybeForIn: boolean,
-    inDestructAssignment: boolean,
 }
 
 interface ASTArrayWithMetaData<T> {
@@ -104,10 +109,59 @@ function createContext(): Context {
         inAsync: false,
         inClass: false,
         maybeForIn: false,
-        inDestructAssignment: false,
+    }
+}
+function getBinaryPrecedence(kind: SyntaxKinds) {
+    switch(kind) {
+        case SyntaxKinds.LogicalOROperator:
+            return 4;
+        case SyntaxKinds.LogicalANDOperator:
+            return 5;
+        case SyntaxKinds.BitwiseOROperator:
+            return 6;
+        case SyntaxKinds.BitwiseXOROperator:
+            return 7;
+        case SyntaxKinds.BitwiseANDOperator:
+            return 8;
+        case SyntaxKinds.StrictEqOperator:
+        case SyntaxKinds.StrictNotEqOperator:
+        case SyntaxKinds.EqOperator:
+        case SyntaxKinds.NotEqOperator:
+            return 9;
+        case SyntaxKinds.InKeyword:
+        case SyntaxKinds.InstanceofKeyword:
+        case SyntaxKinds.GtOperator:
+        case SyntaxKinds.GeqtOperator:
+        case SyntaxKinds.LeqtOperator:
+        case SyntaxKinds.LtOperator:
+            return 10;
+        case SyntaxKinds.BitwiseLeftShiftOperator:
+        case SyntaxKinds.BitwiseRightShiftOperator:
+        case SyntaxKinds.BitwiseRightShiftFillOperator:
+            return 11;
+        case SyntaxKinds.PlusOperator:
+        case SyntaxKinds.MinusOperator:
+            return 12;
+        case SyntaxKinds.ModOperator:
+        case SyntaxKinds.DivideOperator:
+        case SyntaxKinds.MultiplyOperator:
+            return 13;
+        case SyntaxKinds.ExponOperator:
+            return 14;
+        default:
+            return -1;
     }
 }
 
+function isBinaryOps(kind: SyntaxKinds) {
+    return getBinaryPrecedence(kind) > 0;
+}
+
+/**
+ * 
+ * @param code 
+ * @returns 
+ */
 export function createParser(code: string) {
     const lexer = createLexer(code);
 
@@ -233,7 +287,8 @@ export function createParser(code: string) {
      * @param {string} messsage 
      */
     function createMessageError(messsage: string) {
-        return new Error(`[Syntax Error]: ${messsage}`);
+        const position = getStartPosition();
+        return new Error(`[Syntax Error]: ${messsage} (${position.col}, ${position.row})`);
     }
     /**
      * Create a error object with message tell developer that get a 
@@ -430,6 +485,65 @@ export function createParser(code: string) {
             throw createMessageError(ErrorMessageMap.for_in_of_loop_can_not_using_initializer);
         }
     }
+    function checkObjectExpressionHaveCoverInit(node: ObjectExpression) {
+        for(const property of node.properties) {
+            if(property.kind === SyntaxKinds.ObjectProperty) {
+                if(property.shorted && property.value) {
+                    throw createMessageError(ErrorMessageMap.object_property_can_not_have_initializer);
+                }
+            }
+        }
+    }
+    /**
+     * this function is a helper function for 
+     */
+    function toAssignmentPattern(node: ModuleItem): ModuleItem {
+        switch(node.kind) {
+            case SyntaxKinds.Identifier:
+            case SyntaxKinds.MemberExpression:
+            case SyntaxKinds.ChainExpression:
+            case SyntaxKinds.AssignmentPattern:
+            case SyntaxKinds.ArrayPattern:
+            case SyntaxKinds.ObjectPattern:
+                return node;
+            case SyntaxKinds.AssigmentExpression: {
+                const assignmentExpressionNode = node as AssigmentExpression;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const left = toAssignmentPattern(assignmentExpressionNode.left);
+                return Factory.createAssignmentPattern(left as Pattern, assignmentExpressionNode.right, node.start, node.end);
+            }
+            case SyntaxKinds.SpreadElement: {
+                const spreadElementNode = node as SpreadElement;
+                return Factory.createRestElement(spreadElementNode.argument, spreadElementNode.start, spreadElementNode.end);
+            }
+            case SyntaxKinds.ArrayExpression: {
+                const arrayExpressionNode = node as ArrayExpression;
+                const elements: Array<ModuleItem> = [];
+                for(const element of arrayExpressionNode.elements) {
+                    if(element === null) {
+                        elements.push(element);
+                        continue;
+                    }
+                    elements.push(toAssignmentPattern(element));
+                }
+                return Factory.createArrayPattern(elements as Array<Expression>, arrayExpressionNode.start, arrayExpressionNode.end);
+            }
+            case SyntaxKinds.ObjectExpression: {
+                const objecExpressionNode = node as ObjectExpression;
+                const properties: Array<ModuleItem> = []
+                for(const property of objecExpressionNode.properties) {
+                    properties.push(toAssignmentPattern(property));
+                }
+                return Factory.createObjectPattern(properties as Array<ObjectPatternProperty>, objecExpressionNode.start, objecExpressionNode.end);
+            }
+            case SyntaxKinds.ObjectProperty: {
+                const objectPropertyNode = node as ObjectPatternProperty;
+                return Factory.createObjectPatternProperty(objectPropertyNode.key, objectPropertyNode.value, objectPropertyNode.computed, objectPropertyNode.shorted, objectPropertyNode.start, objectPropertyNode.end);
+            }
+            default:
+                throw createMessageError(ErrorMessageMap.invalid_left_value);
+        }
+    }
     /**
      * 
      */
@@ -441,7 +555,6 @@ export function createParser(code: string) {
             isAwait = true;
         }
         expect(SyntaxKinds.ParenthesesLeftPunctuator);
-        context.maybeForIn = true;
         if(matchSet([SyntaxKinds.LetKeyword, SyntaxKinds.ConstKeyword, SyntaxKinds.VarKeyword])) {
             leftOrInit = parseVariableDeclaration(false);
         }else if (match(SyntaxKinds.SemiPunctuator)) {
@@ -449,12 +562,14 @@ export function createParser(code: string) {
         }else {
             leftOrInit = parseExpression();
         }
-        context.maybeForIn = false;
         /* dirty solution when there is a expression left in for-in statement, example like `for(i in array) {}` */
         if(leftOrInit && isBinaryExpression(leftOrInit)) {
             if(leftOrInit.operator === SyntaxKinds.InKeyword) {
                 expect(SyntaxKinds.ParenthesesRightPunctuator);
                 const body = parseStatement();
+                if(isArrayExpression(leftOrInit.left) || isObjectExpression(leftOrInit.left)) {
+                    leftOrInit.left = toAssignmentPattern(leftOrInit.left) as Expression;
+                }
                 return Factory.createForInStatement(leftOrInit.left, leftOrInit.right,body, keywordStart, cloneSourcePosition(body.end));
             }
         }
@@ -487,6 +602,9 @@ export function createParser(code: string) {
             // ForOfStatement
             if(leftOrInit.kind === SyntaxKinds.VariableDeclaration) {
                 helperCheckDeclarationmaybeForInOrForOfStatement(leftOrInit);
+            }
+            if(isArrayExpression(leftOrInit) || isObjectExpression(leftOrInit)) {
+                leftOrInit = toAssignmentPattern(leftOrInit) as Expression;
             }
             nextToken();
             const right = parseAssigmentExpression();
@@ -712,10 +830,6 @@ export function createParser(code: string) {
                 declarations.push(Factory.createVariableDeclarator(id, init, cloneSourcePosition(id.start), cloneSourcePosition(init.end)));
                 continue;
             }
-            // TODO: using helper 
-            if(id.kind !== SyntaxKinds.Identifier && !context.maybeForIn) {
-                throw createMessageError(ErrorMessageMap.destructing_pattern_must_need_initializer);
-            }
             declarations.push(Factory.createVariableDeclarator(id, null, cloneSourcePosition(id.start), cloneSourcePosition(id.end)));
         }
         if(shouldEatSemi) {
@@ -938,9 +1052,15 @@ export function createParser(code: string) {
         if(match(SyntaxKinds.YieldKeyword)) {
             return parseYieldExpression();
         }
-        const left = parseConditionalExpression();
+        let left = parseConditionalExpression();
         if (!matchSet(AssigmentOperators)) {
+            if(isObjectExpression(left)) {
+                checkObjectExpressionHaveCoverInit(left);
+            }
             return left;
+        }
+        if(isArrayExpression(left) || isObjectExpression(left)) {
+            left = toAssignmentPattern(left) as Expression;
         }
         const operator = getToken();
         nextToken();
@@ -1208,14 +1328,8 @@ export function createParser(code: string) {
             case SyntaxKinds.ThisKeyword:
                 return parseThisExpression();
             case SyntaxKinds.BracesLeftPunctuator:
-                if(context.maybeForIn || context.inDestructAssignment) {
-                    return parseObjectPattern();
-                }
                 return parseObjectExpression();
             case SyntaxKinds.BracketLeftPunctuator:
-                if(context.maybeForIn || context.inDestructAssignment) {
-                    return parseArrayPattern();
-                }
                 return parseArrayExpression();
             case SyntaxKinds.FunctionKeyword:
                 return parseFunctionExpression();
@@ -1428,6 +1542,12 @@ export function createParser(code: string) {
             const expr = parseAssigmentExpression()
             return Factory.createObjectProperty(propertyName, expr , isComputedRef.isComputed, false, cloneSourcePosition(propertyName.start), cloneSourcePosition(expr.end));
         }
+        if(match(SyntaxKinds.AssginOperator)) {
+            nextToken();
+            const expr = parseAssigmentExpression();
+            return Factory.createObjectProperty(propertyName, expr , isComputedRef.isComputed, false, cloneSourcePosition(propertyName.start), cloneSourcePosition(expr.end));
+
+        }
         return Factory.createObjectProperty(propertyName, undefined, isComputedRef.isComputed, true, cloneSourcePosition(propertyName.start), cloneSourcePosition(propertyName.end));
     }
     /**
@@ -1599,8 +1719,15 @@ export function createParser(code: string) {
                 elements.push(null);
                 continue;
             }
-            const expr = parseAssigmentExpression();
-            elements.push(expr);
+            if(match(SyntaxKinds.SpreadOperator)) {
+                const start = getStartPosition();
+                nextToken();
+                const expr = parseAssigmentExpression();
+                elements.push(Factory.createSpreadElement(expr, start, cloneSourcePosition(expr.end)));
+            }else {
+                const expr = parseAssigmentExpression();
+                elements.push(expr);
+            }
             if(match(SyntaxKinds.CommaToken)) {
                 nextToken();
             }
@@ -1656,7 +1783,7 @@ export function createParser(code: string) {
      * ```
      * @returns 
      */
-    function parseBindingElement(): Pattern {
+    function parseBindingElement(shouldParseAssignment = true): Pattern {
         if(!matchSet([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracketLeftPunctuator])) {
             throw createUnreachError([SyntaxKinds.Identifier, SyntaxKinds.BracesLeftPunctuator, SyntaxKinds.BracesLeftPunctuator]);
         }
@@ -1666,7 +1793,7 @@ export function createParser(code: string) {
         }else {
             left = parseBindingPattern();
         }
-        if(match(SyntaxKinds.AssginOperator)) {
+        if(match(SyntaxKinds.AssginOperator) && shouldParseAssignment) {
             nextToken();
             const right = parseAssigmentExpression();
             return Factory.createAssignmentPattern(left, right, cloneSourcePosition(left.start), cloneSourcePosition(right.end));
@@ -1764,7 +1891,6 @@ export function createParser(code: string) {
         const { start } = expectGuard([SyntaxKinds.BracketLeftPunctuator])
         let isStart = true;
         const elements: Array<Expression| null> = [];
-        context.inDestructAssignment = true;
         while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
             if(isStart) {
                 isStart = false;
@@ -1779,21 +1905,14 @@ export function createParser(code: string) {
                 continue;
             }
             if(match(SyntaxKinds.SpreadOperator)) {
+                const start = getStartPosition();
                 nextToken();
-                const expr = parseLeftHandSideExpression();
-                elements.push(Factory.createRestElement(expr, cloneSourcePosition(expr.start), cloneSourcePosition(expr.end)));
+                const bindingElement = parseBindingElement();
+                elements.push(Factory.createRestElement(bindingElement, start, cloneSourcePosition(bindingElement.end)));
                 continue;
             }
-            const expr = parseLeftHandSideExpression();
-            if(match(SyntaxKinds.AssginOperator)) {
-                nextToken();
-                const init = parseAssigmentExpression();
-                elements.push(Factory.createAssignmentPattern(expr as Pattern, init, cloneSourcePosition(expr.start), cloneSourcePosition(init.end)));
-                continue;
-            }
-            elements.push(expr);
+            elements.push(parseBindingElement());
         }
-        context.inDestructAssignment = false;
         const { end } =  expect(SyntaxKinds.BracketRightPunctuator);
         return Factory.createArrayPattern(elements, start, end);
     }

@@ -2,9 +2,17 @@ import { createLexer } from "@/src/lexer";
 import { SyntaxKinds } from "js-types";
 import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
+import fs from 'fs';
 
 const code = 
-`switch (answer) { case 42: hi(); break; }`;
+`({
+    a,
+    a:a,
+    a:a=a,
+    [a]:{a},
+    a:some_call()[a],
+    a:this.a
+} = 0);`
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

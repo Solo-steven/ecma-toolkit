@@ -95,7 +95,7 @@
                             }
                         },
                         "init": {
-                            "kind": "ObjectPattern",
+                            "kind": "ObjectExpression",
                             "properties": [],
                             "start": {
                                 "row": 1,

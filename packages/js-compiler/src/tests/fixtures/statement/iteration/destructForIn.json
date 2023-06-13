@@ -4,7 +4,7 @@
         {
             "kind": "ForInStatement",
             "left": {
-                "kind": "ArrayPattern",
+                "kind": "ArrayExpression",
                 "elements": [
                     {
                         "kind": "Identifer",
@@ -64,10 +64,10 @@
                         }
                     },
                     {
-                        "kind": "ObjectPattern",
+                        "kind": "ObjectExpression",
                         "properties": [
                             {
-                                "kind": "ObjectPatternProperty",
+                                "kind": "ObjectProperty",
                                 "computed": false,
                                 "shorted": true,
                                 "key": {
@@ -96,7 +96,7 @@
                                 }
                             },
                             {
-                                "kind": "ObjectPatternProperty",
+                                "kind": "ObjectProperty",
                                 "computed": false,
                                 "shorted": false,
                                 "key": {
@@ -139,7 +139,7 @@
                                 }
                             },
                             {
-                                "kind": "ObjectPatternProperty",
+                                "kind": "ObjectProperty",
                                 "computed": true,
                                 "shorted": false,
                                 "key": {
@@ -157,7 +157,7 @@
                                     }
                                 },
                                 "value": {
-                                    "kind": "ArrayPattern",
+                                    "kind": "ArrayExpression",
                                     "elements": [
                                         {
                                             "kind": "Identifer",
@@ -275,7 +275,7 @@
                                             }
                                         },
                                         {
-                                            "kind": "RestElement",
+                                            "kind": "SpreadElement",
                                             "argument": {
                                                 "kind": "MemberExpression",
                                                 "computed": true,
@@ -321,8 +321,8 @@
                                             },
                                             "start": {
                                                 "row": 1,
-                                                "col": 42,
-                                                "index": 41
+                                                "col": 39,
+                                                "index": 38
                                             },
                                             "end": {
                                                 "row": 1,

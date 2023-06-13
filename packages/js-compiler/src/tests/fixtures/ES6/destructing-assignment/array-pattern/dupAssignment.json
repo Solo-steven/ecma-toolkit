@@ -1,0 +1,127 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "AssigmentExpression",
+                "operator": "=",
+                "left": {
+                    "kind": "ArrayPattern",
+                    "elements": [
+                        {
+                            "kind": "Identifer",
+                            "name": "a",
+                            "start": {
+                                "row": 1,
+                                "col": 2,
+                                "index": 1
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 3,
+                                "index": 2
+                            }
+                        },
+                        {
+                            "kind": "Identifer",
+                            "name": "a",
+                            "start": {
+                                "row": 1,
+                                "col": 4,
+                                "index": 3
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 5,
+                                "index": 4
+                            }
+                        },
+                        null,
+                        {
+                            "kind": "RestElement",
+                            "argument": {
+                                "kind": "Identifer",
+                                "name": "a",
+                                "start": {
+                                    "row": 1,
+                                    "col": 10,
+                                    "index": 9
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 11,
+                                    "index": 10
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 7,
+                                "index": 6
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 1,
+                        "index": 0
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 12,
+                        "index": 11
+                    }
+                },
+                "right": {
+                    "kind": "NumberLiteral",
+                    "value": "0",
+                    "start": {
+                        "row": 1,
+                        "col": 13,
+                        "index": 12
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 14,
+                        "index": 13
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 14,
+                "index": 13
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 15,
+        "index": 14
+    }
+}
