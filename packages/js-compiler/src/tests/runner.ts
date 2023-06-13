@@ -13,6 +13,7 @@ const gate = Number(process.env.TEST_GATE) || 1;
 const jsFileRegex = new RegExp('.*\.js$');
 // eslint-disable-next-line no-useless-escape
 const jsonFileRegex = new RegExp('.*\.json$');
+const invalidFileReg = new RegExp('invalid');
 /**
  * Test structure for test case.
  * @property {string} jsPath  absolute path for js file in current os file system
@@ -136,6 +137,34 @@ async function runTestCase(testCase: TestCase) {
         })
     }
 }
+/**
+ *  Helperfunction for running a test case that should be 
+ *  invalid.
+ *  if it throw a parse error, add to pass arrray
+ *  if it shows no error, add to failed array.
+ *  @param {TestCase} testCase
+ */
+async function runInvalidTestCase(testCase: TestCase) {
+    try {
+        const code = await readFile(testCase.jsPath);
+        toASTString(code.toString());
+        failedTestCases.push({
+            fileName: testCase.fileName,
+            result: "This case should failed",
+        })
+    } catch(e) {
+        passTestCases.push({
+            fileName: testCase.fileName,
+            result: ``
+        })
+    }
+}
+/**
+ * Helper function for runnung a test case and update json file
+ * if update success, add to update array
+ * if failed, add to failed array.
+ * @param {TestCase} testCase 
+ */
 async function updateTestCase(testCase: TestCase) {
     let isExisted = true;
     if(!testCase.jsonPath) {
@@ -160,6 +189,9 @@ async function updateTestCase(testCase: TestCase) {
 async function runerAllTestCase() {
     const testCases = await findAllTestCase();
     await Promise.all(testCases.map((testCase) => {
+        if(invalidFileReg.test(testCase.fileName)) {
+            return runInvalidTestCase(testCase);
+        }
         if(isUpdate) {
             return updateTestCase(testCase);
         }

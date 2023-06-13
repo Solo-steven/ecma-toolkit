@@ -5,14 +5,10 @@ import { transformSyntaxKindToLiteral } from  "./tests/transform";
 import fs from 'fs';
 
 const code = 
-`({
-    a,
-    a:a,
-    a:a=a,
-    [a]:{a},
-    a:some_call()[a],
-    a:this.a
-} = 0);`
+`const Modal = ({open ,onOpen}) => {
+    const [state, setState] = useState();
+    return;
+}`
 
 console.log("=================================");
 console.log("Test JavaScript Code:");

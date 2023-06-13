@@ -588,7 +588,8 @@ export function createParser(code: string) {
             expect(SyntaxKinds.ParenthesesRightPunctuator)
             const body = parseStatement();
             return Factory.createForStatement(body,leftOrInit, test, update, keywordStart, cloneSourcePosition(body.end));
-        }else if (match(SyntaxKinds.InKeyword)) {
+        }
+        if (match(SyntaxKinds.InKeyword)) {
             // ForInStatement when left is variableDeclaration.
             if(leftOrInit.kind === SyntaxKinds.VariableDeclaration) {
                 helperCheckDeclarationmaybeForInOrForOfStatement(leftOrInit);
@@ -598,7 +599,8 @@ export function createParser(code: string) {
             expect(SyntaxKinds.ParenthesesRightPunctuator);
             const body = parseStatement();
             return Factory.createForInStatement(leftOrInit, right, body, keywordStart, cloneSourcePosition(body.end));
-        }else if(getValue() === "of") {
+        }
+        if(getValue() === "of") {
             // ForOfStatement
             if(leftOrInit.kind === SyntaxKinds.VariableDeclaration) {
                 helperCheckDeclarationmaybeForInOrForOfStatement(leftOrInit);
@@ -1054,9 +1056,6 @@ export function createParser(code: string) {
         }
         let left = parseConditionalExpression();
         if (!matchSet(AssigmentOperators)) {
-            if(isObjectExpression(left)) {
-                checkObjectExpressionHaveCoverInit(left);
-            }
             return left;
         }
         if(isArrayExpression(left) || isObjectExpression(left)) {
@@ -1545,7 +1544,7 @@ export function createParser(code: string) {
         if(match(SyntaxKinds.AssginOperator)) {
             nextToken();
             const expr = parseAssigmentExpression();
-            return Factory.createObjectProperty(propertyName, expr , isComputedRef.isComputed, false, cloneSourcePosition(propertyName.start), cloneSourcePosition(expr.end));
+            return Factory.createObjectProperty(propertyName, expr , isComputedRef.isComputed, true, cloneSourcePosition(propertyName.start), cloneSourcePosition(expr.end));
 
         }
         return Factory.createObjectProperty(propertyName, undefined, isComputedRef.isComputed, true, cloneSourcePosition(propertyName.start), cloneSourcePosition(propertyName.end));
@@ -1768,7 +1767,8 @@ export function createParser(code: string) {
             body = parseExpression();
             isExpression = true;
         }
-        return Factory.createArrowExpression(isExpression, body,  metaData.nodes, context.inAsync, cloneSourcePosition(metaData.start), cloneSourcePosition(body.end));
+        const functionArguments = metaData.nodes.map(node => toAssignmentPattern(node)) as Array<Expression>;
+        return Factory.createArrowExpression(isExpression, body,  functionArguments, context.inAsync, cloneSourcePosition(metaData.start), cloneSourcePosition(body.end));
     }
 /** ================================================================================
  *  Parse Pattern
