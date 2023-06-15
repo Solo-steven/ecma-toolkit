@@ -5,7 +5,12 @@ import { transformSyntaxKindToLiteral } from  "./tests/transform";
 import fs from 'fs';
 import { performance } from "node:perf_hooks";
 
-const code =  `[{a=b}=0]`
+const code =  `app.post("/", async (req, rep) => {
+    const data = await someAsyncComputed(req.params);
+    return rep.json({
+        data
+    });
+})`
 console.log("=================================");
 console.log("Test JavaScript Code:");
 console.log("=================================");
