@@ -72,7 +72,7 @@
                                                                                                                                                                                         {
                                                                                                                                                                                             "kind": "ObjectPatternProperty",
                                                                                                                                                                                             "computed": false,
-                                                                                                                                                                                            "shorted": false,
+                                                                                                                                                                                            "shorted": true,
                                                                                                                                                                                             "key": {
                                                                                                                                                                                                 "kind": "Identifer",
                                                                                                                                                                                                 "name": "a",

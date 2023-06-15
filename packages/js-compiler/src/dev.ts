@@ -1,15 +1,11 @@
 import { createLexer } from "@/src/lexer";
-import { SyntaxKinds } from "js-types";
+import { SyntaxKinds,  } from "js-types";
 import { createParser } from "@/src/parser";
 import { transformSyntaxKindToLiteral } from  "./tests/transform";
 import fs from 'fs';
+import { performance } from "node:perf_hooks";
 
-const code = 
-`const Modal = ({open ,onOpen}) => {
-    const [state, setState] = useState();
-    return;
-}`
-
+const code =  `[{a=b}=0]`
 console.log("=================================");
 console.log("Test JavaScript Code:");
 console.log("=================================");

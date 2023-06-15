@@ -301,7 +301,7 @@ export function createLexer(code: string): Lexer {
      * @returns {Error} - a error object
      */
     function lexicalError(content: string): Error {
-        return new Error(`[Error]: Lexical Error, ${content}, position is ${context.sourcePosition.row}, ${context.sourcePosition.col}`);
+        return new Error(`[Error]: Lexical Error, ${content},start position is (${context.startPosition.row}, ${context.startPosition.col}), end position is ${context.sourcePosition.row}, ${context.sourcePosition.col}`);
     }
     /** ======================================
      *      Operators State Machine
@@ -486,7 +486,7 @@ export function createLexer(code: string): Lexer {
             return finishToken(SyntaxKinds.StrictEqOperator, "===");
         }
         if(startWith("==")) {
-            eatChar(3);
+            eatChar(2);
             return finishToken(SyntaxKinds.EqOperator, "==");
         }
         if(startWith("=>")) {
@@ -717,13 +717,17 @@ export function createLexer(code: string): Lexer {
             mode = "'";
         }else if(startWith("\"")) {
             mode = "\""
+        }else {
+            throw new Error("There");
         }
         eatChar();
         let word = "";
+        const position = getStartPosition();
         while(!startWith(mode) && !eof()) {
             word += eatChar()
         }
         if(eof()) {
+            console.log(position);
             throw lexicalError(`string literal start with ${mode} can't find closed char`);
         }
         eatChar();

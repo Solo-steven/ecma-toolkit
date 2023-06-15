@@ -298,7 +298,7 @@ export function createParser(code: string) {
      * @returns {Error}
      */
     function createUnexpectError(expectToken: SyntaxKinds | null, messsage = ""): Error {
-        return new Error(`[Syntax Error]: Unexpect token${expectToken ? `, expect ${expectToken}` : ""}, got ${getToken()}(${getValue()}).${messsage}`);
+        return new Error(`[Syntax Error]: Unexpect token${expectToken ? `, expect ${expectToken}` : ""}, got ${getToken()}(${getValue()}) at ${getStartPosition().row},${getStartPosition().col}  .${messsage}`);
     }
     /**
      * Given that this parser is recurive decent parser, some
@@ -1347,6 +1347,13 @@ export function createParser(code: string) {
                         start: argus[0].start,
                         end: argus[0].end
                     });
+                }
+                if(getValue() === "async"  && lookahead() === SyntaxKinds.ParenthesesLeftPunctuator) {
+                    nextToken();
+                    context.inAsync = true;
+                    const arrowFunExpr = parseArrowFunctionExpression(parseArguments());
+                    context.inAsync = false;
+                    return arrowFunExpr;
                 }
                 return parseIdentifer();
             }

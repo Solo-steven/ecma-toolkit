@@ -4,7 +4,7 @@
         {
             "kind": "ForInStatement",
             "left": {
-                "kind": "ArrayExpression",
+                "kind": "ArrayPattern",
                 "elements": [
                     {
                         "kind": "Identifer",
@@ -64,10 +64,10 @@
                         }
                     },
                     {
-                        "kind": "ObjectExpression",
+                        "kind": "ObjectPattern",
                         "properties": [
                             {
-                                "kind": "ObjectProperty",
+                                "kind": "ObjectPatternProperty",
                                 "computed": false,
                                 "shorted": true,
                                 "key": {
@@ -96,9 +96,9 @@
                                 }
                             },
                             {
-                                "kind": "ObjectProperty",
+                                "kind": "ObjectPatternProperty",
                                 "computed": false,
-                                "shorted": false,
+                                "shorted": true,
                                 "key": {
                                     "kind": "Identifer",
                                     "name": "d",
@@ -139,7 +139,7 @@
                                 }
                             },
                             {
-                                "kind": "ObjectProperty",
+                                "kind": "ObjectPatternProperty",
                                 "computed": true,
                                 "shorted": false,
                                 "key": {
