@@ -3661,6 +3661,7 @@ __metadata:
     "@rollup/plugin-typescript": ^11.1.1
     rollup: ^3.23.0
     rollup-plugin-dts: ^5.3.0
+    tinybench: ^2.5.0
     ts-node: ^10.9.1
     tsconfig-paths: ^4.2.0
   languageName: unknown
@@ -5582,6 +5583,13 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: a38c3e059853c494af95d50c072b83f8b676a9ba2818dcc5b108ef252230735c54e0185437618596c790bbba8fcdaef5b290405981ffa09dce67b1f1bf190cbd
+  languageName: node
+  linkType: hard
+
+"tinybench@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "tinybench@npm:2.5.0"
+  checksum: 284bb9428f197ec8b869c543181315e65e41ccfdad3c4b6c916bb1fdae1b5c6785661b0d90cf135b48d833b03cb84dc5357b2d33ec65a1f5971fae0ab2023821
   languageName: node
   linkType: hard
 

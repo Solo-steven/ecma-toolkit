@@ -4,7 +4,7 @@
         {
             "kind": "DoWhileStatement",
             "test": {
-                "kind": 10147,
+                "kind": "BoolLterial",
                 "value": true,
                 "start": {
                     "row": 1,

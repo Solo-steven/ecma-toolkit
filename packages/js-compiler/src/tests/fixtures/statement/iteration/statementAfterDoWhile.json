@@ -7,7 +7,7 @@
                 {
                     "kind": "DoWhileStatement",
                     "test": {
-                        "kind": 10147,
+                        "kind": "BoolLterial",
                         "value": false,
                         "start": {
                             "row": 1,
@@ -48,7 +48,7 @@
                 {
                     "kind": "ExpressionStatement",
                     "expr": {
-                        "kind": 10147,
+                        "kind": "BoolLterial",
                         "value": false,
                         "start": {
                             "row": 1,

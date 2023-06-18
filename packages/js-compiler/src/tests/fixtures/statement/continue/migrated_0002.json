@@ -20,7 +20,7 @@
             "body": {
                 "kind": "WhileStatement",
                 "test": {
-                    "kind": 10147,
+                    "kind": "BoolLterial",
                     "value": true,
                     "start": {
                         "row": 1,
@@ -62,19 +62,6 @@
                                 "col": 35,
                                 "index": 34
                             }
-                        },
-                        {
-                            "kind": 10135,
-                            "start": {
-                                "row": 1,
-                                "col": 35,
-                                "index": 34
-                            },
-                            "end": {
-                                "row": 1,
-                                "col": 36,
-                                "index": 35
-                            }
                         }
                     ],
                     "start": {
@@ -84,8 +71,8 @@
                     },
                     "end": {
                         "row": 1,
-                        "col": 38,
-                        "index": 37
+                        "col": 37,
+                        "index": 36
                     }
                 },
                 "start": {
@@ -95,8 +82,8 @@
                 },
                 "end": {
                     "row": 1,
-                    "col": 38,
-                    "index": 37
+                    "col": 37,
+                    "index": 36
                 }
             },
             "start": {
@@ -106,8 +93,8 @@
             },
             "end": {
                 "row": 1,
-                "col": 38,
-                "index": 37
+                "col": 37,
+                "index": 36
             }
         }
     ],
@@ -118,7 +105,7 @@
     },
     "end": {
         "row": 1,
-        "col": 38,
-        "index": 37
+        "col": 37,
+        "index": 36
     }
 }

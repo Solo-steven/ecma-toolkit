@@ -28,6 +28,18 @@ export function createStringLiteral(value: string, start: SourcePosition, end: S
         value, start, end
     }
 }
+export function createNullLiteral(start: SourcePosition,  end: SourcePosition): AST.NullLiteral {
+    return {
+        kind: SyntaxKinds.NullLiteral,
+        start, end,
+    }
+}
+export function createUndefinedLiteral(start: SourcePosition,  end: SourcePosition): AST.UndefinbedLiteral{
+    return {
+        kind: SyntaxKinds.UndefinedLiteral,
+        start, end,
+    }
+}
 export function createBoolLiteral(value: boolean, start: SourcePosition, end: SourcePosition): AST.BoolLiteral {
     return {
         kind: SyntaxKinds.BooleanLiteral,

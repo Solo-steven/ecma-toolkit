@@ -76,6 +76,8 @@ import {
     StringLiteral,
     BoolLiteral,
     EmptyStatement,
+    NullLiteral,
+    UndefinbedLiteral,
 } from "@/src/ast";
 import { SyntaxKinds } from "@/src/kind";
 import type { Visitor } from "./type";
@@ -88,6 +90,18 @@ const VisitorTable: { [key: number ]: (node: ModuleItem, visior: Visitor) => voi
             visitor[node.kind](node);
         }
         node.body.forEach(node => visitNode(node, visitor));
+    },
+    [SyntaxKinds.NullLiteral]: function visitNullLiteral(node: NullLiteral, visitor: Visitor) {
+        if(!node) return;
+        if(visitor[node.kind]) {
+            visitor[node.kind](node);
+        }
+    },
+    [SyntaxKinds.UndefinedLiteral]: function visitUndefinedLiteral(node: UndefinbedLiteral, visitor: Visitor) {
+        if(!node) return;
+        if(visitor[node.kind]) {
+            visitor[node.kind](node);
+        }
     },
     [SyntaxKinds.BooleanLiteral]: function visitBoolLiteral(node: BoolLiteral, visitor: Visitor) {
         if(!node) return 

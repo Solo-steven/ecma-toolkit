@@ -1302,6 +1302,10 @@ export function createParser(code: string) {
     }
     function parsePrimaryExpression(): Expression {
         switch(getToken()) {
+            case SyntaxKinds.NullKeyword:
+                return parseNullLiteral();
+            case SyntaxKinds.UndefinedKeyword:
+                return parseUndefinedLiteral()
             case SyntaxKinds.TrueKeyword:
             case SyntaxKinds.FalseKeyword:
                 return parseBoolLiteral();
@@ -1372,6 +1376,14 @@ export function createParser(code: string) {
     function parsePrivateName() {
         const { value, start, end } = expectGuard([SyntaxKinds.PrivateName]);
         return Factory.createPrivateName(value, start, end);
+    }
+    function parseNullLiteral() {
+        const { start, end } =  expectGuard([SyntaxKinds.NullKeyword]);
+        return Factory.createNullLiteral(start, end);
+    }
+    function parseUndefinedLiteral() {
+        const { start, end } = expectGuard([SyntaxKinds.UndefinedKeyword]);
+        return Factory.createUndefinedLiteral(start, end);
     }
     function parseNumberLiteral() {
         const { start, end, value } = expectGuard([SyntaxKinds.NumberLiteral]);

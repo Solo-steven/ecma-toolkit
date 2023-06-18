@@ -20,7 +20,7 @@
             "body": {
                 "kind": "WhileStatement",
                 "test": {
-                    "kind": 10147,
+                    "kind": "BoolLterial",
                     "value": true,
                     "start": {
                         "row": 1,

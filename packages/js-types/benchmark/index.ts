@@ -3,40 +3,24 @@ import { traversal as HalfInlineTraversal } from "@/src/visitor/half-inline";
 import { traversal as AllInlineTraversal } from "@/src/visitor/all-inline";
 import { validParent, createFakeAST, BindingTable } from "./helper";
 
+import { Bench } from "tinybench";
 
+const bench = new Bench({ time: 120 });
 
-export function benchmark(callback: CallableFunction, prefix: string) {
-    const startStr = `${prefix}-start`;
-    const endStr = `${prefix}-end`;
-    performance.mark(startStr);
-    callback();
-    performance.mark(endStr);
-    console.log(performance.measure(prefix, startStr, endStr));
-}
+bench
+  .add('declarative task', async () => {
+    const ast = await createFakeAST();
+    HalfInlineTraversal(ast, BindingTable);
+  })
+  .add('half inline task', async () => {
+    const ast = await createFakeAST();
+    DeclarativeTraversal(ast, BindingTable);
+  })
+  .add('all inline task', async () => {
+    const ast = await createFakeAST();
+    AllInlineTraversal(ast, BindingTable);
+  })
 
-function frecurive(n: number): number {
-    if(n === 0) {
-        return 0;
-    }
-    if(n === 1) {
-        return 1;
-    }
-    return frecurive(n-1) + frecurive(n-2);
-}
-
-
-function main() {
-    benchmark(() => {
-        frecurive(7);
-    }, "all-inline");
-
-    benchmark(() => {
-        frecurive(7);
-    }, "declarative");
-
-    benchmark(() => {
-        frecurive(7);
-    }, "half-inline");
-}
-
-main();
+bench.run().then(() => {
+    console.table(bench.table());
+}).catch(e => console.log(e));

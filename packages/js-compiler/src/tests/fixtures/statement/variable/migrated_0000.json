@@ -2,17 +2,18 @@
     "kind": "Program",
     "body": [
         {
-            "kind": "BlockStatement",
-            "body": [
+            "kind": "VariableDeclaration",
+            "variant": "var",
+            "declarations": [
                 {
-                    "kind": "ExpressionStatement",
-                    "expr": {
+                    "kind": "VariableDeclarator",
+                    "id": {
                         "kind": "Identifer",
-                        "name": "foo",
+                        "name": "x",
                         "start": {
                             "row": 1,
-                            "col": 3,
-                            "index": 2
+                            "col": 5,
+                            "index": 4
                         },
                         "end": {
                             "row": 1,
@@ -20,10 +21,11 @@
                             "index": 5
                         }
                     },
+                    "init": null,
                     "start": {
                         "row": 1,
-                        "col": 3,
-                        "index": 2
+                        "col": 5,
+                        "index": 4
                     },
                     "end": {
                         "row": 1,
@@ -39,8 +41,8 @@
             },
             "end": {
                 "row": 1,
-                "col": 8,
-                "index": 7
+                "col": 6,
+                "index": 5
             }
         }
     ],
@@ -51,7 +53,7 @@
     },
     "end": {
         "row": 1,
-        "col": 8,
-        "index": 7
+        "col": 6,
+        "index": 5
     }
 }

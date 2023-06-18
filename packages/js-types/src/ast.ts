@@ -74,6 +74,12 @@ export interface BoolLiteral extends ModuleItem {
     kind: SyntaxKinds.BooleanLiteral;
     value: boolean;
 }
+export interface NullLiteral extends ModuleItem {
+    kind: SyntaxKinds.NullLiteral;
+}
+export interface UndefinbedLiteral extends ModuleItem {
+    kind: SyntaxKinds.UndefinedLiteral;
+}
 export interface TemplateLiteral extends ModuleItem {
     kind: SyntaxKinds.TemplateLiteral,
     quasis: Array<TemplateElement>;
@@ -204,7 +210,7 @@ export type Expression =
     // identifer and super and ThisExpression
     Identifier  | PrivateName | Super | ThisExpression |
     // literals 
-    NumberLiteral | StringLiteral | BoolLiteral | TemplateLiteral |
+    NumberLiteral | StringLiteral | BoolLiteral | TemplateLiteral | UndefinbedLiteral | NullLiteral |
     // structal literal
     ObjectExpression | ArrayExpression | ArrorFunctionExpression | FunctionExpression | ClassExpression |
     // meta property and spread element

@@ -5,7 +5,7 @@
             "kind": "LabledStatement",
             "label": {
                 "kind": "Identifer",
-                "name": "done",
+                "name": "__proto__",
                 "start": {
                     "row": 1,
                     "col": 1,
@@ -13,24 +13,24 @@
                 },
                 "end": {
                     "row": 1,
-                    "col": 5,
-                    "index": 4
+                    "col": 10,
+                    "index": 9
                 }
             },
             "body": {
                 "kind": "WhileStatement",
                 "test": {
-                    "kind": 10147,
+                    "kind": "BoolLterial",
                     "value": true,
                     "start": {
                         "row": 1,
-                        "col": 14,
-                        "index": 13
+                        "col": 19,
+                        "index": 18
                     },
                     "end": {
                         "row": 1,
-                        "col": 18,
-                        "index": 17
+                        "col": 23,
+                        "index": 22
                     }
                 },
                 "body": {
@@ -40,50 +40,63 @@
                             "kind": "ContinueStatement",
                             "label": {
                                 "kind": "Identifer",
-                                "name": "done",
+                                "name": "__proto__",
                                 "start": {
                                     "row": 1,
-                                    "col": 31,
-                                    "index": 30
+                                    "col": 36,
+                                    "index": 35
                                 },
                                 "end": {
                                     "row": 1,
-                                    "col": 35,
-                                    "index": 34
+                                    "col": 45,
+                                    "index": 44
                                 }
                             },
                             "start": {
                                 "row": 1,
-                                "col": 22,
-                                "index": 21
+                                "col": 27,
+                                "index": 26
                             },
                             "end": {
                                 "row": 1,
-                                "col": 35,
-                                "index": 34
+                                "col": 45,
+                                "index": 44
+                            }
+                        },
+                        {
+                            "kind": 10135,
+                            "start": {
+                                "row": 1,
+                                "col": 45,
+                                "index": 44
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 46,
+                                "index": 45
                             }
                         }
                     ],
                     "start": {
                         "row": 1,
-                        "col": 20,
-                        "index": 19
+                        "col": 25,
+                        "index": 24
                     },
                     "end": {
                         "row": 1,
-                        "col": 37,
-                        "index": 36
+                        "col": 48,
+                        "index": 47
                     }
                 },
                 "start": {
                     "row": 1,
-                    "col": 7,
-                    "index": 6
+                    "col": 12,
+                    "index": 11
                 },
                 "end": {
                     "row": 1,
-                    "col": 37,
-                    "index": 36
+                    "col": 48,
+                    "index": 47
                 }
             },
             "start": {
@@ -93,8 +106,8 @@
             },
             "end": {
                 "row": 1,
-                "col": 37,
-                "index": 36
+                "col": 48,
+                "index": 47
             }
         }
     ],
@@ -105,7 +118,7 @@
     },
     "end": {
         "row": 1,
-        "col": 37,
-        "index": 36
+        "col": 48,
+        "index": 47
     }
 }

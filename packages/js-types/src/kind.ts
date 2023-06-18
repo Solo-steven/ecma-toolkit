@@ -157,6 +157,8 @@ export enum SyntaxKinds {
     ClassDeclaration,
     ClassBody,
     // ========== Expression ==========
+    NullLiteral,
+    UndefinedLiteral,
     BooleanLiteral,
     MetaProperty,
     Super,
@@ -457,6 +459,9 @@ export const SytaxKindsMapLexicalLiteral = {
     [SyntaxKinds.ClassDeclaration]: "ClassDeclaration",
     [SyntaxKinds.ClassBody]: "ClassBody",
     // ========== Expression ==========
+    [SyntaxKinds.NullLiteral]: "NullLiteral",
+    [SyntaxKinds.UndefinedLiteral]: "UndefinedLiteral",
+    [SyntaxKinds.BooleanLiteral]: "BoolLterial",
     [SyntaxKinds.MetaProperty]: "MetaProperty",
     [SyntaxKinds.Super]: "Super",
     [SyntaxKinds.ThisExpression]: "ThisExpression",

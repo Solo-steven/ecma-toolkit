@@ -1,0 +1,87 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "FunctionDeclaration",
+            "name": {
+                "kind": "Identifer",
+                "name": "a",
+                "start": {
+                    "row": 1,
+                    "col": 10,
+                    "index": 9
+                },
+                "end": {
+                    "row": 1,
+                    "col": 11,
+                    "index": 10
+                }
+            },
+            "generator": false,
+            "async": false,
+            "body": {
+                "kind": "FunctionBody",
+                "body": [
+                    {
+                        "kind": "ReturnStatement",
+                        "argu": {
+                            "kind": "StringLiteral",
+                            "value": "hello \\\n  \tworld",
+                            "start": {
+                                "row": 2,
+                                "col": 9,
+                                "index": 24
+                            },
+                            "end": {
+                                "row": 3,
+                                "col": 9,
+                                "index": 42
+                            }
+                        },
+                        "start": {
+                            "row": 2,
+                            "col": 2,
+                            "index": 17
+                        },
+                        "end": {
+                            "row": 3,
+                            "col": 9,
+                            "index": 42
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                },
+                "end": {
+                    "row": 4,
+                    "col": 1,
+                    "index": 45
+                }
+            },
+            "params": [],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 4,
+                "col": 1,
+                "index": 45
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 5,
+        "col": 0,
+        "index": 46
+    }
+}

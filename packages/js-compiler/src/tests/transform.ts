@@ -77,12 +77,23 @@ import {
     Visitor, 
     SytaxKindsMapLexicalLiteral,
     traversal,
-    ExpressionStatement
+    ExpressionStatement,
+    BoolLiteral,
+    UndefinbedLiteral,
 } from "js-types";
 
 const VisitorTable: Visitor = {
     [SyntaxKinds.Program]: function Program(node: Program) {
         node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.Program];
+    },
+    [SyntaxKinds.BooleanLiteral]: function BooleanLiteral(node: BoolLiteral) {
+        node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.BooleanLiteral];
+    },
+    [SyntaxKinds.NullLiteral]: function NullLiteral(node: NullLiteral) {
+        node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.NullLiteral];
+    },
+    [SyntaxKinds.UndefinedLiteral]: function UndefinedLiteral(node: UndefinbedLiteral)  {
+        node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.UndefinedLiteral];
     },
     [SyntaxKinds.NumberLiteral]: function NumberString(node: NumberLiteral) {
         node.kind = SytaxKindsMapLexicalLiteral[SyntaxKinds.NumberLiteral]
