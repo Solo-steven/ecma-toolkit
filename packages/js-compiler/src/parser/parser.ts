@@ -288,7 +288,8 @@ export function createParser(code: string) {
      */
     function createMessageError(messsage: string) {
         const position = getStartPosition();
-        return new Error(`[Syntax Error]: ${messsage} (${position.col}, ${position.row})`);
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        return new Error(`[Syntax Error]: ${messsage} (${position.row}, ${position.col}), got token ${SytaxKindsMapLexicalLiteral[getToken()]}`);
     }
     /**
      * Create a error object with message tell developer that get a 
@@ -1928,7 +1929,10 @@ export function createParser(code: string) {
                 nextToken();
                 const bindingElement = parseBindingElement();
                 elements.push(Factory.createRestElement(bindingElement, start, cloneSourcePosition(bindingElement.end)));
-                continue;
+                if(!match(SyntaxKinds.BracketRightPunctuator)) {
+                    throw createMessageError(ErrorMessageMap.rest_element_can_not_end_with_comma);
+                }
+                break
             }
             elements.push(parseBindingElement());
         }
