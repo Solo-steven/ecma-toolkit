@@ -5,11 +5,7 @@ import { transformSyntaxKindToLiteral } from  "./tests/transform";
 import fs from 'fs';
 import { performance } from "node:perf_hooks";
 
-const code =  `function a() {
-    return 'hello \
-        world';
-  }
-  `;
+const code =  `({a:this}=0)`;
 console.log("=================================");
 console.log("Test JavaScript Code:");
 console.log("=================================");
