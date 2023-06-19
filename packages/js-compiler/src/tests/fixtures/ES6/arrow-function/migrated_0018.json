@@ -1,0 +1,88 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "CallExpression",
+                "optional": false,
+                "callee": {
+                    "kind": "Identifer",
+                    "name": "foo",
+                    "start": {
+                        "row": 1,
+                        "col": 1,
+                        "index": 0
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 4,
+                        "index": 3
+                    }
+                },
+                "arguments": [
+                    {
+                        "kind": "ArrowFunctionExpression",
+                        "expressionBody": false,
+                        "async": false,
+                        "arguments": [],
+                        "body": {
+                            "kind": "FunctionBody",
+                            "body": [],
+                            "start": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 13,
+                                "index": 12
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 5,
+                            "index": 4
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 13,
+                            "index": 12
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 14,
+                    "index": 13
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 14,
+                "index": 13
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 14,
+        "index": 13
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "ArrowFunctionExpression",
+                "expressionBody": true,
+                "async": false,
+                "arguments": [],
+                "body": {
+                    "kind": "StringLiteral",
+                    "value": "test",
+                    "start": {
+                        "row": 1,
+                        "col": 7,
+                        "index": 6
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 13,
+                        "index": 12
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 13,
+                    "index": 12
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 13,
+                "index": 12
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 13,
+        "index": 12
+    }
+}

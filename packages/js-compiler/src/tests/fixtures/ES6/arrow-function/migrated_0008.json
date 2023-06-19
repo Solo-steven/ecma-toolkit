@@ -1,0 +1,128 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "ArrowFunctionExpression",
+                "expressionBody": true,
+                "async": false,
+                "arguments": [
+                    {
+                        "kind": "AssigmentPattern",
+                        "left": {
+                            "kind": "Identifer",
+                            "name": "x",
+                            "start": {
+                                "row": 1,
+                                "col": 2,
+                                "index": 1
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 3,
+                                "index": 2
+                            }
+                        },
+                        "right": {
+                            "kind": "NumberLiteral",
+                            "value": "1",
+                            "start": {
+                                "row": 1,
+                                "col": 4,
+                                "index": 3
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 5,
+                                "index": 4
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 2,
+                            "index": 1
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 5,
+                            "index": 4
+                        }
+                    }
+                ],
+                "body": {
+                    "kind": "BinaryExpression",
+                    "operator": "*",
+                    "left": {
+                        "kind": "Identifer",
+                        "name": "x",
+                        "start": {
+                            "row": 1,
+                            "col": 10,
+                            "index": 9
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 11,
+                            "index": 10
+                        }
+                    },
+                    "right": {
+                        "kind": "Identifer",
+                        "name": "x",
+                        "start": {
+                            "row": 1,
+                            "col": 14,
+                            "index": 13
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 15,
+                            "index": 14
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 10,
+                        "index": 9
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 15,
+                        "index": 14
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 15,
+                    "index": 14
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 15,
+                "index": 14
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 15,
+        "index": 14
+    }
+}

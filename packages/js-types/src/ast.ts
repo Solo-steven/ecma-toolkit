@@ -117,6 +117,7 @@ export interface ClassExpression extends Class {
 export interface ArrayExpression extends ModuleItem {
     kind: SyntaxKinds.ArrayExpression;
     elements: Array<Expression | null>; // actually need to be assigment expression;
+    trailingComma: boolean;
 }
 export interface FunctionExpression extends ModuleItem, Function {
     kind: SyntaxKinds.FunctionExpression

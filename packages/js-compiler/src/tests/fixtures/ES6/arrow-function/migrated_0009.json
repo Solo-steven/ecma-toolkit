@@ -1,0 +1,73 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "ArrowFunctionExpression",
+                "expressionBody": true,
+                "async": false,
+                "arguments": [
+                    {
+                        "kind": "Identifer",
+                        "name": "eval",
+                        "start": {
+                            "row": 1,
+                            "col": 1,
+                            "index": 0
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 5,
+                            "index": 4
+                        }
+                    }
+                ],
+                "body": {
+                    "kind": "NumberLiteral",
+                    "value": "42",
+                    "start": {
+                        "row": 1,
+                        "col": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 11,
+                        "index": 10
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 11,
+                    "index": 10
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 11,
+                "index": 10
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 11,
+        "index": 10
+    }
+}

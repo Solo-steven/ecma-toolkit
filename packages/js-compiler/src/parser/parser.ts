@@ -520,12 +520,19 @@ export function createParser(code: string) {
             case SyntaxKinds.ArrayExpression: {
                 const arrayExpressionNode = node as ArrayExpression;
                 const elements: Array<ModuleItem> = [];
-                for(const element of arrayExpressionNode.elements) {
+                for(let index = 0 ; index < arrayExpressionNode.elements.length; ++index) {
+                    const element = arrayExpressionNode.elements[index];
                     if(element === null) {
                         elements.push(element);
                         continue;
                     }
-                    elements.push(toAssignmentPattern(element));
+                    const transformElement = toAssignmentPattern(element);
+                    elements.push(transformElement);
+                    if(transformElement.kind === SyntaxKinds.RestElement) {
+                        if(index !== arrayExpressionNode.elements.length -1 || arrayExpressionNode.trailingComma) {
+                            throw createMessageError(ErrorMessageMap.rest_element_can_not_end_with_comma);
+                        }
+                    }
                 }
                 return Factory.createArrayPattern(elements as Array<Expression>, arrayExpressionNode.start, arrayExpressionNode.end);
             }
@@ -1251,7 +1258,7 @@ export function createParser(code: string) {
                 const argu = parseAssigmentExpression();
                 callerArguments.push(Factory.createSpreadElement(argu, spreadElementStart, cloneSourcePosition(argu.end)));
                 if(match(SyntaxKinds.CommaToken)) {
-                    nextToken();
+                    throw createMessageError(ErrorMessageMap.rest_element_can_not_end_with_comma);
                 }
                 shouldStop = true;
                 continue;
@@ -1732,9 +1739,19 @@ export function createParser(code: string) {
     function parseArrayExpression() {
         const { start } = expectGuard([SyntaxKinds.BracketLeftPunctuator]);
         const elements: Array<Expression | null> = [];
+        let tralingComma = false;
+        let isStart = true;
         while(!match(SyntaxKinds.BracketRightPunctuator) && !match(SyntaxKinds.EOFToken)) {
+            if(isStart) {
+                isStart = false;
+            }else {
+                expect(SyntaxKinds.CommaToken, "array expression or pattern need comma for separating elements");
+            }
+            if(matchSet([SyntaxKinds.BracketRightPunctuator, SyntaxKinds.EOFToken])) {
+                tralingComma = true;
+                break;
+            }
             if(match(SyntaxKinds.CommaToken)) {
-                nextToken();
                 elements.push(null);
                 continue;
             }
@@ -1747,12 +1764,9 @@ export function createParser(code: string) {
                 const expr = parseAssigmentExpression();
                 elements.push(expr);
             }
-            if(match(SyntaxKinds.CommaToken)) {
-                nextToken();
-            }
         }
         const { end } = expect(SyntaxKinds.BracketRightPunctuator);
-        return Factory.createArrayExpression(elements, start, end);
+        return Factory.createArrayExpression(elements, start, end, tralingComma);
     }
     function parseFunctionExpression() {
         return Factory.transFormFunctionToFunctionExpression(parseFunction());

@@ -1,0 +1,73 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "ArrowFunctionExpression",
+                "expressionBody": true,
+                "async": false,
+                "arguments": [
+                    {
+                        "kind": "Identifer",
+                        "name": "sun",
+                        "start": {
+                            "row": 1,
+                            "col": 2,
+                            "index": 1
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 5,
+                            "index": 4
+                        }
+                    }
+                ],
+                "body": {
+                    "kind": "Identifer",
+                    "name": "earth",
+                    "start": {
+                        "row": 1,
+                        "col": 10,
+                        "index": 9
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 15,
+                        "index": 14
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 15,
+                    "index": 14
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 15,
+                "index": 14
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 15,
+        "index": 14
+    }
+}

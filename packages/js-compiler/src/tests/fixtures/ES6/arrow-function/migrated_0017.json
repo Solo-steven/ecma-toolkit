@@ -1,0 +1,161 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "ArrowFunctionExpression",
+                "expressionBody": true,
+                "async": false,
+                "arguments": [
+                    {
+                        "kind": "Identifer",
+                        "name": "x",
+                        "start": {
+                            "row": 1,
+                            "col": 2,
+                            "index": 1
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 3,
+                            "index": 2
+                        }
+                    }
+                ],
+                "body": {
+                    "kind": "ArrowFunctionExpression",
+                    "expressionBody": true,
+                    "async": false,
+                    "arguments": [
+                        {
+                            "kind": "Identifer",
+                            "name": "y",
+                            "start": {
+                                "row": 1,
+                                "col": 10,
+                                "index": 9
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            }
+                        },
+                        {
+                            "kind": "Identifer",
+                            "name": "z",
+                            "start": {
+                                "row": 1,
+                                "col": 13,
+                                "index": 12
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 14,
+                                "index": 13
+                            }
+                        }
+                    ],
+                    "body": {
+                        "kind": "SequenceExpression",
+                        "exprs": [
+                            {
+                                "kind": "Identifer",
+                                "name": "x",
+                                "start": {
+                                    "row": 1,
+                                    "col": 20,
+                                    "index": 19
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 21,
+                                    "index": 20
+                                }
+                            },
+                            {
+                                "kind": "Identifer",
+                                "name": "y",
+                                "start": {
+                                    "row": 1,
+                                    "col": 23,
+                                    "index": 22
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 24,
+                                    "index": 23
+                                }
+                            },
+                            {
+                                "kind": "Identifer",
+                                "name": "z",
+                                "start": {
+                                    "row": 1,
+                                    "col": 26,
+                                    "index": 25
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 27,
+                                    "index": 26
+                                }
+                            }
+                        ],
+                        "start": {
+                            "row": 1,
+                            "col": 19,
+                            "index": 18
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 28,
+                            "index": 27
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 28,
+                        "index": 27
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 28,
+                    "index": 27
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 28,
+                "index": 27
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 29,
+        "index": 28
+    }
+}

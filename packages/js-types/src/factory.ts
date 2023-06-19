@@ -58,10 +58,10 @@ export function createTemplateElement(value: string, tail: boolean, start: Sourc
         value, tail, start , end
     }
 }
-export function createArrayExpression(elements: Array<AST.Expression | null>, start: SourcePosition, end: SourcePosition): AST.ArrayExpression {
+export function createArrayExpression(elements: Array<AST.Expression | null>, start: SourcePosition, end: SourcePosition, trailingComma = false): AST.ArrayExpression {
     return {
         kind: SyntaxKinds.ArrayExpression,
-        elements,start, end
+        elements, trailingComma, start, end
     };
 }
 export function createObjectExpression(properties: Array<AST.PropertyDefinition>, start: SourcePosition, end: SourcePosition): AST.ObjectExpression {

@@ -1,0 +1,100 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "ExpressionStatement",
+            "expr": {
+                "kind": "ArrowFunctionExpression",
+                "expressionBody": true,
+                "async": false,
+                "arguments": [
+                    {
+                        "kind": "AssigmentPattern",
+                        "left": {
+                            "kind": "Identifer",
+                            "name": "eval",
+                            "start": {
+                                "row": 1,
+                                "col": 2,
+                                "index": 1
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 6,
+                                "index": 5
+                            }
+                        },
+                        "right": {
+                            "kind": "NumberLiteral",
+                            "value": "10",
+                            "start": {
+                                "row": 1,
+                                "col": 9,
+                                "index": 8
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 11,
+                                "index": 10
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 2,
+                            "index": 1
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 11,
+                            "index": 10
+                        }
+                    }
+                ],
+                "body": {
+                    "kind": "NumberLiteral",
+                    "value": "42",
+                    "start": {
+                        "row": 1,
+                        "col": 16,
+                        "index": 15
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 18,
+                        "index": 17
+                    }
+                },
+                "start": {
+                    "row": 1,
+                    "col": 1,
+                    "index": 0
+                },
+                "end": {
+                    "row": 1,
+                    "col": 18,
+                    "index": 17
+                }
+            },
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 18,
+                "index": 17
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 18,
+        "index": 17
+    }
+}

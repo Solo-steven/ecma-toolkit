@@ -5,7 +5,7 @@ import { transformSyntaxKindToLiteral } from  "./tests/transform";
 import fs from 'fs';
 import { performance } from "node:perf_hooks";
 
-const code =  `((a)) => 0`;
+const code =  `({a:b[0]})=>0`;
 console.log("=================================");
 console.log("Test JavaScript Code:");
 console.log("=================================");
