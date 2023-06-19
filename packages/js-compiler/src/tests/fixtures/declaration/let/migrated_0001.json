@@ -1,0 +1,74 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "BlockStatement",
+            "body": [
+                {
+                    "kind": "VariableDeclaration",
+                    "variant": "let",
+                    "declarations": [
+                        {
+                            "kind": "VariableDeclarator",
+                            "id": {
+                                "kind": "Identifer",
+                                "name": "x",
+                                "start": {
+                                    "row": 1,
+                                    "col": 7,
+                                    "index": 6
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 8,
+                                    "index": 7
+                                }
+                            },
+                            "init": null,
+                            "start": {
+                                "row": 1,
+                                "col": 7,
+                                "index": 6
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 8,
+                                "index": 7
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 3,
+                        "index": 2
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 8,
+                        "index": 7
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 10,
+                "index": 9
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 10,
+        "index": 9
+    }
+}

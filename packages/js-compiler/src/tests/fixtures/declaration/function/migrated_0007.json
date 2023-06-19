@@ -1,0 +1,131 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "FunctionDeclaration",
+            "name": {
+                "kind": "Identifer",
+                "name": "hello",
+                "start": {
+                    "row": 1,
+                    "col": 10,
+                    "index": 9
+                },
+                "end": {
+                    "row": 1,
+                    "col": 15,
+                    "index": 14
+                }
+            },
+            "generator": false,
+            "async": false,
+            "body": {
+                "kind": "FunctionBody",
+                "body": [
+                    {
+                        "kind": "ExpressionStatement",
+                        "expr": {
+                            "kind": "CallExpression",
+                            "optional": false,
+                            "callee": {
+                                "kind": "Identifer",
+                                "name": "sayHi",
+                                "start": {
+                                    "row": 1,
+                                    "col": 24,
+                                    "index": 23
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 29,
+                                    "index": 28
+                                }
+                            },
+                            "arguments": [],
+                            "start": {
+                                "row": 1,
+                                "col": 24,
+                                "index": 23
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 31,
+                                "index": 30
+                            }
+                        },
+                        "start": {
+                            "row": 1,
+                            "col": 24,
+                            "index": 23
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 31,
+                            "index": 30
+                        }
+                    }
+                ],
+                "start": {
+                    "row": 1,
+                    "col": 22,
+                    "index": 21
+                },
+                "end": {
+                    "row": 1,
+                    "col": 34,
+                    "index": 33
+                }
+            },
+            "params": [
+                {
+                    "kind": "Identifer",
+                    "name": "a",
+                    "start": {
+                        "row": 1,
+                        "col": 16,
+                        "index": 15
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 17,
+                        "index": 16
+                    }
+                },
+                {
+                    "kind": "Identifer",
+                    "name": "b",
+                    "start": {
+                        "row": 1,
+                        "col": 19,
+                        "index": 18
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 20,
+                        "index": 19
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 34,
+                "index": 33
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 34,
+        "index": 33
+    }
+}

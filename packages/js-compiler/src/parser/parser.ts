@@ -1237,7 +1237,7 @@ export function createParser(code: string) {
             if(isStart) {
                 isStart = false
             } else {
-                expect(SyntaxKinds.CommaToken);
+                expect(SyntaxKinds.CommaToken, "Argument should seprated by comma.");
             }
             // case 1: ',' following by ')'
             if(match(SyntaxKinds.ParenthesesRightPunctuator)) {

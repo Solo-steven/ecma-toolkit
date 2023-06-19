@@ -1,0 +1,74 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "FunctionDeclaration",
+            "name": {
+                "kind": "Identifer",
+                "name": "universe",
+                "start": {
+                    "row": 1,
+                    "col": 10,
+                    "index": 9
+                },
+                "end": {
+                    "row": 1,
+                    "col": 18,
+                    "index": 17
+                }
+            },
+            "generator": false,
+            "async": false,
+            "body": {
+                "kind": "FunctionBody",
+                "body": [],
+                "start": {
+                    "row": 1,
+                    "col": 30,
+                    "index": 29
+                },
+                "end": {
+                    "row": 1,
+                    "col": 33,
+                    "index": 32
+                }
+            },
+            "params": [
+                {
+                    "kind": "Identifer",
+                    "name": "__proto__",
+                    "start": {
+                        "row": 1,
+                        "col": 19,
+                        "index": 18
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 28,
+                        "index": 27
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 33,
+                "index": 32
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 33,
+        "index": 32
+    }
+}

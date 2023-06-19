@@ -1,0 +1,87 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "BlockStatement",
+            "body": [
+                {
+                    "kind": "VariableDeclaration",
+                    "variant": "let",
+                    "declarations": [
+                        {
+                            "kind": "VariableDeclarator",
+                            "id": {
+                                "kind": "Identifer",
+                                "name": "x",
+                                "start": {
+                                    "row": 1,
+                                    "col": 7,
+                                    "index": 6
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 8,
+                                    "index": 7
+                                }
+                            },
+                            "init": {
+                                "kind": "NumberLiteral",
+                                "value": "42",
+                                "start": {
+                                    "row": 1,
+                                    "col": 11,
+                                    "index": 10
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 13,
+                                    "index": 12
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 7,
+                                "index": 6
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 13,
+                                "index": 12
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 3,
+                        "index": 2
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 13,
+                        "index": 12
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 15,
+                "index": 14
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 15,
+        "index": 14
+    }
+}

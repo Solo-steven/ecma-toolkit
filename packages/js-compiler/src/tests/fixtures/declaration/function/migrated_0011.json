@@ -1,0 +1,145 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "VariableDeclaration",
+            "variant": "var",
+            "declarations": [
+                {
+                    "kind": "VariableDeclarator",
+                    "id": {
+                        "kind": "Identifer",
+                        "name": "hello",
+                        "start": {
+                            "row": 1,
+                            "col": 5,
+                            "index": 4
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 10,
+                            "index": 9
+                        }
+                    },
+                    "init": {
+                        "kind": "FunctionExpression",
+                        "name": {
+                            "kind": "Identifer",
+                            "name": "hi",
+                            "start": {
+                                "row": 1,
+                                "col": 22,
+                                "index": 21
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 24,
+                                "index": 23
+                            }
+                        },
+                        "generator": false,
+                        "async": false,
+                        "body": {
+                            "kind": "FunctionBody",
+                            "body": [
+                                {
+                                    "kind": "ExpressionStatement",
+                                    "expr": {
+                                        "kind": "CallExpression",
+                                        "optional": false,
+                                        "callee": {
+                                            "kind": "Identifer",
+                                            "name": "sayHi",
+                                            "start": {
+                                                "row": 1,
+                                                "col": 29,
+                                                "index": 28
+                                            },
+                                            "end": {
+                                                "row": 1,
+                                                "col": 34,
+                                                "index": 33
+                                            }
+                                        },
+                                        "arguments": [],
+                                        "start": {
+                                            "row": 1,
+                                            "col": 29,
+                                            "index": 28
+                                        },
+                                        "end": {
+                                            "row": 1,
+                                            "col": 36,
+                                            "index": 35
+                                        }
+                                    },
+                                    "start": {
+                                        "row": 1,
+                                        "col": 29,
+                                        "index": 28
+                                    },
+                                    "end": {
+                                        "row": 1,
+                                        "col": 36,
+                                        "index": 35
+                                    }
+                                }
+                            ],
+                            "start": {
+                                "row": 1,
+                                "col": 27,
+                                "index": 26
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 38,
+                                "index": 37
+                            }
+                        },
+                        "params": [],
+                        "start": {
+                            "row": 1,
+                            "col": 13,
+                            "index": 12
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 38,
+                            "index": 37
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 5,
+                        "index": 4
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 38,
+                        "index": 37
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 38,
+                "index": 37
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 39,
+        "index": 38
+    }
+}

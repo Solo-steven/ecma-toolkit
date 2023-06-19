@@ -1,0 +1,102 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "VariableDeclaration",
+            "variant": "var",
+            "declarations": [
+                {
+                    "kind": "VariableDeclarator",
+                    "id": {
+                        "kind": "Identifer",
+                        "name": "hi",
+                        "start": {
+                            "row": 1,
+                            "col": 5,
+                            "index": 4
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 7,
+                            "index": 6
+                        }
+                    },
+                    "init": {
+                        "kind": "FunctionExpression",
+                        "name": {
+                            "kind": "Identifer",
+                            "name": "eval",
+                            "start": {
+                                "row": 1,
+                                "col": 19,
+                                "index": 18
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 23,
+                                "index": 22
+                            }
+                        },
+                        "generator": false,
+                        "async": false,
+                        "body": {
+                            "kind": "FunctionBody",
+                            "body": [],
+                            "start": {
+                                "row": 1,
+                                "col": 26,
+                                "index": 25
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 29,
+                                "index": 28
+                            }
+                        },
+                        "params": [],
+                        "start": {
+                            "row": 1,
+                            "col": 10,
+                            "index": 9
+                        },
+                        "end": {
+                            "row": 1,
+                            "col": 29,
+                            "index": 28
+                        }
+                    },
+                    "start": {
+                        "row": 1,
+                        "col": 5,
+                        "index": 4
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 29,
+                        "index": 28
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 29,
+                "index": 28
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 30,
+        "index": 29
+    }
+}

@@ -1,0 +1,169 @@
+{
+    "kind": "Program",
+    "body": [
+        {
+            "kind": "BlockStatement",
+            "body": [
+                {
+                    "kind": "VariableDeclaration",
+                    "variant": "let",
+                    "declarations": [
+                        {
+                            "kind": "VariableDeclarator",
+                            "id": {
+                                "kind": "Identifer",
+                                "name": "x",
+                                "start": {
+                                    "row": 1,
+                                    "col": 7,
+                                    "index": 6
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 8,
+                                    "index": 7
+                                }
+                            },
+                            "init": {
+                                "kind": "NumberLiteral",
+                                "value": "14",
+                                "start": {
+                                    "row": 1,
+                                    "col": 11,
+                                    "index": 10
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 13,
+                                    "index": 12
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 7,
+                                "index": 6
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 13,
+                                "index": 12
+                            }
+                        },
+                        {
+                            "kind": "VariableDeclarator",
+                            "id": {
+                                "kind": "Identifer",
+                                "name": "y",
+                                "start": {
+                                    "row": 1,
+                                    "col": 15,
+                                    "index": 14
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 16,
+                                    "index": 15
+                                }
+                            },
+                            "init": {
+                                "kind": "NumberLiteral",
+                                "value": "3",
+                                "start": {
+                                    "row": 1,
+                                    "col": 19,
+                                    "index": 18
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 20,
+                                    "index": 19
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 15,
+                                "index": 14
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 20,
+                                "index": 19
+                            }
+                        },
+                        {
+                            "kind": "VariableDeclarator",
+                            "id": {
+                                "kind": "Identifer",
+                                "name": "z",
+                                "start": {
+                                    "row": 1,
+                                    "col": 22,
+                                    "index": 21
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 23,
+                                    "index": 22
+                                }
+                            },
+                            "init": {
+                                "kind": "NumberLiteral",
+                                "value": "1977",
+                                "start": {
+                                    "row": 1,
+                                    "col": 26,
+                                    "index": 25
+                                },
+                                "end": {
+                                    "row": 1,
+                                    "col": 30,
+                                    "index": 29
+                                }
+                            },
+                            "start": {
+                                "row": 1,
+                                "col": 22,
+                                "index": 21
+                            },
+                            "end": {
+                                "row": 1,
+                                "col": 30,
+                                "index": 29
+                            }
+                        }
+                    ],
+                    "start": {
+                        "row": 1,
+                        "col": 3,
+                        "index": 2
+                    },
+                    "end": {
+                        "row": 1,
+                        "col": 30,
+                        "index": 29
+                    }
+                }
+            ],
+            "start": {
+                "row": 1,
+                "col": 1,
+                "index": 0
+            },
+            "end": {
+                "row": 1,
+                "col": 32,
+                "index": 31
+            }
+        }
+    ],
+    "start": {
+        "row": 1,
+        "col": 1,
+        "index": 0
+    },
+    "end": {
+        "row": 1,
+        "col": 32,
+        "index": 31
+    }
+}
